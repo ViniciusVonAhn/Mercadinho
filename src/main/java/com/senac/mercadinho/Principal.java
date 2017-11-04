@@ -521,14 +521,19 @@ public class Principal extends javax.swing.JFrame {
         usuarioT.setText("ADMIN");
         usuarioT.setToolTipText("");
         usuarioT.setBorder(null);
-        jPanel1.add(usuarioT, new org.netbeans.lib.awtextra.AbsoluteConstraints(145, 75, 230, 28));
+        usuarioT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                usuarioTActionPerformed(evt);
+            }
+        });
+        jPanel1.add(usuarioT, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 80, 230, 28));
 
         senhaT.setBackground(new java.awt.Color(165, 164, 169));
         senhaT.setFont(new java.awt.Font("Hobo Std", 0, 18)); // NOI18N
         senhaT.setText("ADMIN");
         senhaT.setToolTipText("");
         senhaT.setBorder(null);
-        jPanel1.add(senhaT, new org.netbeans.lib.awtextra.AbsoluteConstraints(494, 75, 230, 28));
+        jPanel1.add(senhaT, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 80, 230, 28));
 
         campoU.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/campoentrada.png"))); // NOI18N
         jPanel1.add(campoU, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 72, -1, -1));
@@ -851,6 +856,10 @@ public class Principal extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_lupaMouseClicked
+
+    private void usuarioTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usuarioTActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_usuarioTActionPerformed
 
     /**
      * @param args the command line arguments

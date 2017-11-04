@@ -1075,9 +1075,12 @@
               <Border info="null"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="usuarioTActionPerformed"/>
+          </Events>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="145" y="75" width="230" height="28"/>
+              <AbsoluteConstraints x="140" y="80" width="230" height="28"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -1097,7 +1100,7 @@
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="494" y="75" width="230" height="28"/>
+              <AbsoluteConstraints x="490" y="80" width="230" height="28"/>
             </Constraint>
           </Constraints>
         </Component>
