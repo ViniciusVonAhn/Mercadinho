@@ -7,29 +7,29 @@ import java.util.Objects;
  * @author Vinny
  */
 public class Produto {
-    
-    private String codigo_de_barras;
+
+    private String codigoDeBarras;
     private int codigo;
     private String descricao;
     private String unidade;
     private double valor;
     private int quantidade;
-    private int quantidade_un;
-    private double quantidade_kg;
-    private String categoria_id;
+    private int quantidadeUn;
+    private double quantidadeKg;
+    private String categoriaId;
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 59 * hash + Objects.hashCode(this.codigo_de_barras);
+        int hash = 5;
+        hash = 59 * hash + Objects.hashCode(this.codigoDeBarras);
         hash = 59 * hash + this.codigo;
         hash = 59 * hash + Objects.hashCode(this.descricao);
         hash = 59 * hash + Objects.hashCode(this.unidade);
         hash = 59 * hash + (int) (Double.doubleToLongBits(this.valor) ^ (Double.doubleToLongBits(this.valor) >>> 32));
         hash = 59 * hash + this.quantidade;
-        hash = 59 * hash + this.quantidade_un;
-        hash = 59 * hash + (int) (Double.doubleToLongBits(this.quantidade_kg) ^ (Double.doubleToLongBits(this.quantidade_kg) >>> 32));
-        hash = 59 * hash + Objects.hashCode(this.categoria_id);
+        hash = 59 * hash + this.quantidadeUn;
+        hash = 59 * hash + (int) (Double.doubleToLongBits(this.quantidadeKg) ^ (Double.doubleToLongBits(this.quantidadeKg) >>> 32));
+        hash = 59 * hash + Objects.hashCode(this.categoriaId);
         return hash;
     }
 
@@ -54,13 +54,13 @@ public class Produto {
         if (this.quantidade != other.quantidade) {
             return false;
         }
-        if (this.quantidade_un != other.quantidade_un) {
+        if (this.quantidadeUn != other.quantidadeUn) {
             return false;
         }
-        if (Double.doubleToLongBits(this.quantidade_kg) != Double.doubleToLongBits(other.quantidade_kg)) {
+        if (Double.doubleToLongBits(this.quantidadeKg) != Double.doubleToLongBits(other.quantidadeKg)) {
             return false;
         }
-        if (!Objects.equals(this.codigo_de_barras, other.codigo_de_barras)) {
+        if (!Objects.equals(this.codigoDeBarras, other.codigoDeBarras)) {
             return false;
         }
         if (!Objects.equals(this.descricao, other.descricao)) {
@@ -69,20 +69,18 @@ public class Produto {
         if (!Objects.equals(this.unidade, other.unidade)) {
             return false;
         }
-        if (!Objects.equals(this.categoria_id, other.categoria_id)) {
+        if (!Objects.equals(this.categoriaId, other.categoriaId)) {
             return false;
         }
         return true;
     }
-    
-    
 
-    public String getCodigo_de_barras() {
-        return codigo_de_barras;
+    public String getCodigoDeBarras() {
+        return codigoDeBarras;
     }
 
-    public void setCodigo_de_barras(String codigo_de_barras) {
-        this.codigo_de_barras = codigo_de_barras;
+    public void setCodigoDeBarras(String codigoDeBarras) {
+        this.codigoDeBarras = codigoDeBarras;
     }
 
     public int getCodigo() {
@@ -125,29 +123,28 @@ public class Produto {
         this.quantidade = quantidade;
     }
 
-    public int getQuantidade_un() {
-        return quantidade_un;
+    public int getQuantidadeUn() {
+        return quantidadeUn;
     }
 
-    public void setQuantidade_un(int quantidade_un) {
-        this.quantidade_un = quantidade_un;
+    public void setQuantidadeUn(int quantidadeUn) {
+        this.quantidadeUn = quantidadeUn;
     }
 
-    public double getQuantidade_kg() {
-        return quantidade_kg;
+    public double getQuantidadeKg() {
+        return quantidadeKg;
     }
 
-    public void setQuantidade_kg(double quantidade_kg) {
-        this.quantidade_kg = quantidade_kg;
+    public void setQuantidadeKg(double quantidadeKg) {
+        this.quantidadeKg = quantidadeKg;
     }
 
-    public String getCategoria_id() {
-        return categoria_id;
+    public String getCategoriaId() {
+        return categoriaId;
     }
 
-    public void setCategoria_id(String categoria_id) {
-        this.categoria_id = categoria_id;
+    public void setCategoriaId(String categoriaId) {
+        this.categoriaId = categoriaId;
     }
-    
-    
+
 }
