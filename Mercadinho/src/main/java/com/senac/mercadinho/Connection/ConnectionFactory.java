@@ -19,7 +19,7 @@ public class ConnectionFactory {
     
     public static Connection getConnection(){
         try {
-            return DriverManager.getConnection(URL, "root", "");
+            return DriverManager.getConnection(URL, "root", "root");
             
         } catch (SQLException ex) {
           throw new RuntimeException("Erro na conexão: ",ex);
