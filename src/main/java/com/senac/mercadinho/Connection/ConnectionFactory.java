@@ -13,17 +13,15 @@ import java.util.logging.Logger;
  */
 public class ConnectionFactory {
     
-    private static final String DRIVER ="com.mysql.jdbc.Driver";
     private static final String URL = "jdbc:mysql://localhost:3306/mercadinho?autoReconnect=true&useSSL=false";
     private static final String USER = "root";
     private static final String PASS = "";
     
     public static Connection getConnection(){
         try {
-            Class.forName(DRIVER);
             return DriverManager.getConnection(URL, "root", "root");
             
-        } catch (ClassNotFoundException | SQLException ex) {
+        } catch (SQLException ex) {
           throw new RuntimeException("Erro na conexão: ",ex);
         }
     }

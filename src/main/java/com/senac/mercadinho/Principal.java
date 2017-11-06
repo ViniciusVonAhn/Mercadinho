@@ -5,7 +5,9 @@
  */
 package com.senac.mercadinho;
 
+import com.senac.mercadinho.DAO.UsuarioDAO;
 import java.awt.Color;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -14,6 +16,7 @@ import java.awt.Color;
 public class Principal extends javax.swing.JFrame {
     
     EventosPrincipal e = new EventosPrincipal();
+    UsuarioDAO dao = new UsuarioDAO();
 
     /**
      * Creates new form Principal
@@ -42,6 +45,20 @@ public class Principal extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        areaV = new javax.swing.JPanel();
+        tabelaC = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        figuraCodBarras = new javax.swing.JLabel();
+        codigoBarrasC = new javax.swing.JTextField();
+        codigoBarrasF = new javax.swing.JLabel();
+        quantidadeT = new javax.swing.JLabel();
+        quantidadeC = new javax.swing.JFormattedTextField();
+        totalT = new javax.swing.JLabel();
+        atualC1 = new javax.swing.JFormattedTextField();
+        fundoFatual1 = new javax.swing.JLabel();
+        quantidadeF = new javax.swing.JLabel();
+        confereTotal = new javax.swing.JLabel();
+        abreCaixaF = new javax.swing.JLabel();
         areaP = new javax.swing.JPanel();
         pesqFundoB = new javax.swing.JPanel();
         pesqFigura = new javax.swing.JLabel();
@@ -65,20 +82,6 @@ public class Principal extends javax.swing.JFrame {
         valorUC = new javax.swing.JFormattedTextField();
         valorUF = new javax.swing.JLabel();
         msgE = new javax.swing.JLabel();
-        areaV = new javax.swing.JPanel();
-        tabelaC = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        figuraCodBarras = new javax.swing.JLabel();
-        codigoBarrasC = new javax.swing.JTextField();
-        codigoBarrasF = new javax.swing.JLabel();
-        quantidadeT = new javax.swing.JLabel();
-        quantidadeC = new javax.swing.JFormattedTextField();
-        totalT = new javax.swing.JLabel();
-        atualC1 = new javax.swing.JFormattedTextField();
-        fundoFatual1 = new javax.swing.JLabel();
-        quantidadeF = new javax.swing.JLabel();
-        confereTotal = new javax.swing.JLabel();
-        abreCaixaF = new javax.swing.JLabel();
         areaC = new javax.swing.JPanel();
         anteriorC = new javax.swing.JFormattedTextField();
         fundoFA = new javax.swing.JLabel();
@@ -113,6 +116,134 @@ public class Principal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        areaV.setBackground(new java.awt.Color(255, 255, 255));
+        areaV.setForeground(new java.awt.Color(255, 255, 255));
+        areaV.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jTable1.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"Arroz Tio Joao 2 Kg",  new Integer(10),  new Double(1.5)},
+                {"Farinha Mafalda 5Kg",  new Integer(66),  new Double(7.35)},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Produto", "Qtd", "Preço"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Integer.class, java.lang.Double.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable1.getTableHeader().setResizingAllowed(false);
+        tabelaC.setViewportView(jTable1);
+        if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(0).setMinWidth(150);
+            jTable1.getColumnModel().getColumn(1).setMaxWidth(50);
+            jTable1.getColumnModel().getColumn(2).setMaxWidth(100);
+        }
+
+        areaV.add(tabelaC, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, -1, 480));
+
+        figuraCodBarras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/codbarra.png"))); // NOI18N
+        areaV.add(figuraCodBarras, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 90, -1, -1));
+
+        codigoBarrasC.setBackground(new java.awt.Color(165, 164, 169));
+        codigoBarrasC.setFont(new java.awt.Font("Hobo Std", 0, 36)); // NOI18N
+        codigoBarrasC.setForeground(new java.awt.Color(255, 255, 255));
+        codigoBarrasC.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        codigoBarrasC.setText("98714753789412");
+        codigoBarrasC.setToolTipText("");
+        codigoBarrasC.setBorder(null);
+        areaV.add(codigoBarrasC, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 158, 310, 32));
+
+        codigoBarrasF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/campoentradacod.png"))); // NOI18N
+        areaV.add(codigoBarrasF, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 150, -1, -1));
+
+        quantidadeT.setFont(new java.awt.Font("Hobo Std", 0, 48)); // NOI18N
+        quantidadeT.setForeground(new java.awt.Color(255, 102, 0));
+        quantidadeT.setText("Total R$");
+        quantidadeT.setToolTipText("");
+        areaV.add(quantidadeT, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 400, -1, -1));
+
+        quantidadeC.setEditable(false);
+        quantidadeC.setBackground(new java.awt.Color(153, 153, 153));
+        quantidadeC.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 6));
+        quantidadeC.setForeground(new java.awt.Color(255, 255, 255));
+        quantidadeC.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+        quantidadeC.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        quantidadeC.setText("9");
+        quantidadeC.setToolTipText("");
+        quantidadeC.setFont(new java.awt.Font("Hobo Std", 0, 24)); // NOI18N
+        areaV.add(quantidadeC, new org.netbeans.lib.awtextra.AbsoluteConstraints(835, 312, 90, 32));
+
+        totalT.setFont(new java.awt.Font("Hobo Std", 0, 24)); // NOI18N
+        totalT.setForeground(new java.awt.Color(255, 102, 0));
+        totalT.setText("Quantidade:");
+        totalT.setToolTipText("");
+        areaV.add(totalT, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 270, -1, -1));
+
+        atualC1.setEditable(false);
+        atualC1.setBackground(new java.awt.Color(153, 153, 153));
+        atualC1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 6));
+        atualC1.setForeground(new java.awt.Color(255, 255, 255));
+        atualC1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
+        atualC1.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        atualC1.setText("354,00");
+        atualC1.setToolTipText("");
+        atualC1.setFont(new java.awt.Font("Arial Black", 0, 36)); // NOI18N
+        areaV.add(atualC1, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 405, 190, 36));
+
+        fundoFatual1.setFont(new java.awt.Font("Hobo Std", 0, 18)); // NOI18N
+        fundoFatual1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/campoentradatotal.png"))); // NOI18N
+        areaV.add(fundoFatual1, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 400, -1, -1));
+
+        quantidadeF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/campoentradaq.png"))); // NOI18N
+        areaV.add(quantidadeF, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 310, -1, -1));
+
+        confereTotal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/certo.png"))); // NOI18N
+        confereTotal.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                confereTotalMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                confereTotalMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                confereTotalMouseExited(evt);
+            }
+        });
+        areaV.add(confereTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(1110, 410, -1, 32));
+
+        abreCaixaF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/voltar.png"))); // NOI18N
+        areaV.add(abreCaixaF, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 20, -1, -1));
+
+        jPanel1.add(areaV, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 140, 1200, 520));
 
         areaP.setBackground(new java.awt.Color(255, 255, 255));
         areaP.setForeground(new java.awt.Color(255, 255, 255));
@@ -302,129 +433,6 @@ public class Principal extends javax.swing.JFrame {
         areaE.add(msgE, new org.netbeans.lib.awtextra.AbsoluteConstraints(1100, 70, -1, -1));
 
         jPanel1.add(areaE, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 140, 1200, 520));
-
-        areaV.setBackground(new java.awt.Color(255, 255, 255));
-        areaV.setForeground(new java.awt.Color(255, 255, 255));
-        areaV.setOpaque(false);
-        areaV.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jTable1.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null},
-                {"Arroz Tio Joao 2 Kg",  new Integer(10),  new Double(1.5)},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            },
-            new String [] {
-                "Produto", "Quantidade", "Preço"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Integer.class, java.lang.Double.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jTable1.getTableHeader().setResizingAllowed(false);
-        jTable1.getTableHeader().setReorderingAllowed(false);
-        tabelaC.setViewportView(jTable1);
-
-        areaV.add(tabelaC, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, -1, 480));
-
-        figuraCodBarras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/codbarra.png"))); // NOI18N
-        areaV.add(figuraCodBarras, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 90, -1, -1));
-
-        codigoBarrasC.setBackground(new java.awt.Color(165, 164, 169));
-        codigoBarrasC.setFont(new java.awt.Font("Hobo Std", 0, 36)); // NOI18N
-        codigoBarrasC.setForeground(new java.awt.Color(255, 255, 255));
-        codigoBarrasC.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        codigoBarrasC.setText("98714753789412");
-        codigoBarrasC.setToolTipText("");
-        codigoBarrasC.setBorder(null);
-        areaV.add(codigoBarrasC, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 158, 310, 32));
-
-        codigoBarrasF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/campoentradacod.png"))); // NOI18N
-        areaV.add(codigoBarrasF, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 150, -1, -1));
-
-        quantidadeT.setFont(new java.awt.Font("Hobo Std", 0, 48)); // NOI18N
-        quantidadeT.setForeground(new java.awt.Color(255, 102, 0));
-        quantidadeT.setText("Total R$");
-        quantidadeT.setToolTipText("");
-        areaV.add(quantidadeT, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 400, -1, -1));
-
-        quantidadeC.setEditable(false);
-        quantidadeC.setBackground(new java.awt.Color(153, 153, 153));
-        quantidadeC.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 6));
-        quantidadeC.setForeground(new java.awt.Color(255, 255, 255));
-        quantidadeC.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
-        quantidadeC.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        quantidadeC.setText("9");
-        quantidadeC.setToolTipText("");
-        quantidadeC.setFont(new java.awt.Font("Hobo Std", 0, 24)); // NOI18N
-        areaV.add(quantidadeC, new org.netbeans.lib.awtextra.AbsoluteConstraints(835, 312, 90, 32));
-
-        totalT.setFont(new java.awt.Font("Hobo Std", 0, 24)); // NOI18N
-        totalT.setForeground(new java.awt.Color(255, 102, 0));
-        totalT.setText("Quantidade:");
-        totalT.setToolTipText("");
-        areaV.add(totalT, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 270, -1, -1));
-
-        atualC1.setEditable(false);
-        atualC1.setBackground(new java.awt.Color(153, 153, 153));
-        atualC1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 6));
-        atualC1.setForeground(new java.awt.Color(255, 255, 255));
-        atualC1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
-        atualC1.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        atualC1.setText("354,00");
-        atualC1.setToolTipText("");
-        atualC1.setFont(new java.awt.Font("Arial Black", 0, 36)); // NOI18N
-        areaV.add(atualC1, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 405, 190, 36));
-
-        fundoFatual1.setFont(new java.awt.Font("Hobo Std", 0, 18)); // NOI18N
-        fundoFatual1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/campoentradatotal.png"))); // NOI18N
-        areaV.add(fundoFatual1, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 400, -1, -1));
-
-        quantidadeF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/campoentradaq.png"))); // NOI18N
-        areaV.add(quantidadeF, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 310, -1, -1));
-
-        confereTotal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/certo.png"))); // NOI18N
-        confereTotal.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                confereTotalMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                confereTotalMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                confereTotalMouseExited(evt);
-            }
-        });
-        areaV.add(confereTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(1110, 410, -1, 32));
-
-        abreCaixaF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/voltar.png"))); // NOI18N
-        areaV.add(abreCaixaF, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 20, -1, -1));
-
-        jPanel1.add(areaV, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 140, 1200, 520));
 
         areaC.setBackground(new java.awt.Color(255, 255, 255));
         areaC.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -651,9 +659,8 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_cadeadoFMouseExited
 
     private void cadeadoFMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cadeadoFMouseClicked
-        e.setUsuario(usuarioT.getText());
-        e.setSenha(senhaT.getText());
-        if (e.login() == true && e.isCadeado() == true) {
+        
+        if (dao.checkLogin(usuarioT.getText(), senhaT.getText())  && e.isCadeado() == true) {
             e.setUser(true);
             e.setCadeado(false);
             fundoPes.setIcon(e.pesquisaIcon());
@@ -666,7 +673,10 @@ public class Principal extends javax.swing.JFrame {
             fundoEstoque.setVisible(true);
             txtVendas.setVisible(true);
             txtEstoque.setVisible(true);
-        } else if (e.isCadeado() == false) {
+            //Check o login e caso der errado aprensneta a mensagem "Usuario ou Senha incorreta!"
+        }else if(dao.checkLogin(usuarioT.getText(), senhaT.getText()) == false){
+            JOptionPane.showMessageDialog(null, "Usuario ou Senha incorreta!");
+        }else if (e.isCadeado() == false) {
             fundoPes.setIcon(e.pesquisaIcon());
             lupa.setIcon(e.lupaIcon());
             campoPT.setText("CODIGO DE BARRA");
