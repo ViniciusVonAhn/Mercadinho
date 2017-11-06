@@ -119,6 +119,7 @@ public class Principal extends javax.swing.JFrame {
 
         areaV.setBackground(new java.awt.Color(255, 255, 255));
         areaV.setForeground(new java.awt.Color(255, 255, 255));
+        areaV.setOpaque(false);
         areaV.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jTable1.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
