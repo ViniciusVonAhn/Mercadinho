@@ -7,6 +7,7 @@ package com.senac.mercadinho;
 
 import com.senac.mercadinho.DAO.UsuarioDAO;
 import java.awt.Color;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -672,7 +673,10 @@ public class Principal extends javax.swing.JFrame {
             fundoEstoque.setVisible(true);
             txtVendas.setVisible(true);
             txtEstoque.setVisible(true);
-        } else if (e.isCadeado() == false) {
+            //Check o login e caso der errado aprensneta a mensagem "Usuario ou Senha incorreta!"
+        }else if(dao.checkLogin(usuarioT.getText(), senhaT.getText()) == false){
+            JOptionPane.showMessageDialog(null, "Usuario ou Senha incorreta!");
+        }else if (e.isCadeado() == false) {
             fundoPes.setIcon(e.pesquisaIcon());
             lupa.setIcon(e.lupaIcon());
             campoPT.setText("CODIGO DE BARRA");
