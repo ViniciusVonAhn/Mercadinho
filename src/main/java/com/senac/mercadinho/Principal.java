@@ -46,16 +46,19 @@ public class Principal extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         areaV = new javax.swing.JPanel();
-        tabelaC = new javax.swing.JScrollPane();
+        tabelaV = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         figuraCodBarras = new javax.swing.JLabel();
         codigoBarrasC = new javax.swing.JTextField();
-        codigoBarrasF = new javax.swing.JLabel();
-        quantidadeT = new javax.swing.JLabel();
-        quantidadeC = new javax.swing.JFormattedTextField();
         totalT = new javax.swing.JLabel();
-        atualC1 = new javax.swing.JFormattedTextField();
-        fundoFatual1 = new javax.swing.JLabel();
+        totalC = new javax.swing.JFormattedTextField();
+        totalF = new javax.swing.JLabel();
+        codigoBarrasF = new javax.swing.JLabel();
+        trocoT = new javax.swing.JLabel();
+        trocoC = new javax.swing.JFormattedTextField();
+        quantidadeC = new javax.swing.JFormattedTextField();
+        quantidadeT = new javax.swing.JLabel();
+        trocoF = new javax.swing.JLabel();
         quantidadeF = new javax.swing.JLabel();
         confereTotal = new javax.swing.JLabel();
         abreCaixaF = new javax.swing.JLabel();
@@ -162,35 +165,67 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         jTable1.getTableHeader().setResizingAllowed(false);
-        tabelaC.setViewportView(jTable1);
+        tabelaV.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
             jTable1.getColumnModel().getColumn(0).setMinWidth(150);
             jTable1.getColumnModel().getColumn(1).setMaxWidth(50);
             jTable1.getColumnModel().getColumn(2).setMaxWidth(100);
         }
 
-        areaV.add(tabelaC, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, -1, 480));
+        areaV.add(tabelaV, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, -1, 480));
 
         figuraCodBarras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/codbarra.png"))); // NOI18N
         areaV.add(figuraCodBarras, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 90, -1, -1));
 
         codigoBarrasC.setBackground(new java.awt.Color(165, 164, 169));
-        codigoBarrasC.setFont(new java.awt.Font("Hobo Std", 0, 36)); // NOI18N
+        codigoBarrasC.setFont(new java.awt.Font("Arial Black", 0, 30)); // NOI18N
         codigoBarrasC.setForeground(new java.awt.Color(255, 255, 255));
-        codigoBarrasC.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        codigoBarrasC.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         codigoBarrasC.setText("98714753789412");
         codigoBarrasC.setToolTipText("");
         codigoBarrasC.setBorder(null);
         areaV.add(codigoBarrasC, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 158, 310, 32));
 
+        totalT.setFont(new java.awt.Font("Hobo Std", 0, 48)); // NOI18N
+        totalT.setForeground(new java.awt.Color(255, 102, 0));
+        totalT.setText("Total R$");
+        totalT.setToolTipText("");
+        areaV.add(totalT, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 320, -1, -1));
+
+        totalC.setEditable(false);
+        totalC.setBackground(new java.awt.Color(153, 153, 153));
+        totalC.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 6));
+        totalC.setForeground(new java.awt.Color(255, 255, 255));
+        totalC.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
+        totalC.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        totalC.setText("354,00");
+        totalC.setToolTipText("");
+        totalC.setFont(new java.awt.Font("Arial Black", 0, 36)); // NOI18N
+        areaV.add(totalC, new org.netbeans.lib.awtextra.AbsoluteConstraints(895, 325, 190, 36));
+
+        totalF.setFont(new java.awt.Font("Hobo Std", 0, 18)); // NOI18N
+        totalF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/campoentradatotal.png"))); // NOI18N
+        areaV.add(totalF, new org.netbeans.lib.awtextra.AbsoluteConstraints(885, 320, -1, -1));
+
         codigoBarrasF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/campoentradacod.png"))); // NOI18N
         areaV.add(codigoBarrasF, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 150, -1, -1));
 
-        quantidadeT.setFont(new java.awt.Font("Hobo Std", 0, 48)); // NOI18N
-        quantidadeT.setForeground(new java.awt.Color(255, 102, 0));
-        quantidadeT.setText("Total R$");
-        quantidadeT.setToolTipText("");
-        areaV.add(quantidadeT, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 400, -1, -1));
+        trocoT.setFont(new java.awt.Font("Hobo Std", 0, 48)); // NOI18N
+        trocoT.setForeground(new java.awt.Color(255, 102, 0));
+        trocoT.setText("Troco R$");
+        trocoT.setToolTipText("");
+        areaV.add(trocoT, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 400, -1, -1));
+
+        trocoC.setEditable(false);
+        trocoC.setBackground(new java.awt.Color(153, 153, 153));
+        trocoC.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 6));
+        trocoC.setForeground(new java.awt.Color(255, 255, 255));
+        trocoC.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
+        trocoC.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        trocoC.setText("354,00");
+        trocoC.setToolTipText("");
+        trocoC.setFont(new java.awt.Font("Arial Black", 0, 36)); // NOI18N
+        areaV.add(trocoC, new org.netbeans.lib.awtextra.AbsoluteConstraints(895, 405, 190, 36));
 
         quantidadeC.setEditable(false);
         quantidadeC.setBackground(new java.awt.Color(153, 153, 153));
@@ -201,31 +236,20 @@ public class Principal extends javax.swing.JFrame {
         quantidadeC.setText("9");
         quantidadeC.setToolTipText("");
         quantidadeC.setFont(new java.awt.Font("Hobo Std", 0, 24)); // NOI18N
-        areaV.add(quantidadeC, new org.netbeans.lib.awtextra.AbsoluteConstraints(835, 312, 90, 32));
+        areaV.add(quantidadeC, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 260, 90, 32));
 
-        totalT.setFont(new java.awt.Font("Hobo Std", 0, 24)); // NOI18N
-        totalT.setForeground(new java.awt.Color(255, 102, 0));
-        totalT.setText("Quantidade:");
-        totalT.setToolTipText("");
-        areaV.add(totalT, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 270, -1, -1));
+        quantidadeT.setFont(new java.awt.Font("Hobo Std", 0, 24)); // NOI18N
+        quantidadeT.setForeground(new java.awt.Color(255, 102, 0));
+        quantidadeT.setText("Quantidade:");
+        quantidadeT.setToolTipText("");
+        areaV.add(quantidadeT, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 220, -1, -1));
 
-        atualC1.setEditable(false);
-        atualC1.setBackground(new java.awt.Color(153, 153, 153));
-        atualC1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 6));
-        atualC1.setForeground(new java.awt.Color(255, 255, 255));
-        atualC1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
-        atualC1.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        atualC1.setText("354,00");
-        atualC1.setToolTipText("");
-        atualC1.setFont(new java.awt.Font("Arial Black", 0, 36)); // NOI18N
-        areaV.add(atualC1, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 405, 190, 36));
-
-        fundoFatual1.setFont(new java.awt.Font("Hobo Std", 0, 18)); // NOI18N
-        fundoFatual1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/campoentradatotal.png"))); // NOI18N
-        areaV.add(fundoFatual1, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 400, -1, -1));
+        trocoF.setFont(new java.awt.Font("Hobo Std", 0, 18)); // NOI18N
+        trocoF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/campoentradatotal.png"))); // NOI18N
+        areaV.add(trocoF, new org.netbeans.lib.awtextra.AbsoluteConstraints(885, 400, -1, -1));
 
         quantidadeF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/campoentradaq.png"))); // NOI18N
-        areaV.add(quantidadeF, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 310, -1, -1));
+        areaV.add(quantidadeF, new org.netbeans.lib.awtextra.AbsoluteConstraints(835, 258, -1, -1));
 
         confereTotal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/certo.png"))); // NOI18N
         confereTotal.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -916,7 +940,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JPanel areaP;
     private javax.swing.JPanel areaV;
     private javax.swing.JFormattedTextField atualC;
-    private javax.swing.JFormattedTextField atualC1;
     private javax.swing.JLabel atualT;
     private javax.swing.JTextField barraC;
     private javax.swing.JLabel barraF;
@@ -938,7 +961,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel fundoEstoque;
     private javax.swing.JLabel fundoFA;
     private javax.swing.JLabel fundoFatual;
-    private javax.swing.JLabel fundoFatual1;
     private javax.swing.JLabel fundoGG;
     private javax.swing.JLabel fundoPes;
     private javax.swing.JLabel fundoPesL;
@@ -964,12 +986,17 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel quantidadeF;
     private javax.swing.JLabel quantidadeT;
     private javax.swing.JPasswordField senhaT;
-    private javax.swing.JScrollPane tabelaC;
     private javax.swing.JScrollPane tabelaC1;
+    private javax.swing.JScrollPane tabelaV;
     private javax.swing.JLabel textoControle;
     private javax.swing.JTextField tipoC;
     private javax.swing.JLabel tipoF;
+    private javax.swing.JFormattedTextField totalC;
+    private javax.swing.JLabel totalF;
     private javax.swing.JLabel totalT;
+    private javax.swing.JFormattedTextField trocoC;
+    private javax.swing.JLabel trocoF;
+    private javax.swing.JLabel trocoT;
     private javax.swing.JLabel txtEstoque;
     private javax.swing.JLabel txtVendas;
     private javax.swing.JLabel usuarioF;
