@@ -810,7 +810,7 @@ public class Principal extends javax.swing.JFrame {
                 campoPT.setText("CODIGO DE BARRA");
                 campoPT.setEditable(false);
                 areaP.setVisible(false);
-                e.setLupa(0);
+                e.setLupa(0); 
             }
             fundoVendas.setIcon(e.fundoEscuro());
             fundoEstoque.setIcon(e.fundoIcon());
