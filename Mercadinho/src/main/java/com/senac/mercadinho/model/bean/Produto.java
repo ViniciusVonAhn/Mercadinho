@@ -13,7 +13,7 @@ public class Produto {
     private String descricao;
     private String unidade;
     private double valor;
-    private int quantidade;
+    private double quantidade;
     private int quantidadeUn;
     private double quantidadeKg;
     private String categoriaId;
@@ -26,7 +26,7 @@ public class Produto {
         hash = 59 * hash + Objects.hashCode(this.descricao);
         hash = 59 * hash + Objects.hashCode(this.unidade);
         hash = 59 * hash + (int) (Double.doubleToLongBits(this.valor) ^ (Double.doubleToLongBits(this.valor) >>> 32));
-        hash = 59 * hash + this.quantidade;
+        hash = (int) (59 * hash + this.quantidade);
         hash = 59 * hash + this.quantidadeUn;
         hash = 59 * hash + (int) (Double.doubleToLongBits(this.quantidadeKg) ^ (Double.doubleToLongBits(this.quantidadeKg) >>> 32));
         hash = 59 * hash + Objects.hashCode(this.categoriaId);
@@ -115,11 +115,11 @@ public class Produto {
         this.valor = valor;
     }
 
-    public int getQuantidade() {
+    public double getQuantidade() {
         return quantidade;
     }
 
-    public void setQuantidade(int quantidade) {
+    public void setQuantidade(double quantidade) {
         this.quantidade = quantidade;
     }
 
