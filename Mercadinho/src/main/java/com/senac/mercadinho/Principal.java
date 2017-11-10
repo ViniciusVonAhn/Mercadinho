@@ -301,9 +301,9 @@ public class Principal extends javax.swing.JFrame {
         areaE.add(quantF, new org.netbeans.lib.awtextra.AbsoluteConstraints(825, 30, -1, -1));
 
         valorUC.setBackground(new java.awt.Color(153, 153, 153));
+        valorUC.setFont(new java.awt.Font("Ubuntu", 0, 22)); // NOI18N
         valorUC.setForeground(new java.awt.Color(255, 255, 255));
         valorUC.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        valorUC.setText("teste");
         areaE.add(valorUC, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 30, 144, 32));
 
         valorUF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/campoentradap.png"))); // NOI18N
