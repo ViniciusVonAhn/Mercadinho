@@ -82,7 +82,7 @@ public class Principal extends javax.swing.JFrame {
         descricaoF = new javax.swing.JLabel();
         quantC = new javax.swing.JFormattedTextField();
         quantF = new javax.swing.JLabel();
-        valorUC = new javax.swing.JFormattedTextField();
+        valorUC = new javax.swing.JTextField();
         valorUF = new javax.swing.JLabel();
         msgE = new javax.swing.JLabel();
         cadastroT = new javax.swing.JButton();
@@ -301,15 +301,10 @@ public class Principal extends javax.swing.JFrame {
         areaE.add(quantF, new org.netbeans.lib.awtextra.AbsoluteConstraints(825, 30, -1, -1));
 
         valorUC.setBackground(new java.awt.Color(153, 153, 153));
-        valorUC.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 6));
         valorUC.setForeground(new java.awt.Color(255, 255, 255));
-        valorUC.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.00"))));
         valorUC.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        valorUC.setText("14,99");
-        valorUC.setToolTipText("");
-        valorUC.setFont(new java.awt.Font("Hobo Std", 0, 18)); // NOI18N
-        valorUC.setOpaque(false);
-        areaE.add(valorUC, new org.netbeans.lib.awtextra.AbsoluteConstraints(944, 33, 144, 32));
+        valorUC.setText("teste");
+        areaE.add(valorUC, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 30, 144, 32));
 
         valorUF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/campoentradap.png"))); // NOI18N
         areaE.add(valorUF, new org.netbeans.lib.awtextra.AbsoluteConstraints(935, 30, -1, -1));
@@ -900,7 +895,7 @@ public class Principal extends javax.swing.JFrame {
         p.setCodigoDeBarras(barraC.getText());
         p.setCategoriaId(tipoC.getText());
         p.setDescricao(descricaoC.getText());
-        p.setQuantidade(Double.parseDouble(quantidadeC.getText()));
+        p.setQuantidade(Double.parseDouble(quantC.getText()));
         p.setValor(Double.parseDouble(valorUC.getText()));
         pdao.create(p);
         readjTable();
@@ -972,24 +967,24 @@ public class Principal extends javax.swing.JFrame {
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
         Produto p = new Produto();
         if (jTable2.getSelectedRow() != -1) {
-            codigoC.setText(jTable1.getValueAt(jTable1.getSelectedRow(), 1).toString());
-            barraC.setText(jTable1.getValueAt(jTable1.getSelectedRow(), 2).toString());
-            tipoC.setText(jTable1.getValueAt(jTable1.getSelectedRow(), 3).toString());
-            descricaoC.setText(jTable1.getValueAt(jTable1.getSelectedRow(), 4).toString());
-            quantidadeC.setText(jTable1.getValueAt(jTable1.getSelectedRow(), 5).toString());
-            valorUC.setText(jTable1.getValueAt(jTable1.getSelectedRow(), 6).toString());
+            codigoC.setText(jTable2.getValueAt(jTable2.getSelectedRow(), 0).toString());
+            barraC.setText(jTable2.getValueAt(jTable2.getSelectedRow(), 1).toString());
+            tipoC.setText(jTable2.getValueAt(jTable2.getSelectedRow(), 2).toString());
+            descricaoC.setText(jTable2.getValueAt(jTable2.getSelectedRow(), 3).toString());
+            quantC.setText(jTable2.getValueAt(jTable2.getSelectedRow(), 4).toString());
+            valorUC.setText(jTable2.getValueAt(jTable2.getSelectedRow(), 5).toString());
             
         }
     }//GEN-LAST:event_jTable2MouseClicked
 
     private void jTable2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTable2KeyReleased
-        if (jTable1.getSelectedRow() != -1) {
-            jTable1.setValueAt(codigoC.getText(), jTable1.getSelectedRow(), 0);
-            jTable1.setValueAt(barraC.getText(), jTable1.getSelectedRow(), 1);
-            jTable1.setValueAt(tipoC.getText(), jTable1.getSelectedRow(), 2);
-            jTable1.setValueAt(descricaoC.getText(), jTable1.getSelectedRow(), 3);
-            jTable1.setValueAt(quantidadeC.getText(), jTable1.getSelectedRow(), 4);
-            jTable1.setValueAt(valorUC.getText(), jTable1.getSelectedRow(), 5);
+        if (jTable2.getSelectedRow() != -1) {
+            jTable2.setValueAt(codigoC.getText(), jTable2.getSelectedRow(), 0);
+            jTable2.setValueAt(barraC.getText(), jTable2.getSelectedRow(), 1);
+            jTable2.setValueAt(tipoC.getText(), jTable2.getSelectedRow(), 2);
+            jTable2.setValueAt(descricaoC.getText(), jTable2.getSelectedRow(), 3);
+            jTable2.setValueAt(quantC.getText(), jTable2.getSelectedRow(), 4);
+            jTable2.setValueAt(valorUC.getText(), jTable2.getSelectedRow(), 5);
         }
     }//GEN-LAST:event_jTable2KeyReleased
 
@@ -1001,7 +996,7 @@ public class Principal extends javax.swing.JFrame {
         p.setCodigoDeBarras(barraC.getText());
         p.setCategoriaId(tipoC.getText());
         p.setDescricao(descricaoC.getText());
-        p.setQuantidade(Double.parseDouble(quantidadeC.getText()));
+        p.setQuantidade(Double.parseDouble(quantC.getText()));
         p.setValor(Double.parseDouble(valorUC.getText()));
         pdao.create(p);
         readjTable();
@@ -1116,7 +1111,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel txtVendas;
     private javax.swing.JLabel usuarioF;
     private javax.swing.JTextField usuarioT;
-    private javax.swing.JFormattedTextField valorUC;
+    private javax.swing.JTextField valorUC;
     private javax.swing.JLabel valorUF;
     // End of variables declaration//GEN-END:variables
 }
