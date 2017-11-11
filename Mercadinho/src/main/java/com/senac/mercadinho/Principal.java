@@ -18,7 +18,7 @@ import javax.swing.table.TableRowSorter;
  * @author LordFabricio
  */
 public class Principal extends javax.swing.JFrame {
-    
+
     EventosPrincipal e = new EventosPrincipal();
     UsuarioDAO dao = new UsuarioDAO();
 
@@ -42,6 +42,7 @@ public class Principal extends javax.swing.JFrame {
         //RadioUn.setSelected(true);
         readjTable();
     }
+
     public void readjTable() {
         DefaultTableModel modelo = (DefaultTableModel) jTable2.getModel();
         modelo.setNumRows(0);
@@ -304,6 +305,7 @@ public class Principal extends javax.swing.JFrame {
         valorUC.setFont(new java.awt.Font("Ubuntu", 0, 22)); // NOI18N
         valorUC.setForeground(new java.awt.Color(255, 255, 255));
         valorUC.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        valorUC.setText("2.99");
         areaE.add(valorUC, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 30, 144, 32));
 
         valorUF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/campoentradap.png"))); // NOI18N
@@ -311,16 +313,16 @@ public class Principal extends javax.swing.JFrame {
 
         msgE.setFont(new java.awt.Font("Hobo Std", 0, 18)); // NOI18N
         msgE.setForeground(new java.awt.Color(255, 102, 51));
-        msgE.setText("Atualisar");
-        areaE.add(msgE, new org.netbeans.lib.awtextra.AbsoluteConstraints(1100, 70, -1, -1));
+        msgE.setText("Cadastrar");
+        areaE.add(msgE, new org.netbeans.lib.awtextra.AbsoluteConstraints(1100, 60, -1, -1));
 
-        cadastroT.setText("Teste");
+        cadastroT.setText("Atualizar");
         cadastroT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cadastroTActionPerformed(evt);
             }
         });
-        areaE.add(cadastroT, new org.netbeans.lib.awtextra.AbsoluteConstraints(1030, 70, -1, -1));
+        areaE.add(cadastroT, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 70, -1, -1));
 
         jPanel1.add(areaE, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 140, 1200, 520));
 
@@ -735,8 +737,8 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_cadeadoFMouseExited
 
     private void cadeadoFMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cadeadoFMouseClicked
-        
-        if (dao.checkLogin(usuarioT.getText(), senhaT.getText())  && e.isCadeado() == true) {
+
+        if (dao.checkLogin(usuarioT.getText(), senhaT.getText()) && e.isCadeado() == true) {
             e.setUser(true);
             e.setCadeado(false);
             fundoPes.setIcon(e.pesquisaIcon());
@@ -750,9 +752,9 @@ public class Principal extends javax.swing.JFrame {
             txtVendas.setVisible(true);
             txtEstoque.setVisible(true);
             //Check o login e caso der errado aprensneta a mensagem "Usuario ou Senha incorreta!"
-        }else if(dao.checkLogin(usuarioT.getText(), senhaT.getText()) == false){
+        } else if (dao.checkLogin(usuarioT.getText(), senhaT.getText()) == false) {
             JOptionPane.showMessageDialog(null, "Usuario ou Senha incorreta!");
-        }else if (e.isCadeado() == false) {
+        } else if (e.isCadeado() == false) {
             fundoPes.setIcon(e.pesquisaIcon());
             lupa.setIcon(e.lupaIcon());
             campoPT.setText("CODIGO DE BARRA");
@@ -805,7 +807,7 @@ public class Principal extends javax.swing.JFrame {
                 campoPT.setText("CODIGO DE BARRA");
                 campoPT.setEditable(false);
                 areaP.setVisible(false);
-                e.setLupa(0); 
+                e.setLupa(0);
             }
             fundoVendas.setIcon(e.fundoEscuro());
             fundoEstoque.setIcon(e.fundoIcon());
@@ -899,9 +901,12 @@ public class Principal extends javax.swing.JFrame {
         p.setValor(Double.parseDouble(valorUC.getText()));
         pdao.create(p);
         readjTable();
-        //txtProduto.setText("");
-        //txtQuantidade.setText("");
-        //txtValor.setText("");
+        codigoC.setText("1");
+        barraC.setText("CODIGO DE BARRA");
+        tipoC.setText("TIPO");
+        descricaoC.setText("DESCRIÇÃO");
+        quantC.setText("10");
+        valorUC.setText("2.99");
     }//GEN-LAST:event_confereEMouseClicked
 
     private void confereEMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confereEMouseEntered
@@ -973,7 +978,7 @@ public class Principal extends javax.swing.JFrame {
             descricaoC.setText(jTable2.getValueAt(jTable2.getSelectedRow(), 3).toString());
             quantC.setText(jTable2.getValueAt(jTable2.getSelectedRow(), 4).toString());
             valorUC.setText(jTable2.getValueAt(jTable2.getSelectedRow(), 5).toString());
-            
+
         }
     }//GEN-LAST:event_jTable2MouseClicked
 
@@ -989,25 +994,28 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jTable2KeyReleased
 
     private void cadastroTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastroTActionPerformed
-        ProdutoDAO pdao = new ProdutoDAO();
-        Produto p = new Produto();
 
-        p.setCodigo(Integer.parseInt(codigoC.getText()));
-        p.setCodigoDeBarras(barraC.getText());
-        p.setCategoriaId(tipoC.getText());
-        p.setDescricao(descricaoC.getText());
-        p.setQuantidade(Double.parseDouble(quantC.getText()));
-        p.setValor(Double.parseDouble(valorUC.getText()));
-        pdao.create(p);
-        readjTable();
-        //txtProduto.setText("");
-        //txtQuantidade.setText("");
-        //txtValor.setText("");
+        if (jTable2.getSelectedRow() != -1) {
+            ProdutoDAO dao = new ProdutoDAO();
+            Produto p = new Produto();
+
+            p.setCodigo(Integer.parseInt(codigoC.getText()));
+            p.setCodigoDeBarras(barraC.getText());
+            p.setCategoriaId(tipoC.getText());
+            p.setDescricao(descricaoC.getText());
+            p.setQuantidade(Double.parseDouble(quantC.getText()));
+            p.setValor(Double.parseDouble(valorUC.getText()));
+            dao.create(p);
+            dao.update(p);
+            readjTable();
+           // txtProduto.setText("");
+            //txtQuantidade.setText("");
+            //txtValor.setText("");
     }//GEN-LAST:event_cadastroTActionPerformed
-
+    }
     /**
-     * @param args the command line arguments
-     */
+         * @param args the command line arguments
+         */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
