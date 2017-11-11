@@ -899,6 +899,7 @@ public class Principal extends javax.swing.JFrame {
         p.setDescricao(descricaoC.getText());
         p.setQuantidade(Double.parseDouble(quantC.getText()));
         p.setValor(Double.parseDouble(valorUC.getText()));
+        p.setProdutosid(Integer.parseInt(codigoC.getText()));
         pdao.create(p);
         readjTable();
         codigoC.setText("1");
@@ -1005,7 +1006,7 @@ public class Principal extends javax.swing.JFrame {
             p.setDescricao(descricaoC.getText());
             p.setQuantidade(Double.parseDouble(quantC.getText()));
             p.setValor(Double.parseDouble(valorUC.getText()));
-            p.setProdutosid((int)jTable2.getValueAt(jTable2.getSelectedRow(), 0));
+            p.setProdutosid(Integer.parseInt(codigoC.getText()));
             pdao.update(p);
             readjTable();
             codigoC.setText("1");
@@ -1013,7 +1014,7 @@ public class Principal extends javax.swing.JFrame {
             tipoC.setText("TIPO");
             descricaoC.setText("DESCRIÇÃO");
             quantC.setText("10");
-            valorUC.setText("2.99");;
+            valorUC.setText("2.99");
     }//GEN-LAST:event_atualizaTActionPerformed
     }
     /**

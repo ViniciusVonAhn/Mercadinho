@@ -29,14 +29,15 @@ public class ProdutoDAO {
         PreparedStatement stmt = null;
         
         try {
-            stmt = (PreparedStatement) con.prepareStatement("INSERT INTO produtos (codigo, codigo_de_barras,"
-                    + " categoria_id, descricao, quantidade, valor)VALUES(?,?,?,?,?,?)");
+            stmt = (PreparedStatement) con.prepareStatement("INSERT INTO produtos (produtosid, codigo, codigo_de_barras,"
+                    + " categoria_id, descricao, quantidade, valor)VALUES(?,?,?,?,?,?,?)");
+            stmt.setInt(2, p.getCodigo());
             stmt.setInt(1, p.getCodigo());
-            stmt.setString(2, p.getCodigoDeBarras());
-            stmt.setString(3, p.getCategoriaId());
-            stmt.setString(4, p.getDescricao());
-            stmt.setDouble(5, p.getQuantidade());
-            stmt.setDouble(6, p.getValor());
+            stmt.setString(3, p.getCodigoDeBarras());
+            stmt.setString(4, p.getCategoriaId());
+            stmt.setString(5, p.getDescricao());
+            stmt.setDouble(6, p.getQuantidade());
+            stmt.setDouble(7, p.getValor());
             stmt.executeUpdate();
             JOptionPane.showMessageDialog(null, "Salvo com sucesso");
          
