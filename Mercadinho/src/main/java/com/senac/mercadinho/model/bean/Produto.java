@@ -8,7 +8,7 @@ import java.util.Objects;
  */
 public class Produto {
 
-    private int produtoid;
+    private int produtosid;
     private String codigoDeBarras;
     private int codigo;
     private String descricao;
@@ -76,13 +76,15 @@ public class Produto {
         return true;
     }
 
-    public int getProdutoid() {
-        return produtoid;
+    public int getProdutosid() {
+        return produtosid;
     }
 
-    public void setProdutoid(int produtoid) {
-        this.produtoid = produtoid;
+    public void setProdutosid(int produtosid) {
+        this.produtosid = produtosid;
     }
+
+    
     
     
 

@@ -82,14 +82,15 @@ public class ProdutoDAO {
         PreparedStatement stmt = null;
         
         try {
-            stmt = (PreparedStatement) con.prepareStatement("UPDATE produto SET codigo = ?, codigo_de_barras = ?,"
-                    + " categoria_id = ?, descricao = ?, quantidade = ?, valor = ? WHERE codigo = ?");
+            stmt = (PreparedStatement) con.prepareStatement("UPDATE produtos SET codigo = ?, codigo_de_barras = ?,"
+                    + " categoria_id = ?, descricao = ?, quantidade = ?, valor = ? WHERE produtosid = ?");
             stmt.setInt(1, p.getCodigo());
             stmt.setString(2, p.getCodigoDeBarras());
             stmt.setString(3, p.getCategoriaId());
             stmt.setString(4, p.getDescricao());
             stmt.setDouble(5, p.getQuantidade());
             stmt.setDouble(6, p.getValor());
+            stmt.setInt(7, p.getProdutosid());
             stmt.executeUpdate();
             JOptionPane.showMessageDialog(null, "Atualizado com sucesso");
          

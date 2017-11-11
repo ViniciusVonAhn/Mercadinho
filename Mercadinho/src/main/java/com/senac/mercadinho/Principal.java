@@ -86,7 +86,7 @@ public class Principal extends javax.swing.JFrame {
         valorUC = new javax.swing.JTextField();
         valorUF = new javax.swing.JLabel();
         msgE = new javax.swing.JLabel();
-        cadastroT = new javax.swing.JButton();
+        atualizaT = new javax.swing.JButton();
         areaP = new javax.swing.JPanel();
         pesqFundoB = new javax.swing.JPanel();
         pesqFigura = new javax.swing.JLabel();
@@ -316,13 +316,13 @@ public class Principal extends javax.swing.JFrame {
         msgE.setText("Cadastrar");
         areaE.add(msgE, new org.netbeans.lib.awtextra.AbsoluteConstraints(1100, 60, -1, -1));
 
-        cadastroT.setText("Atualizar");
-        cadastroT.addActionListener(new java.awt.event.ActionListener() {
+        atualizaT.setText("Atualizar");
+        atualizaT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cadastroTActionPerformed(evt);
+                atualizaTActionPerformed(evt);
             }
         });
-        areaE.add(cadastroT, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 70, -1, -1));
+        areaE.add(atualizaT, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 70, -1, -1));
 
         jPanel1.add(areaE, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 140, 1200, 520));
 
@@ -993,10 +993,10 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jTable2KeyReleased
 
-    private void cadastroTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastroTActionPerformed
+    private void atualizaTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atualizaTActionPerformed
 
         if (jTable2.getSelectedRow() != -1) {
-            ProdutoDAO dao = new ProdutoDAO();
+            ProdutoDAO pdao = new ProdutoDAO();
             Produto p = new Produto();
 
             p.setCodigo(Integer.parseInt(codigoC.getText()));
@@ -1005,13 +1005,16 @@ public class Principal extends javax.swing.JFrame {
             p.setDescricao(descricaoC.getText());
             p.setQuantidade(Double.parseDouble(quantC.getText()));
             p.setValor(Double.parseDouble(valorUC.getText()));
-            dao.create(p);
-            dao.update(p);
+            p.setProdutosid((int)jTable2.getValueAt(jTable2.getSelectedRow(), 0));
+            pdao.update(p);
             readjTable();
-           // txtProduto.setText("");
-            //txtQuantidade.setText("");
-            //txtValor.setText("");
-    }//GEN-LAST:event_cadastroTActionPerformed
+            codigoC.setText("1");
+            barraC.setText("CODIGO DE BARRA");
+            tipoC.setText("TIPO");
+            descricaoC.setText("DESCRIÇÃO");
+            quantC.setText("10");
+            valorUC.setText("2.99");;
+    }//GEN-LAST:event_atualizaTActionPerformed
     }
     /**
          * @param args the command line arguments
@@ -1058,9 +1061,9 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JPanel areaV;
     private javax.swing.JFormattedTextField atualC;
     private javax.swing.JLabel atualT;
+    private javax.swing.JButton atualizaT;
     private javax.swing.JTextField barraC;
     private javax.swing.JLabel barraF;
-    private javax.swing.JButton cadastroT;
     private javax.swing.JLabel cadeadoF;
     private javax.swing.JLabel campoPF;
     private javax.swing.JTextField campoPT;
