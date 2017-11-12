@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -21,13 +22,14 @@ import javax.swing.JOptionPane;
  *
  * @author viniciusvonahn
  */
-public class ProdutoDAO {
+public class ProdutoDAO extends ConnectionFactory {
+
     public ResultSet result;
 
-    public void create(Produto p){
+    public void create(Produto p) {
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null;
-        
+
         try {
             stmt = (PreparedStatement) con.prepareStatement("INSERT INTO produtos (produtosid, codigo, codigo_de_barras,"
                     + " categoria_id, descricao, quantidade, valor)VALUES(?,?,?,?,?,?,?)");
@@ -40,25 +42,26 @@ public class ProdutoDAO {
             stmt.setDouble(7, p.getValor());
             stmt.executeUpdate();
             JOptionPane.showMessageDialog(null, "Salvo com sucesso");
-         
+
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro ao salvar: "+ex);
-        }finally{
+            JOptionPane.showMessageDialog(null, "Erro ao salvar: " + ex);
+        } finally {
             ConnectionFactory.closeConnection(con, stmt);
         }
-        
+
     }
-    public List<Produto> read(){
+
+    public List<Produto> read() {
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null;
         ResultSet rs = null;
         List<Produto> produtos = new ArrayList<>();
-        
+
         try {
             stmt = (PreparedStatement) con.prepareStatement("SELECT * FROM produtos");
-           rs = stmt.executeQuery();
-            while (rs.next()) {                
-                
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+
                 Produto produto = new Produto();
                 produto.setCodigo(rs.getInt("codigo"));
                 produto.setCodigoDeBarras(rs.getString("codigo_de_barras"));
@@ -66,22 +69,22 @@ public class ProdutoDAO {
                 produto.setDescricao(rs.getString("descricao"));
                 produto.setQuantidade(rs.getInt("quantidade"));
                 produto.setValor(rs.getDouble("valor"));
-             
+
                 produtos.add(produto);
             }
         } catch (SQLException ex) {
             Logger.getLogger(ProdutoDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
+        } finally {
             ConnectionFactory.closeConnection(con, stmt, rs);
         }
         return produtos;
-        
+
     }
-    
-    public void update(Produto p){
+
+    public void update(Produto p) {
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null;
-        
+
         try {
             stmt = (PreparedStatement) con.prepareStatement("UPDATE produtos SET codigo = ?, codigo_de_barras = ?,"
                     + " categoria_id = ?, descricao = ?, quantidade = ?, valor = ? WHERE produtosid = ?");
@@ -94,12 +97,27 @@ public class ProdutoDAO {
             stmt.setInt(7, p.getProdutosid());
             stmt.executeUpdate();
             JOptionPane.showMessageDialog(null, "Atualizado com sucesso");
-         
+
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Erro ao atualizar: "+ex);
-        }finally{
+            JOptionPane.showMessageDialog(null, "Erro ao atualizar: " + ex);
+        } finally {
             ConnectionFactory.closeConnection(con, stmt);
         }
-        
+
+    }
+
+    public Vector pesquisar(String pesq) throws Exception {
+        Vector tb = new Vector();
+        String url = "select * from produtos where codigo_de_barras like '" + pesq + "%'";
+        PreparedStatement stmt = (PreparedStatement) getConnection().prepareStatement(url);
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            Vector nl = new Vector();
+            nl.add(rs.getString("descricao"));
+            nl.add(rs.getDouble("quantidade"));
+            nl.add(rs.getDouble("valor"));
+            tb.add(nl);
+        }
+        return tb;
     }
 }
