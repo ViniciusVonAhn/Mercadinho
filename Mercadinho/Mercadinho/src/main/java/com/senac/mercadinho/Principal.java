@@ -760,6 +760,11 @@ public class Principal extends javax.swing.JFrame {
                 campoPTActionPerformed(evt);
             }
         });
+        campoPT.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                campoPTKeyReleased(evt);
+            }
+        });
         jPanel1.add(campoPT, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 24, 238, 28));
 
         campoPF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/campoentrada.png"))); // NOI18N
@@ -1083,23 +1088,6 @@ public class Principal extends javax.swing.JFrame {
             campoPT.setEditable(true);
             campoPT.requestFocus();
             campoPT.selectAll();
-            ProdutoDAO pdao = new ProdutoDAO();
-            Produto p = new Produto();
-            try {
-                Vector cabecalho = new Vector();
-
-                cabecalho.add("descricao");
-                cabecalho.add("valor");
-                if (!codigoBarrasC.getText().equals("")) {
-                    pdao.pesquisar(campoPT.getText());
-                    pesqProduto.setText(p.getDescricao());
-                } else {
-                    DefaultTableModel nv = new DefaultTableModel(new Vector(), cabecalho);
-                    jtbVenda.setModel(nv);
-                }
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "Erro: " + ex.getMessage());
-            }
             if (u.isCadeado() == true) {
                 u.setLupa(1);
             } else {
@@ -1233,6 +1221,27 @@ public class Principal extends javax.swing.JFrame {
     private void campoPTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_campoPTActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_campoPTActionPerformed
+
+    private void campoPTKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_campoPTKeyReleased
+        
+            ProdutoDAO pdao = new ProdutoDAO();
+            Produto p = new Produto();
+            try {
+                Vector cabecalho = new Vector();
+
+                cabecalho.add("descricao");
+                cabecalho.add("valor");
+                if (!codigoBarrasC.getText().equals("")) {
+                    pdao.pesquisar(campoPT.getText());
+                    pesqProduto.setText(p.getDescricao());
+                } else {
+                    DefaultTableModel nv = new DefaultTableModel(new Vector(), cabecalho);
+                    jtbVenda.setModel(nv);
+                }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Erro: " + ex.getMessage());
+            }
+    }//GEN-LAST:event_campoPTKeyReleased
 
     /**
      * @param args the command line arguments
