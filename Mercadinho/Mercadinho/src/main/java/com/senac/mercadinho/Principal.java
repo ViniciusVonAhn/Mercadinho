@@ -107,6 +107,7 @@ public class Principal extends javax.swing.JFrame {
         valorUC = new javax.swing.JFormattedTextField();
         valorUF = new javax.swing.JLabel();
         msgE = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
         areaP = new javax.swing.JPanel();
         pesqFundoB = new javax.swing.JPanel();
         pesqFigura = new javax.swing.JLabel();
@@ -270,7 +271,7 @@ public class Principal extends javax.swing.JFrame {
         codigoC.setForeground(new java.awt.Color(255, 255, 255));
         codigoC.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
         codigoC.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        codigoC.setText("1");
+        codigoC.setText("999");
         codigoC.setToolTipText("");
         codigoC.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
         codigoC.setOpaque(false);
@@ -284,9 +285,9 @@ public class Principal extends javax.swing.JFrame {
                 codigoCActionPerformed(evt);
             }
         });
-        areaE.add(codigoC, new org.netbeans.lib.awtextra.AbsoluteConstraints(34, 33, 92, 28));
+        areaE.add(codigoC, new org.netbeans.lib.awtextra.AbsoluteConstraints(36, 33, 52, 28));
 
-        codigoF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/campoentradaq.png"))); // NOI18N
+        codigoF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/campoeestoquecod.png"))); // NOI18N
         areaE.add(codigoF, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, -1, -1));
 
         barraC.setEditable(false);
@@ -294,7 +295,7 @@ public class Principal extends javax.swing.JFrame {
         barraC.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
         barraC.setForeground(new java.awt.Color(255, 255, 255));
         barraC.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        barraC.setText("CODIGO DE BARRA");
+        barraC.setText("1234567890123");
         barraC.setToolTipText("");
         barraC.setBorder(null);
         barraC.setOpaque(false);
@@ -303,10 +304,10 @@ public class Principal extends javax.swing.JFrame {
                 barraCMouseClicked(evt);
             }
         });
-        areaE.add(barraC, new org.netbeans.lib.awtextra.AbsoluteConstraints(147, 33, 234, 28));
+        areaE.add(barraC, new org.netbeans.lib.awtextra.AbsoluteConstraints(106, 33, 156, 28));
 
-        barraF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/campoentrada.png"))); // NOI18N
-        areaE.add(barraF, new org.netbeans.lib.awtextra.AbsoluteConstraints(135, 30, -1, -1));
+        barraF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/campoeestoquebarra.png"))); // NOI18N
+        areaE.add(barraF, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 30, -1, -1));
 
         descricaoC.setEditable(false);
         descricaoC.setBackground(new java.awt.Color(165, 164, 169));
@@ -326,10 +327,10 @@ public class Principal extends javax.swing.JFrame {
                 descricaoCKeyPressed(evt);
             }
         });
-        areaE.add(descricaoC, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 33, 238, 28));
+        areaE.add(descricaoC, new org.netbeans.lib.awtextra.AbsoluteConstraints(286, 33, 520, 28));
 
-        descricaoF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/campoentrada.png"))); // NOI18N
-        areaE.add(descricaoF, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 30, -1, -1));
+        descricaoF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/campoeestoquedesc.png"))); // NOI18N
+        areaE.add(descricaoF, new org.netbeans.lib.awtextra.AbsoluteConstraints(276, 30, -1, -1));
 
         quantC.setEditable(false);
         quantC.setBackground(new java.awt.Color(153, 153, 153));
@@ -337,7 +338,7 @@ public class Principal extends javax.swing.JFrame {
         quantC.setForeground(new java.awt.Color(255, 255, 255));
         quantC.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
         quantC.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        quantC.setText("10");
+        quantC.setText("999");
         quantC.setToolTipText("");
         quantC.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
         quantC.setOpaque(false);
@@ -346,9 +347,9 @@ public class Principal extends javax.swing.JFrame {
                 quantCMouseClicked(evt);
             }
         });
-        areaE.add(quantC, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 33, 90, 32));
+        areaE.add(quantC, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 33, 52, 28));
 
-        quantF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/campoentradaq.png"))); // NOI18N
+        quantF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/campoeestoquecod.png"))); // NOI18N
         areaE.add(quantF, new org.netbeans.lib.awtextra.AbsoluteConstraints(825, 30, -1, -1));
 
         valorUC.setEditable(false);
@@ -366,10 +367,10 @@ public class Principal extends javax.swing.JFrame {
                 valorUCMouseClicked(evt);
             }
         });
-        areaE.add(valorUC, new org.netbeans.lib.awtextra.AbsoluteConstraints(942, 33, 144, 32));
+        areaE.add(valorUC, new org.netbeans.lib.awtextra.AbsoluteConstraints(976, 33, 110, 32));
 
-        valorUF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/campoentradap.png"))); // NOI18N
-        areaE.add(valorUF, new org.netbeans.lib.awtextra.AbsoluteConstraints(935, 30, -1, -1));
+        valorUF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/campoeestoqueval.png"))); // NOI18N
+        areaE.add(valorUF, new org.netbeans.lib.awtextra.AbsoluteConstraints(966, 30, -1, -1));
 
         msgE.setFont(new java.awt.Font("Hobo Std", 0, 18)); // NOI18N
         msgE.setForeground(new java.awt.Color(255, 145, 96));
@@ -377,6 +378,13 @@ public class Principal extends javax.swing.JFrame {
         msgE.setText("Novo Produto");
         msgE.setToolTipText("");
         areaE.add(msgE, new org.netbeans.lib.awtextra.AbsoluteConstraints(1060, 70, 120, 19));
+
+        jComboBox1.setBackground(new java.awt.Color(102, 102, 102));
+        jComboBox1.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
+        jComboBox1.setForeground(new java.awt.Color(102, 102, 102));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Kg", "UN" }));
+        jComboBox1.setBorder(null);
+        areaE.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(896, 30, 64, 36));
 
         jPanel1.add(areaE, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 140, 1200, 520));
 
@@ -570,7 +578,7 @@ public class Principal extends javax.swing.JFrame {
         });
         areaV.add(confereTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(1110, 410, -1, 32));
 
-        abreCaixaF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/voltar.png"))); // NOI18N
+        abreCaixaF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/remove.png"))); // NOI18N
         areaV.add(abreCaixaF, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 20, -1, -1));
 
         jPanel1.add(areaV, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 140, 1200, 520));
@@ -1281,6 +1289,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel fundoPesL;
     private javax.swing.JLabel fundoS;
     private javax.swing.JLabel fundoVendas;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTable jTable2;
     private javax.swing.JTable jtbVenda;
