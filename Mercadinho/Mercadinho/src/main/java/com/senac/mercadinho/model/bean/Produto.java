@@ -17,7 +17,6 @@ public class Produto {
     private double quantidade;
     private int quantidadeUn;
     private double quantidadeKg;
-    private String categoriaId;
 
     @Override
     public int hashCode() {
@@ -30,7 +29,7 @@ public class Produto {
         hash = (int) (59 * hash + this.quantidade);
         hash = 59 * hash + this.quantidadeUn;
         hash = 59 * hash + (int) (Double.doubleToLongBits(this.quantidadeKg) ^ (Double.doubleToLongBits(this.quantidadeKg) >>> 32));
-        hash = 59 * hash + Objects.hashCode(this.categoriaId);
+        
         return hash;
     }
 
@@ -68,9 +67,6 @@ public class Produto {
             return false;
         }
         if (!Objects.equals(this.unidade, other.unidade)) {
-            return false;
-        }
-        if (!Objects.equals(this.categoriaId, other.categoriaId)) {
             return false;
         }
         return true;
@@ -150,14 +146,6 @@ public class Produto {
 
     public void setQuantidadeKg(double quantidadeKg) {
         this.quantidadeKg = quantidadeKg;
-    }
-
-    public String getCategoriaId() {
-        return categoriaId;
-    }
-
-    public void setCategoriaId(String categoriaId) {
-        this.categoriaId = categoriaId;
     }
 
 }

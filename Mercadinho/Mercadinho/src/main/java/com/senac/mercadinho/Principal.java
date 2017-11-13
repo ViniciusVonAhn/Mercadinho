@@ -54,7 +54,6 @@ public class Principal extends javax.swing.JFrame {
             modelo.addRow(new Object[]{
                 p.getCodigo(),
                 p.getCodigoDeBarras(),
-                p.getCategoriaId(),
                 p.getDescricao(),
                 p.getQuantidade(),
                 p.getValor(),});
@@ -65,20 +64,17 @@ public class Principal extends javax.swing.JFrame {
         if (u.getBtSalvar() == 0) {
             codigoC.setEditable(true);
             barraC.setEditable(true);
-            tipoC.setEditable(true);
             descricaoC.setEditable(true);
             quantC.setEditable(true);
             valorUC.setEditable(true);
         } else {
             codigoC.setEditable(false);
             barraC.setEditable(false);
-            tipoC.setEditable(false);
             descricaoC.setEditable(false);
             quantC.setEditable(false);
             valorUC.setEditable(false);
             codigoC.setText("1");
             barraC.setText("CODIGO DE BARRA");
-            tipoC.setText("TIPO");
             descricaoC.setText("DESCRIÇÃO");
             quantC.setText("10");
             valorUC.setText("1,99");
@@ -95,12 +91,6 @@ public class Principal extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        areaP = new javax.swing.JPanel();
-        pesqFundoB = new javax.swing.JPanel();
-        pesqFigura = new javax.swing.JLabel();
-        pesqProduto = new javax.swing.JLabel();
-        pesqTesto = new javax.swing.JLabel();
-        pesqValor = new javax.swing.JFormattedTextField();
         areaE = new javax.swing.JPanel();
         tabelaC1 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
@@ -110,8 +100,6 @@ public class Principal extends javax.swing.JFrame {
         codigoF = new javax.swing.JLabel();
         barraC = new javax.swing.JTextField();
         barraF = new javax.swing.JLabel();
-        tipoC = new javax.swing.JTextField();
-        tipoF = new javax.swing.JLabel();
         descricaoC = new javax.swing.JTextField();
         descricaoF = new javax.swing.JLabel();
         quantC = new javax.swing.JFormattedTextField();
@@ -119,6 +107,12 @@ public class Principal extends javax.swing.JFrame {
         valorUC = new javax.swing.JFormattedTextField();
         valorUF = new javax.swing.JLabel();
         msgE = new javax.swing.JLabel();
+        areaP = new javax.swing.JPanel();
+        pesqFundoB = new javax.swing.JPanel();
+        pesqFigura = new javax.swing.JLabel();
+        pesqProduto = new javax.swing.JLabel();
+        pesqTesto = new javax.swing.JLabel();
+        pesqValor = new javax.swing.JFormattedTextField();
         areaV = new javax.swing.JPanel();
         tabelaV = new javax.swing.JScrollPane();
         jtbVenda = new javax.swing.JTable();
@@ -171,41 +165,6 @@ public class Principal extends javax.swing.JFrame {
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        areaP.setBackground(new java.awt.Color(255, 255, 255));
-        areaP.setForeground(new java.awt.Color(255, 255, 255));
-        areaP.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        pesqFundoB.setBackground(new java.awt.Color(255, 255, 255));
-        pesqFundoB.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        pesqFundoB.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        pesqFigura.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/arroztj.png"))); // NOI18N
-        pesqFundoB.add(pesqFigura, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, -1, -1));
-
-        areaP.add(pesqFundoB, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 100, 270, 320));
-
-        pesqProduto.setFont(new java.awt.Font("Hobo Std", 0, 48)); // NOI18N
-        pesqProduto.setForeground(new java.awt.Color(255, 153, 51));
-        pesqProduto.setText("Arroz Tio João 1 Kg");
-        areaP.add(pesqProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 160, -1, -1));
-
-        pesqTesto.setFont(new java.awt.Font("Hobo Std", 0, 36)); // NOI18N
-        pesqTesto.setForeground(new java.awt.Color(255, 153, 51));
-        pesqTesto.setText("Valor Unitário R$");
-        areaP.add(pesqTesto, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 280, -1, -1));
-
-        pesqValor.setEditable(false);
-        pesqValor.setBackground(new java.awt.Color(0, 0, 0));
-        pesqValor.setBorder(null);
-        pesqValor.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.##"))));
-        pesqValor.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        pesqValor.setText("14,99");
-        pesqValor.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
-        pesqValor.setOpaque(false);
-        areaP.add(pesqValor, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 270, -1, -1));
-
-        jPanel1.add(areaP, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 140, 1200, 520));
-
         areaE.setBackground(new java.awt.Color(255, 255, 255));
         areaE.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         areaE.setForeground(new java.awt.Color(255, 255, 255));
@@ -217,30 +176,30 @@ public class Principal extends javax.swing.JFrame {
         jTable2.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {"", null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null},
+                {"", null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Código", "Código de Barra", "Tipo", "Descrição", "Quantidade", "Valor Unitario"
+                "Código", "Código de Barra", "Descrição", "Quantidade", "Valor Unitario"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -269,11 +228,10 @@ public class Principal extends javax.swing.JFrame {
             jTable2.getColumnModel().getColumn(0).setMaxWidth(100);
             jTable2.getColumnModel().getColumn(1).setMinWidth(150);
             jTable2.getColumnModel().getColumn(1).setMaxWidth(400);
-            jTable2.getColumnModel().getColumn(2).setMaxWidth(100);
-            jTable2.getColumnModel().getColumn(3).setMinWidth(300);
-            jTable2.getColumnModel().getColumn(3).setMaxWidth(600);
-            jTable2.getColumnModel().getColumn(4).setMaxWidth(100);
-            jTable2.getColumnModel().getColumn(5).setMaxWidth(200);
+            jTable2.getColumnModel().getColumn(2).setMinWidth(300);
+            jTable2.getColumnModel().getColumn(2).setMaxWidth(600);
+            jTable2.getColumnModel().getColumn(3).setMaxWidth(100);
+            jTable2.getColumnModel().getColumn(4).setMaxWidth(200);
         }
 
         areaE.add(tabelaC1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 100, 1140, 400));
@@ -350,24 +308,6 @@ public class Principal extends javax.swing.JFrame {
         barraF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/campoentrada.png"))); // NOI18N
         areaE.add(barraF, new org.netbeans.lib.awtextra.AbsoluteConstraints(135, 30, -1, -1));
 
-        tipoC.setEditable(false);
-        tipoC.setBackground(new java.awt.Color(165, 164, 169));
-        tipoC.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
-        tipoC.setForeground(new java.awt.Color(255, 255, 255));
-        tipoC.setText("TIPO");
-        tipoC.setToolTipText("");
-        tipoC.setBorder(null);
-        tipoC.setOpaque(false);
-        tipoC.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tipoCMouseClicked(evt);
-            }
-        });
-        areaE.add(tipoC, new org.netbeans.lib.awtextra.AbsoluteConstraints(405, 33, 140, 28));
-
-        tipoF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/campoentradap.png"))); // NOI18N
-        areaE.add(tipoF, new org.netbeans.lib.awtextra.AbsoluteConstraints(395, 30, -1, -1));
-
         descricaoC.setEditable(false);
         descricaoC.setBackground(new java.awt.Color(165, 164, 169));
         descricaoC.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
@@ -439,6 +379,41 @@ public class Principal extends javax.swing.JFrame {
         areaE.add(msgE, new org.netbeans.lib.awtextra.AbsoluteConstraints(1060, 70, 120, 19));
 
         jPanel1.add(areaE, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 140, 1200, 520));
+
+        areaP.setBackground(new java.awt.Color(255, 255, 255));
+        areaP.setForeground(new java.awt.Color(255, 255, 255));
+        areaP.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        pesqFundoB.setBackground(new java.awt.Color(255, 255, 255));
+        pesqFundoB.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        pesqFundoB.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        pesqFigura.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/arroztj.png"))); // NOI18N
+        pesqFundoB.add(pesqFigura, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, -1, -1));
+
+        areaP.add(pesqFundoB, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 100, 270, 320));
+
+        pesqProduto.setFont(new java.awt.Font("Hobo Std", 0, 48)); // NOI18N
+        pesqProduto.setForeground(new java.awt.Color(255, 153, 51));
+        pesqProduto.setText("Arroz Tio João 1 Kg");
+        areaP.add(pesqProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 160, -1, -1));
+
+        pesqTesto.setFont(new java.awt.Font("Hobo Std", 0, 36)); // NOI18N
+        pesqTesto.setForeground(new java.awt.Color(255, 153, 51));
+        pesqTesto.setText("Valor Unitário R$");
+        areaP.add(pesqTesto, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 280, -1, -1));
+
+        pesqValor.setEditable(false);
+        pesqValor.setBackground(new java.awt.Color(0, 0, 0));
+        pesqValor.setBorder(null);
+        pesqValor.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.##"))));
+        pesqValor.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        pesqValor.setText("14,99");
+        pesqValor.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
+        pesqValor.setOpaque(false);
+        areaP.add(pesqValor, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 270, -1, -1));
+
+        jPanel1.add(areaP, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 140, 1200, 520));
 
         areaV.setBackground(new java.awt.Color(255, 255, 255));
         areaV.setForeground(new java.awt.Color(255, 255, 255));
@@ -993,7 +968,6 @@ public class Principal extends javax.swing.JFrame {
 
             p.setCodigo(Integer.parseInt(codigoC.getText()));
             p.setCodigoDeBarras(barraC.getText());
-            p.setCategoriaId(tipoC.getText());
             p.setDescricao(descricaoC.getText());
             p.setQuantidade(Double.parseDouble(quantC.getText()));
             p.setValor(u.convertePonto(valorUC.getText()));
@@ -1008,7 +982,6 @@ public class Principal extends javax.swing.JFrame {
 
                 p.setCodigo(Integer.parseInt(codigoC.getText()));
                 p.setCodigoDeBarras(barraC.getText());
-                p.setCategoriaId(tipoC.getText());
                 p.setDescricao(descricaoC.getText());
                 p.setQuantidade(Double.parseDouble(quantC.getText()));
                 System.out.println(u.convertePonto(valorUC.getText()));
@@ -1119,10 +1092,9 @@ public class Principal extends javax.swing.JFrame {
             if (jTable2.getSelectedRow() != -1) {
                 codigoC.setText(jTable2.getValueAt(jTable2.getSelectedRow(), 0).toString());
                 barraC.setText(jTable2.getValueAt(jTable2.getSelectedRow(), 1).toString());
-                tipoC.setText(jTable2.getValueAt(jTable2.getSelectedRow(), 2).toString());
-                descricaoC.setText(jTable2.getValueAt(jTable2.getSelectedRow(), 3).toString());
-                quantC.setText(jTable2.getValueAt(jTable2.getSelectedRow(), 4).toString());
-                valorUC.setText(u.converteVirgula(jTable2.getValueAt(jTable2.getSelectedRow(), 5).toString()));
+                descricaoC.setText(jTable2.getValueAt(jTable2.getSelectedRow(), 2).toString());
+                quantC.setText(jTable2.getValueAt(jTable2.getSelectedRow(), 3).toString());
+                valorUC.setText(u.converteVirgula(jTable2.getValueAt(jTable2.getSelectedRow(), 4).toString()));
                 mudarComponentes();
             }
             u.certoIcon();
@@ -1139,10 +1111,9 @@ public class Principal extends javax.swing.JFrame {
         if (jTable2.getSelectedRow() != -1) {
             jTable2.setValueAt(codigoC.getText(), jTable2.getSelectedRow(), 0);
             jTable2.setValueAt(barraC.getText(), jTable2.getSelectedRow(), 1);
-            jTable2.setValueAt(tipoC.getText(), jTable2.getSelectedRow(), 2);
-            jTable2.setValueAt(descricaoC.getText(), jTable2.getSelectedRow(), 3);
-            jTable2.setValueAt(quantC.getText(), jTable2.getSelectedRow(), 4);
-            jTable2.setValueAt(valorUC.getText(), jTable2.getSelectedRow(), 5);
+            jTable2.setValueAt(descricaoC.getText(), jTable2.getSelectedRow(), 2);
+            jTable2.setValueAt(quantC.getText(), jTable2.getSelectedRow(), 3);
+            jTable2.setValueAt(valorUC.getText(), jTable2.getSelectedRow(), 4);
         }
     }//GEN-LAST:event_jTable2KeyReleased
 
@@ -1153,10 +1124,6 @@ public class Principal extends javax.swing.JFrame {
     private void barraCMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_barraCMouseClicked
         barraC.selectAll();
     }//GEN-LAST:event_barraCMouseClicked
-
-    private void tipoCMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tipoCMouseClicked
-        tipoC.selectAll();
-    }//GEN-LAST:event_tipoCMouseClicked
 
     private void descricaoCMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_descricaoCMouseClicked
         descricaoC.selectAll();
@@ -1337,8 +1304,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JScrollPane tabelaC1;
     private javax.swing.JScrollPane tabelaV;
     private javax.swing.JLabel textoControle;
-    private javax.swing.JTextField tipoC;
-    private javax.swing.JLabel tipoF;
     private javax.swing.JFormattedTextField totalC;
     private javax.swing.JLabel totalF;
     private javax.swing.JLabel totalT;

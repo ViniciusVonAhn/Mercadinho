@@ -29,14 +29,13 @@ public class ProdutoDAO extends ConnectionFactory {
     public void create(Produto p) {
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null;
-
+        
         try {
             stmt = (PreparedStatement) con.prepareStatement("INSERT INTO produtos (produtosid, codigo, codigo_de_barras,"
-                    + " categoria_id, descricao, quantidade, valor)VALUES(?,?,?,?,?,?,?)");
+                    + " descricao, quantidade, valor)VALUES(,?,?,?,?,?,?)");
             stmt.setInt(2, p.getCodigo());
             stmt.setInt(1, p.getCodigo());
             stmt.setString(3, p.getCodigoDeBarras());
-            stmt.setString(4, p.getCategoriaId());
             stmt.setString(5, p.getDescricao());
             stmt.setDouble(6, p.getQuantidade());
             stmt.setDouble(7, p.getValor());
@@ -65,7 +64,6 @@ public class ProdutoDAO extends ConnectionFactory {
                 Produto produto = new Produto();
                 produto.setCodigo(rs.getInt("codigo"));
                 produto.setCodigoDeBarras(rs.getString("codigo_de_barras"));
-                produto.setCategoriaId(rs.getString("categoria_id"));
                 produto.setDescricao(rs.getString("descricao"));
                 produto.setQuantidade(rs.getInt("quantidade"));
                 produto.setValor(rs.getDouble("valor"));
@@ -87,14 +85,13 @@ public class ProdutoDAO extends ConnectionFactory {
 
         try {
             stmt = (PreparedStatement) con.prepareStatement("UPDATE produtos SET codigo = ?, codigo_de_barras = ?,"
-                    + " categoria_id = ?, descricao = ?, quantidade = ?, valor = ? WHERE produtosid = ?");
+                    + " descricao = ?, quantidade = ?, valor = ? WHERE produtosid = ?");
             stmt.setInt(1, p.getCodigo());
             stmt.setString(2, p.getCodigoDeBarras());
-            stmt.setString(3, p.getCategoriaId());
-            stmt.setString(4, p.getDescricao());
-            stmt.setDouble(5, p.getQuantidade());
-            stmt.setDouble(6, p.getValor());
-            stmt.setInt(7, p.getProdutosid());
+            stmt.setString(3, p.getDescricao());
+            stmt.setDouble(4, p.getQuantidade());
+            stmt.setDouble(5, p.getValor());
+            stmt.setInt(6, p.getProdutosid());
             stmt.executeUpdate();
             JOptionPane.showMessageDialog(null, "Atualizado com sucesso");
 
