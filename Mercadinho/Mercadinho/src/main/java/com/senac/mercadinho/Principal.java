@@ -95,12 +95,6 @@ public class Principal extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        areaP = new javax.swing.JPanel();
-        pesqFundoB = new javax.swing.JPanel();
-        pesqFigura = new javax.swing.JLabel();
-        pesqProduto = new javax.swing.JLabel();
-        pesqTesto = new javax.swing.JLabel();
-        pesqValor = new javax.swing.JFormattedTextField();
         areaE = new javax.swing.JPanel();
         tabelaC1 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
@@ -119,6 +113,12 @@ public class Principal extends javax.swing.JFrame {
         valorUC = new javax.swing.JFormattedTextField();
         valorUF = new javax.swing.JLabel();
         msgE = new javax.swing.JLabel();
+        areaP = new javax.swing.JPanel();
+        pesqFundoB = new javax.swing.JPanel();
+        pesqFigura = new javax.swing.JLabel();
+        pesqProduto = new javax.swing.JLabel();
+        pesqTesto = new javax.swing.JLabel();
+        pesqValor = new javax.swing.JFormattedTextField();
         areaV = new javax.swing.JPanel();
         tabelaV = new javax.swing.JScrollPane();
         jtbVenda = new javax.swing.JTable();
@@ -170,41 +170,6 @@ public class Principal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        areaP.setBackground(new java.awt.Color(255, 255, 255));
-        areaP.setForeground(new java.awt.Color(255, 255, 255));
-        areaP.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        pesqFundoB.setBackground(new java.awt.Color(255, 255, 255));
-        pesqFundoB.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        pesqFundoB.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        pesqFigura.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/arroztj.png"))); // NOI18N
-        pesqFundoB.add(pesqFigura, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, -1, -1));
-
-        areaP.add(pesqFundoB, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 100, 270, 320));
-
-        pesqProduto.setFont(new java.awt.Font("Hobo Std", 0, 48)); // NOI18N
-        pesqProduto.setForeground(new java.awt.Color(255, 153, 51));
-        pesqProduto.setText("Arroz Tio João 1 Kg");
-        areaP.add(pesqProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 160, -1, -1));
-
-        pesqTesto.setFont(new java.awt.Font("Hobo Std", 0, 36)); // NOI18N
-        pesqTesto.setForeground(new java.awt.Color(255, 153, 51));
-        pesqTesto.setText("Valor Unitário R$");
-        areaP.add(pesqTesto, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 280, -1, -1));
-
-        pesqValor.setEditable(false);
-        pesqValor.setBackground(new java.awt.Color(0, 0, 0));
-        pesqValor.setBorder(null);
-        pesqValor.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.##"))));
-        pesqValor.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        pesqValor.setText("14,99");
-        pesqValor.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
-        pesqValor.setOpaque(false);
-        areaP.add(pesqValor, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 270, -1, -1));
-
-        jPanel1.add(areaP, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 140, 1200, 520));
 
         areaE.setBackground(new java.awt.Color(255, 255, 255));
         areaE.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -439,6 +404,42 @@ public class Principal extends javax.swing.JFrame {
         areaE.add(msgE, new org.netbeans.lib.awtextra.AbsoluteConstraints(1060, 70, 120, 19));
 
         jPanel1.add(areaE, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 140, 1200, 520));
+
+        areaP.setBackground(new java.awt.Color(255, 255, 255));
+        areaP.setForeground(new java.awt.Color(255, 255, 255));
+        areaP.setOpaque(false);
+        areaP.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        pesqFundoB.setBackground(new java.awt.Color(255, 255, 255));
+        pesqFundoB.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        pesqFundoB.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        pesqFigura.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/arroztj.png"))); // NOI18N
+        pesqFundoB.add(pesqFigura, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, -1, -1));
+
+        areaP.add(pesqFundoB, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 100, 270, 320));
+
+        pesqProduto.setFont(new java.awt.Font("Hobo Std", 0, 48)); // NOI18N
+        pesqProduto.setForeground(new java.awt.Color(255, 153, 51));
+        pesqProduto.setText("Arroz Tio João 1 Kg");
+        areaP.add(pesqProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 160, -1, -1));
+
+        pesqTesto.setFont(new java.awt.Font("Hobo Std", 0, 36)); // NOI18N
+        pesqTesto.setForeground(new java.awt.Color(255, 153, 51));
+        pesqTesto.setText("Valor Unitário R$");
+        areaP.add(pesqTesto, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 280, -1, -1));
+
+        pesqValor.setEditable(false);
+        pesqValor.setBackground(new java.awt.Color(0, 0, 0));
+        pesqValor.setBorder(null);
+        pesqValor.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.##"))));
+        pesqValor.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        pesqValor.setText("14,99");
+        pesqValor.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
+        pesqValor.setOpaque(false);
+        areaP.add(pesqValor, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 270, -1, -1));
+
+        jPanel1.add(areaP, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 140, 1200, 520));
 
         areaV.setBackground(new java.awt.Color(255, 255, 255));
         areaV.setForeground(new java.awt.Color(255, 255, 255));
@@ -737,11 +738,11 @@ public class Principal extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lupaMouseClicked(evt);
             }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                lupaMouseExited(evt);
-            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 lupaMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lupaMouseExited(evt);
             }
         });
         jPanel1.add(lupa, new org.netbeans.lib.awtextra.AbsoluteConstraints(895, 20, -1, -1));
