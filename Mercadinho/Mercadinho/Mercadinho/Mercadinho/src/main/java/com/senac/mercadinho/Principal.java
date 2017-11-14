@@ -284,9 +284,9 @@ public class Principal extends javax.swing.JFrame {
         quantidadeC.setText("9");
         quantidadeC.setToolTipText("");
         quantidadeC.setFont(new java.awt.Font("Hobo Std", 0, 24)); // NOI18N
-        quantidadeC.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                quantidadeCMouseClicked(evt);
+        quantidadeC.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                quantidadeCKeyPressed(evt);
             }
         });
         areaV.add(quantidadeC, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 210, 90, 32));
@@ -1108,7 +1108,7 @@ public class Principal extends javax.swing.JFrame {
             Vector cabecalho = new Vector();
 
             cabecalho.add("descricao");
-            cabecalho.add("quantidade");
+            cabecalho.add("quantidade_kg");
             cabecalho.add("valor");
             if (!codigoBarrasC.getText().equals("")) {
                 DefaultTableModel nv = new DefaultTableModel(pdao.pesquisar(codigoBarrasC.getText()), cabecalho);
@@ -1147,7 +1147,7 @@ public class Principal extends javax.swing.JFrame {
             }
     }//GEN-LAST:event_campoPTKeyReleased
 
-    private void quantidadeCMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_quantidadeCMouseClicked
+    private void quantidadeCKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_quantidadeCKeyPressed
         ProdutoDAO pdao = new ProdutoDAO();
         try {
             if (!codigoBarrasC.getText().equals("")) {
@@ -1159,7 +1159,7 @@ public class Principal extends javax.swing.JFrame {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Erro: " + ex.getMessage());
         }
-    }//GEN-LAST:event_quantidadeCMouseClicked
+    }//GEN-LAST:event_quantidadeCKeyPressed
 
     /**
      * @param args the command line arguments

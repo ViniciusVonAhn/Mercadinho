@@ -119,7 +119,7 @@ public class ProdutoDAO extends ConnectionFactory {
         return tb;
     }
     
-    public void venda(String pesq) throws Exception{
+    public DefaultTableModel venda(String pesq) throws Exception{
         Connection con = ConnectionFactory.getConnection();
 		DefaultTableModel dtm = new DefaultTableModel() {
 			public boolean isCellEditable(int row, int column) {
@@ -138,5 +138,7 @@ public class ProdutoDAO extends ConnectionFactory {
 			dtm.addRow(new String[] {rs.getString("descricao"), rs.getString("valor")});
 		}
 		ConnectionFactory.closeConnection(con, ps);
+                return dtm;
 	}
+    
 }
