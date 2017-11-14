@@ -43,7 +43,7 @@ public class Util {
     public Util() {
         btSalvar = 0;
         cadeado = true;
-        caixa = false;
+        caixa = true;
         user = false;
         janela = 0;
         lupa = 0;

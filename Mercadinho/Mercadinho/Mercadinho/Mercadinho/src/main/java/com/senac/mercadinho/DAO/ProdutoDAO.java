@@ -17,6 +17,7 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -117,4 +118,25 @@ public class ProdutoDAO extends ConnectionFactory {
         }
         return tb;
     }
+    
+    public void venda(String pesq) throws Exception{
+        Connection con = ConnectionFactory.getConnection();
+		DefaultTableModel dtm = new DefaultTableModel() {
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+		String sql = "select * from produtos where codigo_de_barras like '" + pesq + "'";
+		PreparedStatement ps = (PreparedStatement) getConnection().prepareStatement(sql);
+		ResultSet rs = ps.executeQuery();
+                //adiciona as colunas
+		dtm.addColumn("descricao");
+		dtm.addColumn("valor");
+                dtm.addColumn("quantidade");
+		while (rs.next()) {
+                //pega os valores do bd para popular tabela
+			dtm.addRow(new String[] {rs.getString("descricao"), rs.getString("valor")});
+		}
+		ConnectionFactory.closeConnection(con, ps);
+	}
 }
