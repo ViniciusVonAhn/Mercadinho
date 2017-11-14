@@ -382,7 +382,7 @@ public class Principal extends javax.swing.JFrame {
         jComboBox1.setBackground(new java.awt.Color(102, 102, 102));
         jComboBox1.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
         jComboBox1.setForeground(new java.awt.Color(102, 102, 102));
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Kg", "UN" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "KG", "UN" }));
         jComboBox1.setBorder(null);
         areaE.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(896, 30, 64, 36));
 
