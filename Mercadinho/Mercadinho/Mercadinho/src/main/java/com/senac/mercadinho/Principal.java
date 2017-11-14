@@ -55,7 +55,7 @@ public class Principal extends javax.swing.JFrame {
                 p.getCodigo(),
                 p.getCodigoDeBarras(),
                 p.getDescricao(),
-                p.getQuantidade(),
+                p.getQuantidadeKg(),
                 p.getValor(),});
         }
     }
@@ -977,7 +977,7 @@ public class Principal extends javax.swing.JFrame {
             p.setCodigo(Integer.parseInt(codigoC.getText()));
             p.setCodigoDeBarras(barraC.getText());
             p.setDescricao(descricaoC.getText());
-            p.setQuantidade(Double.parseDouble(quantC.getText()));
+            p.setQuantidadeKg(Double.parseDouble(quantC.getText()));
             p.setValor(u.convertePonto(valorUC.getText()));
             pdao.create(p);
             readjTable();
@@ -991,7 +991,7 @@ public class Principal extends javax.swing.JFrame {
                 p.setCodigo(Integer.parseInt(codigoC.getText()));
                 p.setCodigoDeBarras(barraC.getText());
                 p.setDescricao(descricaoC.getText());
-                p.setQuantidade(Double.parseDouble(quantC.getText()));
+                p.setQuantidadeKg(Double.parseDouble(quantC.getText()));
                 System.out.println(u.convertePonto(valorUC.getText()));
                 p.setValor(u.convertePonto(valorUC.getText()));
                 p.setProdutosid((int) jTable2.getValueAt(jTable2.getSelectedRow(), 0));
@@ -1179,7 +1179,7 @@ public class Principal extends javax.swing.JFrame {
             Vector cabecalho = new Vector();
 
             cabecalho.add("descricao");
-            cabecalho.add("quantidade");
+            cabecalho.add("quantidade_kg");
             cabecalho.add("valor");
             if (!codigoBarrasC.getText().equals("")) {
                 DefaultTableModel nv = new DefaultTableModel(pdao.pesquisar(codigoBarrasC.getText()), cabecalho);

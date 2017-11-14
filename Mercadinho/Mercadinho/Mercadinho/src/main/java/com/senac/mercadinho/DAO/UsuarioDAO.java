@@ -1,7 +1,5 @@
 package com.senac.mercadinho.DAO;
 import com.senac.mercadinho.Connection.ConnectionFactory;
-import com.senac.mercadinho.Util;
-import com.senac.mercadinho.Principal;
 import java.sql.PreparedStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;

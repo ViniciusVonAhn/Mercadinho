@@ -32,13 +32,13 @@ public class ProdutoDAO extends ConnectionFactory {
         
         try {
             stmt = (PreparedStatement) con.prepareStatement("INSERT INTO produtos (produtosid, codigo, codigo_de_barras,"
-                    + " descricao, quantidade, valor)VALUES(,?,?,?,?,?,?)");
+                    + " descricao, quantidade_kg, valor)VALUES(?,?,?,?,?,?)");
             stmt.setInt(2, p.getCodigo());
             stmt.setInt(1, p.getCodigo());
             stmt.setString(3, p.getCodigoDeBarras());
-            stmt.setString(5, p.getDescricao());
-            stmt.setDouble(6, p.getQuantidade());
-            stmt.setDouble(7, p.getValor());
+            stmt.setString(4, p.getDescricao());
+            stmt.setDouble(5, p.getQuantidadeKg());
+            stmt.setDouble(6, p.getValor());
             stmt.executeUpdate();
             JOptionPane.showMessageDialog(null, "Salvo com sucesso");
 
@@ -65,7 +65,7 @@ public class ProdutoDAO extends ConnectionFactory {
                 produto.setCodigo(rs.getInt("codigo"));
                 produto.setCodigoDeBarras(rs.getString("codigo_de_barras"));
                 produto.setDescricao(rs.getString("descricao"));
-                produto.setQuantidade(rs.getInt("quantidade"));
+                produto.setQuantidadeKg(rs.getInt("quantidade_kg"));
                 produto.setValor(rs.getDouble("valor"));
 
                 produtos.add(produto);
@@ -85,11 +85,11 @@ public class ProdutoDAO extends ConnectionFactory {
 
         try {
             stmt = (PreparedStatement) con.prepareStatement("UPDATE produtos SET codigo = ?, codigo_de_barras = ?,"
-                    + " descricao = ?, quantidade = ?, valor = ? WHERE produtosid = ?");
+                    + " descricao = ?, quantidade_kg = ?, valor = ? WHERE produtosid = ?");
             stmt.setInt(1, p.getCodigo());
             stmt.setString(2, p.getCodigoDeBarras());
             stmt.setString(3, p.getDescricao());
-            stmt.setDouble(4, p.getQuantidade());
+            stmt.setDouble(4, p.getQuantidadeKg());
             stmt.setDouble(5, p.getValor());
             stmt.setInt(6, p.getProdutosid());
             stmt.executeUpdate();
@@ -111,7 +111,7 @@ public class ProdutoDAO extends ConnectionFactory {
         while (rs.next()) {
             Vector nl = new Vector();
             nl.add(rs.getString("descricao"));
-            nl.add(rs.getDouble("quantidade"));
+            nl.add(rs.getDouble("quantidade_kg"));
             nl.add(rs.getDouble("valor"));
             tb.add(nl);
         }
