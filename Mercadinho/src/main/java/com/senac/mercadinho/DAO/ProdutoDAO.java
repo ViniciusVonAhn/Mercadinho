@@ -141,4 +141,40 @@ public class ProdutoDAO extends ConnectionFactory {
                 return dtm;
 	}
     
+    public Produto pegaP(String pId) {
+        Produto p = new Produto();
+        try {
+            this.conectar();
+            this.executarMysql(
+                    "SELECT "
+                    + "produtosid, "     
+                    + "codigo_de_barras, "
+                    + "codigo, "        
+                    + "descricao, "
+                    + "unidade, "
+                    + "valor, "        
+                    + "quantidade_un, "
+                    + "quantidade_kg, "
+                    + "quantidade"
+                    + " FROM produtos WHERE codigo_de_barras = '" + pId + "'"
+            );
+            while (this.getResultSet().next()){
+                p.setProdutosid(this.getResultSet().getInt(1));
+                p.setCodigoDeBarras(this.getResultSet().getString(2));
+                p.setCodigo(this.getResultSet().getInt(3));
+                p.setDescricao(this.getResultSet().getString(4));
+                p.setUnidade(this.getResultSet().getString(5));
+                p.setValor(this.getResultSet().getDouble(6));
+                p.setQuantidadeUn(this.getResultSet().getInt(7));
+                p.setQuantidadeKg(this.getResultSet().getDouble(8));
+                p.setQuantidade(this.getResultSet().getDouble(9));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            this.desconectar();
+        }
+        return p;
+    }
+    
 }

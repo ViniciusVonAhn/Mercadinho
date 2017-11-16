@@ -10,8 +10,11 @@ import com.senac.mercadinho.DAO.UsuarioDAO;
 import com.senac.mercadinho.model.bean.Produto;
 import java.awt.Color;
 import java.util.Vector;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 /**
@@ -40,6 +43,7 @@ public class Principal extends javax.swing.JFrame {
         pesqValor.setBackground(new Color(0, 0, 0, 0));
         DefaultTableModel modelo = (DefaultTableModel) jTable2.getModel();
         jTable2.setRowSorter(new TableRowSorter(modelo));
+        pesqTabela.setVisible(false);
         //RadioUn.setSelected(true);
         readjTable();
     }
@@ -128,6 +132,8 @@ public class Principal extends javax.swing.JFrame {
         msgE = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
         areaP = new javax.swing.JPanel();
+        pesqTabela = new javax.swing.JScrollPane();
+        tabelaP = new javax.swing.JTable();
         pesqFundoB = new javax.swing.JPanel();
         pesqFigura = new javax.swing.JLabel();
         pesqProduto = new javax.swing.JLabel();
@@ -570,11 +576,44 @@ public class Principal extends javax.swing.JFrame {
         areaP.setForeground(new java.awt.Color(255, 255, 255));
         areaP.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        pesqTabela.setBorder(null);
+
+        tabelaP.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "descricao", "valor"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Double.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        pesqTabela.setViewportView(tabelaP);
+        if (tabelaP.getColumnModel().getColumnCount() > 0) {
+            tabelaP.getColumnModel().getColumn(0).setMinWidth(300);
+            tabelaP.getColumnModel().getColumn(0).setPreferredWidth(300);
+        }
+
+        areaP.add(pesqTabela, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, 50));
+
         pesqFundoB.setBackground(new java.awt.Color(255, 255, 255));
         pesqFundoB.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         pesqFundoB.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        pesqFigura.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/arroztj.png"))); // NOI18N
+        pesqFigura.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/9781001001005.png"))); // NOI18N
         pesqFundoB.add(pesqFigura, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, -1, -1));
 
         areaP.add(pesqFundoB, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 100, 270, 320));
@@ -1127,24 +1166,15 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_campoPTActionPerformed
 
     private void campoPTKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_campoPTKeyReleased
-        
-            ProdutoDAO pdao = new ProdutoDAO();
-            Produto p = new Produto();
-            try {
-                Vector cabecalho = new Vector();
-
-                cabecalho.add("descricao");
-                cabecalho.add("valor");
-                if (!codigoBarrasC.getText().equals("")) {
-                    pdao.pesquisar(campoPT.getText());
-                    pesqProduto.setText(p.getDescricao());
-                } else {
-                    DefaultTableModel nv = new DefaultTableModel(new Vector(), cabecalho);
-                    jtbVenda.setModel(nv);
-                }
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "Erro: " + ex.getMessage());
-            }
+        ProdutoDAO pdao = new ProdutoDAO();
+        Produto p = new Produto();
+        DefaultTableModel tb = (DefaultTableModel) this.tabelaP.getModel();
+        final TableRowSorter<TableModel> classificador = new TableRowSorter<>(tb);
+        this.tabelaP.setRowSorter(classificador);
+        String id = this.campoPT.getText();
+        classificador.setRowFilter(RowFilter.regexFilter(id, 0));
+        this.pesqP();
+        pesqFigura.setIcon(mudarImagem(id));
     }//GEN-LAST:event_campoPTKeyReleased
 
     private void quantidadeCKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_quantidadeCKeyPressed
@@ -1195,6 +1225,20 @@ public class Principal extends javax.swing.JFrame {
             }
         });
     }
+    
+    private void pesqP() {
+        ProdutoDAO pdao = new ProdutoDAO();
+        Produto p = new Produto();
+        String id = this.campoPT.getText();
+        p = pdao.pegaP(id);
+        this.pesqProduto.setText(p.getDescricao());
+        this.pesqValor.setText(String.valueOf(p.getValor()));
+    }
+    
+    private ImageIcon mudarImagem(String n){
+        ImageIcon salva = new ImageIcon(getClass().getResource("/img/" + n + ".png"));
+        return salva; 
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel abreCaixaF;
@@ -1234,6 +1278,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel pesqFigura;
     private javax.swing.JPanel pesqFundoB;
     private javax.swing.JLabel pesqProduto;
+    private javax.swing.JScrollPane pesqTabela;
     private javax.swing.JLabel pesqTesto;
     private javax.swing.JFormattedTextField pesqValor;
     private javax.swing.JLabel pesquisaD;
@@ -1246,6 +1291,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel quantidadeT;
     private javax.swing.JPasswordField senhaT;
     private javax.swing.JScrollPane tabelaC1;
+    private javax.swing.JTable tabelaP;
     private javax.swing.JScrollPane tabelaV;
     private javax.swing.JFormattedTextField totalC;
     private javax.swing.JFormattedTextField totalC1;
