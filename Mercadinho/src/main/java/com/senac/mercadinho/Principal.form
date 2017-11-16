@@ -997,13 +997,14 @@
               <SubComponents>
                 <Component class="javax.swing.JLabel" name="pesqFigura">
                   <Properties>
+                    <Property name="horizontalAlignment" type="int" value="0"/>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/img/9781001001005.png"/>
                     </Property>
                   </Properties>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                      <AbsoluteConstraints x="50" y="40" width="-1" height="-1"/>
+                      <AbsoluteConstraints x="0" y="0" width="270" height="320"/>
                     </Constraint>
                   </Constraints>
                 </Component>

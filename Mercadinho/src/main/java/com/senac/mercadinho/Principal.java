@@ -613,8 +613,9 @@ public class Principal extends javax.swing.JFrame {
         pesqFundoB.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         pesqFundoB.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        pesqFigura.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         pesqFigura.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/9781001001005.png"))); // NOI18N
-        pesqFundoB.add(pesqFigura, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, -1, -1));
+        pesqFundoB.add(pesqFigura, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 270, 320));
 
         areaP.add(pesqFundoB, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 100, 270, 320));
 

@@ -154,8 +154,7 @@ public class ProdutoDAO extends ConnectionFactory {
                     + "unidade, "
                     + "valor, "        
                     + "quantidade_un, "
-                    + "quantidade_kg, "
-                    + "quantidade"
+                    + "quantidade_kg "
                     + " FROM produtos WHERE codigo_de_barras = '" + pId + "'"
             );
             while (this.getResultSet().next()){
