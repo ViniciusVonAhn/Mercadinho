@@ -52,14 +52,23 @@ public class Principal extends javax.swing.JFrame {
         DefaultTableModel modelo = (DefaultTableModel) jTable2.getModel();
         modelo.setNumRows(0);
         ProdutoDAO pdao = new ProdutoDAO();
-
-        for (Produto p : pdao.read()) {
-            modelo.addRow(new Object[]{
-                p.getCodigo(),
-                p.getCodigoDeBarras(),
-                p.getDescricao(),
-                p.getQuantidadeKg(),
-                p.getValor(),});
+        Produto prod = new Produto();
+            for (Produto p : pdao.read()) {
+                if(p.getQuantidadeKg() != 0){
+                  modelo.addRow(new Object[]{
+                    p.getCodigo(),
+                    p.getCodigoDeBarras(),
+                    p.getDescricao(),
+                    p.getQuantidadeKg(),
+                    p.getValor(),});  
+                }else{
+                    modelo.addRow(new Object[]{
+                    p.getCodigo(),
+                    p.getCodigoDeBarras(),
+                    p.getDescricao(),
+                    p.getQuantidadeUn(),
+                    p.getValor(),});
+                }
         }
     }
 
@@ -94,6 +103,14 @@ public class Principal extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        areaP = new javax.swing.JPanel();
+        pesqTabela = new javax.swing.JScrollPane();
+        tabelaP = new javax.swing.JTable();
+        pesqFundoB = new javax.swing.JPanel();
+        pesqFigura = new javax.swing.JLabel();
+        pesqProduto = new javax.swing.JLabel();
+        pesqTesto = new javax.swing.JLabel();
+        pesqValor = new javax.swing.JFormattedTextField();
         areaV = new javax.swing.JPanel();
         tabelaV = new javax.swing.JScrollPane();
         jtbVenda = new javax.swing.JTable();
@@ -125,20 +142,12 @@ public class Principal extends javax.swing.JFrame {
         barraF = new javax.swing.JLabel();
         descricaoC = new javax.swing.JTextField();
         descricaoF = new javax.swing.JLabel();
-        quantC = new javax.swing.JFormattedTextField();
+        quantC = new javax.swing.JTextField();
         quantF = new javax.swing.JLabel();
         valorUC = new javax.swing.JFormattedTextField();
         valorUF = new javax.swing.JLabel();
         msgE = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        areaP = new javax.swing.JPanel();
-        pesqTabela = new javax.swing.JScrollPane();
-        tabelaP = new javax.swing.JTable();
-        pesqFundoB = new javax.swing.JPanel();
-        pesqFigura = new javax.swing.JLabel();
-        pesqProduto = new javax.swing.JLabel();
-        pesqTesto = new javax.swing.JLabel();
-        pesqValor = new javax.swing.JFormattedTextField();
+        jcQuant = new javax.swing.JComboBox<>();
         fundoGG = new javax.swing.JLabel();
         pesquisaV = new javax.swing.JLabel();
         pesquisaU = new javax.swing.JLabel();
@@ -164,6 +173,75 @@ public class Principal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        areaP.setBackground(new java.awt.Color(255, 255, 255));
+        areaP.setForeground(new java.awt.Color(255, 255, 255));
+        areaP.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        pesqTabela.setBorder(null);
+
+        tabelaP.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "descricao", "valor"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Double.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        pesqTabela.setViewportView(tabelaP);
+        if (tabelaP.getColumnModel().getColumnCount() > 0) {
+            tabelaP.getColumnModel().getColumn(0).setMinWidth(300);
+            tabelaP.getColumnModel().getColumn(0).setPreferredWidth(300);
+        }
+
+        areaP.add(pesqTabela, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, 50));
+
+        pesqFundoB.setBackground(new java.awt.Color(255, 255, 255));
+        pesqFundoB.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        pesqFundoB.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        pesqFigura.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        pesqFigura.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/9781001001005.png"))); // NOI18N
+        pesqFundoB.add(pesqFigura, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 270, 320));
+
+        areaP.add(pesqFundoB, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 100, 270, 320));
+
+        pesqProduto.setFont(new java.awt.Font("Hobo Std", 0, 48)); // NOI18N
+        pesqProduto.setForeground(new java.awt.Color(255, 153, 51));
+        pesqProduto.setText("Arroz Tio João 1 Kg");
+        areaP.add(pesqProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 160, -1, -1));
+
+        pesqTesto.setFont(new java.awt.Font("Hobo Std", 0, 36)); // NOI18N
+        pesqTesto.setForeground(new java.awt.Color(255, 153, 51));
+        pesqTesto.setText("Valor Unitário R$");
+        areaP.add(pesqTesto, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 280, -1, -1));
+
+        pesqValor.setEditable(false);
+        pesqValor.setBackground(new java.awt.Color(0, 0, 0));
+        pesqValor.setBorder(null);
+        pesqValor.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.##"))));
+        pesqValor.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        pesqValor.setText("14,99");
+        pesqValor.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
+        pesqValor.setOpaque(false);
+        areaP.add(pesqValor, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 270, -1, -1));
+
+        jPanel1.add(areaP, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 140, 1200, 520));
 
         areaV.setBackground(new java.awt.Color(255, 255, 255));
         areaV.setForeground(new java.awt.Color(255, 255, 255));
@@ -353,6 +431,7 @@ public class Principal extends javax.swing.JFrame {
         areaE.setBackground(new java.awt.Color(255, 255, 255));
         areaE.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         areaE.setForeground(new java.awt.Color(255, 255, 255));
+        areaE.setOpaque(false);
         areaE.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         tabelaC1.setFont(new java.awt.Font("Hobo Std", 0, 18)); // NOI18N
@@ -381,7 +460,7 @@ public class Principal extends javax.swing.JFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false
@@ -440,11 +519,11 @@ public class Principal extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 confereEMouseClicked(evt);
             }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                confereEMouseEntered(evt);
-            }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 confereEMouseExited(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                confereEMouseEntered(evt);
             }
         });
         areaE.add(confereE, new org.netbeans.lib.awtextra.AbsoluteConstraints(1100, 30, -1, 32));
@@ -515,23 +594,7 @@ public class Principal extends javax.swing.JFrame {
 
         descricaoF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/campoeestoquedesc.png"))); // NOI18N
         areaE.add(descricaoF, new org.netbeans.lib.awtextra.AbsoluteConstraints(276, 30, -1, -1));
-
-        quantC.setEditable(false);
-        quantC.setBackground(new java.awt.Color(153, 153, 153));
-        quantC.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 6));
-        quantC.setForeground(new java.awt.Color(255, 255, 255));
-        quantC.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
-        quantC.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        quantC.setText("999");
-        quantC.setToolTipText("");
-        quantC.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
-        quantC.setOpaque(false);
-        quantC.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                quantCMouseClicked(evt);
-            }
-        });
-        areaE.add(quantC, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 33, 52, 28));
+        areaE.add(quantC, new org.netbeans.lib.awtextra.AbsoluteConstraints(832, 34, 50, -1));
 
         quantF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/campoeestoquecod.png"))); // NOI18N
         areaE.add(quantF, new org.netbeans.lib.awtextra.AbsoluteConstraints(825, 30, -1, -1));
@@ -563,83 +626,14 @@ public class Principal extends javax.swing.JFrame {
         msgE.setToolTipText("");
         areaE.add(msgE, new org.netbeans.lib.awtextra.AbsoluteConstraints(1060, 70, 120, 19));
 
-        jComboBox1.setBackground(new java.awt.Color(102, 102, 102));
-        jComboBox1.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
-        jComboBox1.setForeground(new java.awt.Color(102, 102, 102));
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "KG", "UN" }));
-        jComboBox1.setBorder(null);
-        areaE.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(896, 30, 64, 36));
+        jcQuant.setBackground(new java.awt.Color(102, 102, 102));
+        jcQuant.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
+        jcQuant.setForeground(new java.awt.Color(102, 102, 102));
+        jcQuant.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "KG", "UN" }));
+        jcQuant.setBorder(null);
+        areaE.add(jcQuant, new org.netbeans.lib.awtextra.AbsoluteConstraints(896, 30, 64, 36));
 
         jPanel1.add(areaE, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 140, 1200, 520));
-
-        areaP.setBackground(new java.awt.Color(255, 255, 255));
-        areaP.setForeground(new java.awt.Color(255, 255, 255));
-        areaP.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        pesqTabela.setBorder(null);
-
-        tabelaP.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "descricao", "valor"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Double.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        pesqTabela.setViewportView(tabelaP);
-        if (tabelaP.getColumnModel().getColumnCount() > 0) {
-            tabelaP.getColumnModel().getColumn(0).setMinWidth(300);
-            tabelaP.getColumnModel().getColumn(0).setPreferredWidth(300);
-        }
-
-        areaP.add(pesqTabela, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, 50));
-
-        pesqFundoB.setBackground(new java.awt.Color(255, 255, 255));
-        pesqFundoB.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        pesqFundoB.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        pesqFigura.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        pesqFigura.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/9781001001005.png"))); // NOI18N
-        pesqFundoB.add(pesqFigura, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 270, 320));
-
-        areaP.add(pesqFundoB, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 100, 270, 320));
-
-        pesqProduto.setFont(new java.awt.Font("Hobo Std", 0, 48)); // NOI18N
-        pesqProduto.setForeground(new java.awt.Color(255, 153, 51));
-        pesqProduto.setText("Arroz Tio João 1 Kg");
-        areaP.add(pesqProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 160, -1, -1));
-
-        pesqTesto.setFont(new java.awt.Font("Hobo Std", 0, 36)); // NOI18N
-        pesqTesto.setForeground(new java.awt.Color(255, 153, 51));
-        pesqTesto.setText("Valor Unitário R$");
-        areaP.add(pesqTesto, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 280, -1, -1));
-
-        pesqValor.setEditable(false);
-        pesqValor.setBackground(new java.awt.Color(0, 0, 0));
-        pesqValor.setBorder(null);
-        pesqValor.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,##0.##"))));
-        pesqValor.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        pesqValor.setText("14,99");
-        pesqValor.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
-        pesqValor.setOpaque(false);
-        areaP.add(pesqValor, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 270, -1, -1));
-
-        jPanel1.add(areaP, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 140, 1200, 520));
 
         fundoGG.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fundoap.png"))); // NOI18N
         jPanel1.add(fundoGG, new org.netbeans.lib.awtextra.AbsoluteConstraints(32, 126, -1, -1));
@@ -943,13 +937,23 @@ public class Principal extends javax.swing.JFrame {
         if (u.getBtSalvar() == 1) {
             ProdutoDAO pdao = new ProdutoDAO();
             Produto p = new Produto();
-
+            String verificaUnidade = jcQuant.getSelectedItem().toString();
             p.setCodigo(Integer.parseInt(codigoC.getText()));
             p.setCodigoDeBarras(barraC.getText());
             p.setDescricao(descricaoC.getText());
-            p.setQuantidadeKg(Double.parseDouble(quantC.getText()));
+            if ("UN".equals(verificaUnidade)) {
+                p.setUnidade(verificaUnidade);
+                p.setQuantidadeUn(Integer.parseInt(quantC.getText()));
+            } else {
+                p.setUnidade(verificaUnidade);
+                p.setQuantidadeKg(u.convertePonto(quantC.getText()));
+            }
             p.setValor(u.convertePonto(valorUC.getText()));
-            pdao.create(p);
+            if ("UN".equals(verificaUnidade)) {
+                pdao.createUn(p);
+            } else {
+                pdao.createKg(p);
+            }
             readjTable();
             u.setBtSalvar(0);
             mudarComponentes();
@@ -957,15 +961,24 @@ public class Principal extends javax.swing.JFrame {
             if (jTable2.getSelectedRow() != -1) {
                 ProdutoDAO pdao = new ProdutoDAO();
                 Produto p = new Produto();
-
+                String verificaUnidade = jcQuant.getSelectedItem().toString();
                 p.setCodigo(Integer.parseInt(codigoC.getText()));
                 p.setCodigoDeBarras(barraC.getText());
                 p.setDescricao(descricaoC.getText());
-                p.setQuantidadeKg(Double.parseDouble(quantC.getText()));
-                System.out.println(u.convertePonto(valorUC.getText()));
+                if ("UN".equals(verificaUnidade)) {
+                    p.setUnidade(verificaUnidade);
+                    p.setQuantidadeUn(Integer.parseInt(quantC.getText()));
+                } else {
+                    p.setUnidade(verificaUnidade);
+                    p.setQuantidadeKg(u.convertePonto(quantC.getText()));
+                }
                 p.setValor(u.convertePonto(valorUC.getText()));
                 p.setProdutosid((int) jTable2.getValueAt(jTable2.getSelectedRow(), 0));
-                pdao.update(p);
+                if ("UN".equals(verificaUnidade)) {
+                    pdao.updateUn(p);
+                } else {
+                    pdao.updateKg(p);
+                }
                 readjTable();
                 mudarComponentes();
                 u.setBtSalvar(0);
@@ -1106,10 +1119,6 @@ public class Principal extends javax.swing.JFrame {
         descricaoC.selectAll();
     }//GEN-LAST:event_descricaoCMouseClicked
 
-    private void quantCMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_quantCMouseClicked
-        quantC.selectAll();
-    }//GEN-LAST:event_quantCMouseClicked
-
     private void valorUCMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_valorUCMouseClicked
         valorUC.selectAll();
     }//GEN-LAST:event_valorUCMouseClicked
@@ -1226,7 +1235,7 @@ public class Principal extends javax.swing.JFrame {
             }
         });
     }
-    
+
     private void pesqP() {
         ProdutoDAO pdao = new ProdutoDAO();
         Produto p = new Produto();
@@ -1235,10 +1244,10 @@ public class Principal extends javax.swing.JFrame {
         this.pesqProduto.setText(p.getDescricao());
         this.pesqValor.setText(String.valueOf(p.getValor()));
     }
-    
-    private ImageIcon mudarImagem(String n){
+
+    private ImageIcon mudarImagem(String n) {
         ImageIcon salva = new ImageIcon(getClass().getResource("/img/" + n + ".png"));
-        return salva; 
+        return salva;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1269,9 +1278,9 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel fundoPesL;
     private javax.swing.JLabel fundoS;
     private javax.swing.JLabel fundoVendas;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTable jTable2;
+    private javax.swing.JComboBox<String> jcQuant;
     private javax.swing.JTable jtbVenda;
     private javax.swing.JLabel logo;
     private javax.swing.JLabel lupa;
@@ -1285,7 +1294,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel pesquisaD;
     private javax.swing.JLabel pesquisaU;
     private javax.swing.JLabel pesquisaV;
-    private javax.swing.JFormattedTextField quantC;
+    private javax.swing.JTextField quantC;
     private javax.swing.JLabel quantF;
     private javax.swing.JFormattedTextField quantidadeC;
     private javax.swing.JLabel quantidadeF;

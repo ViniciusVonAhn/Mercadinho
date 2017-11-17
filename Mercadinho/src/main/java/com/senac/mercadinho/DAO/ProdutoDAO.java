@@ -27,19 +27,20 @@ public class ProdutoDAO extends ConnectionFactory {
 
     public ResultSet result;
 
-    public void create(Produto p) {
+    public void createKg(Produto p) {
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null;
         
         try {
             stmt = (PreparedStatement) con.prepareStatement("INSERT INTO produtos (produtosid, codigo, codigo_de_barras,"
-                    + " descricao, quantidade_kg, valor)VALUES(?,?,?,?,?,?)");
+                    + " descricao, quantidade_kg, unidade, valor)VALUES(?,?,?,?,?,?,?)");
             stmt.setInt(2, p.getCodigo());
             stmt.setInt(1, p.getCodigo());
             stmt.setString(3, p.getCodigoDeBarras());
-            stmt.setString(4, p.getDescricao());
+            stmt.setString(4, p.getDescricao());  
             stmt.setDouble(5, p.getQuantidadeKg());
-            stmt.setDouble(6, p.getValor());
+            stmt.setString(6, p.getUnidade());
+            stmt.setDouble(7, p.getValor());
             stmt.executeUpdate();
             JOptionPane.showMessageDialog(null, "Salvo com sucesso");
 
@@ -50,7 +51,32 @@ public class ProdutoDAO extends ConnectionFactory {
         }
 
     }
+    
+    public void createUn(Produto p) {
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null;
+        
+        try {
+            stmt = (PreparedStatement) con.prepareStatement("INSERT INTO produtos (produtosid, codigo, codigo_de_barras,"
+                    + " descricao, quantidade_un, unidade, valor)VALUES(?,?,?,?,?,?,?)");
+            stmt.setInt(2, p.getCodigo());
+            stmt.setInt(1, p.getCodigo());
+            stmt.setString(3, p.getCodigoDeBarras());
+            stmt.setString(4, p.getDescricao());  
+            stmt.setDouble(5, p.getQuantidadeUn());
+            stmt.setString(6, p.getUnidade());
+            stmt.setDouble(7, p.getValor());
+            stmt.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Salvo com sucesso");
 
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao salvar: " + ex);
+        } finally {
+            ConnectionFactory.closeConnection(con, stmt);
+        }
+
+    }
+    
     public List<Produto> read() {
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null;
@@ -66,7 +92,12 @@ public class ProdutoDAO extends ConnectionFactory {
                 produto.setCodigo(rs.getInt("codigo"));
                 produto.setCodigoDeBarras(rs.getString("codigo_de_barras"));
                 produto.setDescricao(rs.getString("descricao"));
-                produto.setQuantidadeKg(rs.getInt("quantidade_kg"));
+                produto.setUnidade(rs.getString("unidade"));
+                if("UN".equals(produto.getUnidade())){
+                produto.setQuantidadeUn(rs.getInt("quantidade_un"));    
+                }else{
+                produto.setQuantidadeKg(rs.getInt("quantidade_kg"));    
+                }
                 produto.setValor(rs.getDouble("valor"));
 
                 produtos.add(produto);
@@ -80,19 +111,45 @@ public class ProdutoDAO extends ConnectionFactory {
 
     }
 
-    public void update(Produto p) {
+    public void updateKg(Produto p) {
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null;
 
         try {
             stmt = (PreparedStatement) con.prepareStatement("UPDATE produtos SET codigo = ?, codigo_de_barras = ?,"
-                    + " descricao = ?, quantidade_kg = ?, valor = ? WHERE produtosid = ?");
+                    + " descricao = ?, quantidade_kg = ?, unidade = ?, valor = ? WHERE produtosid = ?");
             stmt.setInt(1, p.getCodigo());
             stmt.setString(2, p.getCodigoDeBarras());
             stmt.setString(3, p.getDescricao());
             stmt.setDouble(4, p.getQuantidadeKg());
-            stmt.setDouble(5, p.getValor());
-            stmt.setInt(6, p.getProdutosid());
+            stmt.setString(5, p.getUnidade());
+            stmt.setDouble(6, p.getValor());
+            stmt.setInt(7, p.getProdutosid());
+            stmt.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Atualizado com sucesso");
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao atualizar: " + ex);
+        } finally {
+            ConnectionFactory.closeConnection(con, stmt);
+        }
+
+    }
+    
+    public void updateUn(Produto p) {
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null;
+
+        try {
+            stmt = (PreparedStatement) con.prepareStatement("UPDATE produtos SET codigo = ?, codigo_de_barras = ?,"
+                    + " descricao = ?, quantidade_un = ?, unidade = ?, valor = ? WHERE produtosid = ?");
+            stmt.setInt(1, p.getCodigo());
+            stmt.setString(2, p.getCodigoDeBarras());
+            stmt.setString(3, p.getDescricao());
+            stmt.setDouble(4, p.getQuantidadeUn());
+            stmt.setString(5, p.getUnidade());
+            stmt.setDouble(6, p.getValor());
+            stmt.setInt(7, p.getProdutosid());
             stmt.executeUpdate();
             JOptionPane.showMessageDialog(null, "Atualizado com sucesso");
 
