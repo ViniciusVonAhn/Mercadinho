@@ -33,6 +33,7 @@ public class Principal extends javax.swing.JFrame {
     private String cadeado;
     private String lupa;
     private String janela;
+    private String salvar;
 
     /**
      * Creates new form Principal
@@ -42,6 +43,7 @@ public class Principal extends javax.swing.JFrame {
         cadeado = "fechado";
         lupa = "fora";
         janela = "entrada";
+        salvar = "falso";
         startComp();
         pesqValor.setBackground(new Color(0, 0, 0, 0));
         DefaultTableModel modelo = (DefaultTableModel) jTable2.getModel();
@@ -91,8 +93,6 @@ public class Principal extends javax.swing.JFrame {
         areaE = new javax.swing.JPanel();
         tabelaC1 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
-        cancelaE = new javax.swing.JLabel();
-        confereE = new javax.swing.JLabel();
         codigoC = new javax.swing.JFormattedTextField();
         codigoF = new javax.swing.JLabel();
         barraC = new javax.swing.JTextField();
@@ -104,8 +104,12 @@ public class Principal extends javax.swing.JFrame {
         valorUC = new javax.swing.JFormattedTextField();
         valorUF = new javax.swing.JLabel();
         jcQuant = new javax.swing.JComboBox<>();
-        addImagemF = new javax.swing.JLabel();
         addImagem = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        AreaEBT = new javax.swing.JPanel();
+        btCancelar = new javax.swing.JButton();
+        btSalvar = new javax.swing.JButton();
+        btNovo = new javax.swing.JButton();
         fundoGG = new javax.swing.JLabel();
         pesquisaV = new javax.swing.JLabel();
         pesquisaU = new javax.swing.JLabel();
@@ -457,41 +461,7 @@ public class Principal extends javax.swing.JFrame {
             jTable2.getColumnModel().getColumn(4).setMaxWidth(200);
         }
 
-        areaE.add(tabelaC1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 110, 1140, 390));
-
-        cancelaE.setFont(new java.awt.Font("Hobo Std", 0, 18)); // NOI18N
-        cancelaE.setForeground(new java.awt.Color(233, 145, 14));
-        cancelaE.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/errados.png"))); // NOI18N
-        cancelaE.setText("Cancelar");
-        cancelaE.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                cancelaEMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                cancelaEMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                cancelaEMouseExited(evt);
-            }
-        });
-        areaE.add(cancelaE, new org.netbeans.lib.awtextra.AbsoluteConstraints(1060, 74, -1, -1));
-
-        confereE.setFont(new java.awt.Font("Hobo Std", 0, 18)); // NOI18N
-        confereE.setForeground(new java.awt.Color(233, 145, 14));
-        confereE.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/certo.png"))); // NOI18N
-        confereE.setText("Novo Produto");
-        confereE.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                confereEMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                confereEMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                confereEMouseExited(evt);
-            }
-        });
-        areaE.add(confereE, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 74, -1, 32));
+        areaE.add(tabelaC1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, 1140, 370));
 
         codigoC.setEditable(false);
         codigoC.setBackground(new java.awt.Color(153, 153, 153));
@@ -597,24 +567,48 @@ public class Principal extends javax.swing.JFrame {
         jcQuant.setBorder(null);
         areaE.add(jcQuant, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 30, 64, 36));
 
-        addImagemF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/imagems.png"))); // NOI18N
-        addImagemF.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                addImagemFMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                addImagemFMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                addImagemFMouseExited(evt);
-            }
-        });
-        areaE.add(addImagemF, new org.netbeans.lib.awtextra.AbsoluteConstraints(288, 30, -1, -1));
-
         addImagem.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
         addImagem.setForeground(new java.awt.Color(233, 145, 14));
         addImagem.setText("Adicionar Imagem");
-        areaE.add(addImagem, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 74, -1, -1));
+        areaE.add(addImagem, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 80, -1, -1));
+
+        jButton1.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
+        jButton1.setText("IMG");
+        jButton1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        areaE.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(278, 30, 54, 34));
+
+        AreaEBT.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        AreaEBT.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        btCancelar.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
+        btCancelar.setText("Cancelar");
+        btCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btCancelarActionPerformed(evt);
+            }
+        });
+        AreaEBT.add(btCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 6, -1, 26));
+
+        btSalvar.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
+        btSalvar.setText("Salvar");
+        btSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btSalvarActionPerformed(evt);
+            }
+        });
+        AreaEBT.add(btSalvar, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 6, -1, 26));
+
+        btNovo.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
+        btNovo.setText("Novo Produto");
+        btNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btNovoActionPerformed(evt);
+            }
+        });
+        AreaEBT.add(btNovo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 6, -1, 26));
+
+        areaE.add(AreaEBT, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 80, 390, 40));
 
         jPanel1.add(areaE, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 140, 1200, 520));
 
@@ -828,86 +822,6 @@ public class Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_confereTotalMouseExited
 
-    private void confereEMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confereEMouseClicked
-        if (u.getBtSalvar() == 1) {
-            addImagemF.setEnabled(true);
-            String verificaUnidade = jcQuant.getSelectedItem().toString();
-            p.setCodigo(Integer.parseInt(codigoC.getText()));
-            p.setCodigoDeBarras(barraC.getText());
-            p.setDescricao(descricaoC.getText());
-            if ("UN".equals(verificaUnidade)) {
-                p.setUnidade(verificaUnidade);
-                p.setQuantidadeUn(Integer.parseInt(quantC.getText()));
-            } else {
-                p.setUnidade(verificaUnidade);
-                p.setQuantidadeKg(u.convertePonto(quantC.getText()));
-            }
-            p.setValor(u.convertePonto(valorUC.getText()));
-            if ("UN".equals(verificaUnidade)) {
-                pdao.createUn(p);
-            } else {
-                pdao.createKg(p);
-            }
-            readjTable();
-            u.setBtSalvar(0);
-            mudarComponentes();
-        } else if (u.getBtSalvar() == 2) {
-            addImagemF.setEnabled(true);
-            if (jTable2.getSelectedRow() != -1) {
-                String verificaUnidade = jcQuant.getSelectedItem().toString();
-                p.setCodigo(Integer.parseInt(codigoC.getText()));
-                p.setCodigoDeBarras(barraC.getText());
-                p.setDescricao(descricaoC.getText());
-                if ("UN".equals(verificaUnidade)) {
-                    p.setUnidade(verificaUnidade);
-                    p.setQuantidadeUn(Integer.parseInt(quantC.getText()));
-                } else {
-                    p.setUnidade(verificaUnidade);
-                    p.setQuantidadeKg(u.convertePonto(quantC.getText()));
-                }
-                p.setValor(u.convertePonto(valorUC.getText()));
-                p.setProdutosid((int) jTable2.getValueAt(jTable2.getSelectedRow(), 0));
-                if ("UN".equals(verificaUnidade)) {
-                    pdao.updateUn(p);
-                } else {
-                    pdao.updateKg(p);
-                }
-                readjTable();
-                mudarComponentes();
-                u.setBtSalvar(0);
-                u.certoIcon();
-            }
-        } else if (u.getBtSalvar() == 0) {
-            addImagemF.setEnabled(true);
-            mudarComponentes();
-            u.mouseMove(evt);
-            cancelaE.setVisible(true);
-            codigoC.selectAll();
-            codigoC.requestFocus();
-            u.setBtSalvar(1);
-        }
-    }//GEN-LAST:event_confereEMouseClicked
-
-    private void confereEMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confereEMouseEntered
-        if (u.getBtSalvar() == 0) {
-            confereE.setIcon(u.certoSobre());
-        } else if (u.getBtSalvar() == 1) {
-            confereE.setIcon(u.salvaIcon());
-        } else if (u.getBtSalvar() == 2) {
-            confereE.setIcon(u.certoSobre());
-        }
-    }//GEN-LAST:event_confereEMouseEntered
-
-    private void confereEMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confereEMouseExited
-        if (u.getBtSalvar() == 0) {
-            confereE.setIcon(u.certoIcon());
-        } else if (u.getBtSalvar() == 1) {
-            confereE.setIcon(u.salvaIcon());
-        } else if (u.getBtSalvar() == 2) {
-            confereE.setIcon(u.certoIcon());
-        }
-    }//GEN-LAST:event_confereEMouseExited
-
     private void lupaFMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lupaFMouseEntered
         if (lupa.equals("dentro")) {
             lupaF.setIcon(a.pegaIcon("lupafraca"));
@@ -939,19 +853,19 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_codigoCActionPerformed
 
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
-        if (u.getBtSalvar() == 0 || u.getBtSalvar() == 2) {
+        if (!salvar.equals("salva") || !salvar.equals("atualiza")) {
             if (jTable2.getSelectedRow() != -1) {
                 codigoC.setText(jTable2.getValueAt(jTable2.getSelectedRow(), 0).toString());
                 barraC.setText(jTable2.getValueAt(jTable2.getSelectedRow(), 1).toString());
                 descricaoC.setText(jTable2.getValueAt(jTable2.getSelectedRow(), 2).toString());
                 quantC.setText(jTable2.getValueAt(jTable2.getSelectedRow(), 3).toString());
-                valorUC.setText(u.converteVirgula(jTable2.getValueAt(jTable2.getSelectedRow(), 4).toString()));
+                valorUC.setText(a.converteVirgula(jTable2.getValueAt(jTable2.getSelectedRow(), 4).toString()));
                 mudarComponentes();
             }
             u.certoIcon();
-            u.setBtSalvar(2);
             valorUC.selectAll();
             valorUC.requestFocus();
+            salvar = "atualiza";
         } else {
             mudarComponentes();
             JOptionPane.showMessageDialog(null, "Salve ou Cancele");
@@ -983,21 +897,6 @@ public class Principal extends javax.swing.JFrame {
     private void valorUCMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_valorUCMouseClicked
         valorUC.selectAll();
     }//GEN-LAST:event_valorUCMouseClicked
-
-    private void cancelaEMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelaEMouseEntered
-        cancelaE.setIcon(u.erradoIcon());
-    }//GEN-LAST:event_cancelaEMouseEntered
-
-    private void cancelaEMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelaEMouseExited
-        cancelaE.setIcon(u.erradoSobre());
-    }//GEN-LAST:event_cancelaEMouseExited
-
-    private void cancelaEMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelaEMouseClicked
-        mudarComponentes();
-        u.setBtSalvar(0);
-        confereE.setIcon(u.certoIcon());
-        cancelaE.setVisible(false);
-    }//GEN-LAST:event_cancelaEMouseClicked
 
     private void descricaoCKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_descricaoCKeyPressed
         // TODO add your handling code here:
@@ -1049,17 +948,67 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_quantidadeCKeyPressed
 
-    private void addImagemFMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addImagemFMouseEntered
-        addImagem.setVisible(true);
-    }//GEN-LAST:event_addImagemFMouseEntered
+    private void btSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalvarActionPerformed
+        if (salvar.equals("salva")) {
+            salvar = "falso";
+            String verificaUnidade = jcQuant.getSelectedItem().toString();
+            p.setCodigo(Integer.parseInt(codigoC.getText()));
+            p.setCodigoDeBarras(barraC.getText());
+            p.setDescricao(descricaoC.getText());
+            if ("UN".equals(verificaUnidade)) {
+                p.setUnidade(verificaUnidade);
+                p.setQuantidadeUn(Integer.parseInt(quantC.getText()));
+            } else {
+                p.setUnidade(verificaUnidade);
+                p.setQuantidadeKg(a.convertePonto(quantC.getText()));
+            }
+            p.setValor(a.convertePonto(valorUC.getText()));
+            if ("UN".equals(verificaUnidade)) {
+                pdao.createUn(p);
+            } else {
+                pdao.createKg(p);
+            }
+            readjTable();
+            mudarComponentes();
+        } else if (salvar.equals("atualiza")) {
+            salvar = "falso";
+            if (jTable2.getSelectedRow() != -1) {
+                String verificaUnidade = jcQuant.getSelectedItem().toString();
+                p.setCodigo(Integer.parseInt(codigoC.getText()));
+                p.setCodigoDeBarras(barraC.getText());
+                p.setDescricao(descricaoC.getText());
+                if ("UN".equals(verificaUnidade)) {
+                    p.setUnidade(verificaUnidade);
+                    p.setQuantidadeUn(Integer.parseInt(quantC.getText()));
+                } else {
+                    p.setUnidade(verificaUnidade);
+                    p.setQuantidadeKg(a.convertePonto(quantC.getText()));
+                }
+                p.setValor(a.convertePonto(valorUC.getText()));
+                p.setProdutosid((int) jTable2.getValueAt(jTable2.getSelectedRow(), 0));
+                if ("UN".equals(verificaUnidade)) {
+                    pdao.updateUn(p);
+                } else {
+                    pdao.updateKg(p);
+                }
+                readjTable();
+                mudarComponentes();
+                u.certoIcon();
+            }
+        }
+    }//GEN-LAST:event_btSalvarActionPerformed
 
-    private void addImagemFMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addImagemFMouseExited
-        addImagem.setVisible(false);
-    }//GEN-LAST:event_addImagemFMouseExited
+    private void btNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNovoActionPerformed
+        mudarComponentes();
+        codigoC.selectAll();
+        codigoC.requestFocus();
+        salvar = "salva";
+    }//GEN-LAST:event_btNovoActionPerformed
 
-    private void addImagemFMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addImagemFMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_addImagemFMouseClicked
+    private void btCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarActionPerformed
+        mudarComponentes();
+        salvar = "falso";
+    }//GEN-LAST:event_btCancelarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1104,11 +1053,9 @@ public class Principal extends javax.swing.JFrame {
         fundoEstoque.setVisible(false);
         txtVendas.setVisible(false);
         txtEstoque.setVisible(false);
-        cancelaE.setVisible(false);
         pesqTabela.setVisible(false);
         pesqFigura.setIcon(null);
         addImagem.setVisible(false);
-        addImagemF.setEnabled(false);
         pesqProduto.setText("");
         pesqValor.setText("");
     }
@@ -1296,7 +1243,6 @@ public class Principal extends javax.swing.JFrame {
         String id = this.campoPT.getText();
         classificador.setRowFilter(RowFilter.regexFilter(id, 0));
         this.pesqP();
-        pesqFigura.setIcon(mudarImagem(id));
     }
 
     private void pesqP() {
@@ -1306,31 +1252,27 @@ public class Principal extends javax.swing.JFrame {
         this.pesqValor.setText(String.valueOf(p.getValor()));
     }
 
-    private ImageIcon mudarImagem(String n) {
-        ImageIcon salva = new ImageIcon(getClass().getResource("/img/" + n + ".png"));
-        return salva;
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel AreaEBT;
     private javax.swing.JLabel abreCaixaF;
     private javax.swing.JLabel addImagem;
-    private javax.swing.JLabel addImagemF;
     private javax.swing.JPanel areaE;
     private javax.swing.JPanel areaP;
     private javax.swing.JPanel areaV;
     private javax.swing.JTextField barraC;
     private javax.swing.JLabel barraF;
+    private javax.swing.JButton btCancelar;
+    private javax.swing.JButton btNovo;
+    private javax.swing.JButton btSalvar;
     private javax.swing.JLabel cadeadoF;
     private javax.swing.JLabel campoPF;
     private javax.swing.JTextField campoPT;
     private javax.swing.JLabel campoS;
     private javax.swing.JLabel campoU;
-    private javax.swing.JLabel cancelaE;
     private javax.swing.JTextField codigoBarrasC;
     private javax.swing.JLabel codigoBarrasF;
     private javax.swing.JFormattedTextField codigoC;
     private javax.swing.JLabel codigoF;
-    private javax.swing.JLabel confereE;
     private javax.swing.JLabel confereTotal;
     private javax.swing.JTextField descricaoC;
     private javax.swing.JLabel descricaoF;
@@ -1341,6 +1283,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel fundoPesL;
     private javax.swing.JLabel fundoS;
     private javax.swing.JLabel fundoVendas;
+    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTable jTable2;
     private javax.swing.JComboBox<String> jcQuant;

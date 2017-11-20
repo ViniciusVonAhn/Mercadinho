@@ -42,33 +42,7 @@ public class Util {
         lupa = 0;
     }
     
-    //Metodo Troca Virgula pra Ponto - Recebe String Envia Double
-    public double convertePonto(String pString){
-        String p = new String();
-        int t = pString.length();
-        for (int i = 0; i < t; i++) {
-            if(pString.charAt(i) == ','){
-                p += '.';
-            } else {
-                p += pString.charAt(i);
-            }
-        }
-        return Double.parseDouble(p);
-    }
     
-    //Metodo Troca Ponto pra Virgula - Recebe String Envia String
-    public String converteVirgula(String vString){
-        String v = new String();
-        int t = vString.length();
-        for (int i = 0; i < t; i++) {
-            if(vString.charAt(i) == '.'){
-                v += ',';
-            } else {
-                v += vString.charAt(i);
-            }
-        }
-        return v;
-    }
     
     public void mouseMove(MouseEvent m){
         try {
