@@ -20,18 +20,12 @@ public class Util {
     private Integer btSalvar;
     private Integer janela;
     private Integer lupa;
-    private boolean cadeado;
     private boolean caixa;
     private boolean user;
     
     // Imagens dos Icones
     private final ImageIcon cadeadoAberto = new ImageIcon(getClass().getResource("/img/cadverde.png"));
     private final ImageIcon cadeadoFechado = new ImageIcon(getClass().getResource("/img/cadvermelho.png"));
-    private final ImageIcon lupaNormal = new ImageIcon(getClass().getResource("/img/lupa.png"));
-    private final ImageIcon lupaLaranjaF = new ImageIcon(getClass().getResource("/img/lupas.png"));
-    private final ImageIcon lupaLaranja = new ImageIcon(getClass().getResource("/img/lupae.png"));
-    private final ImageIcon pesquisaNormal = new ImageIcon(getClass().getResource("/img/fundopesquisa.png"));
-    private final ImageIcon pesquisaSobre = new ImageIcon(getClass().getResource("/img/fundopesquisae.png"));
     private final ImageIcon fundoClaro = new ImageIcon(getClass().getResource("/img/fundoclaro.png"));
     private final ImageIcon fundoEscuro = new ImageIcon(getClass().getResource("/img/fundoescuro.png"));
     private final ImageIcon certoSobre = new ImageIcon(getClass().getResource("/img/certos.png"));
@@ -42,7 +36,6 @@ public class Util {
 
     public Util() {
         btSalvar = 0;
-        cadeado = true;
         caixa = true;
         user = false;
         janela = 0;
@@ -94,26 +87,6 @@ public class Util {
     public ImageIcon cadeadoFechado(){
         return cadeadoFechado;
     }
-
-    public ImageIcon lupaIcon() {
-        return lupaNormal;
-    }
-    
-    public ImageIcon lupaLaranjaF(){
-        return lupaLaranjaF;
-    }
-    
-    public ImageIcon lupaLaranja(){
-        return lupaLaranja;
-    }
-
-    public ImageIcon pesquisaIcon() {
-        return pesquisaNormal;
-    }
-    
-    public ImageIcon pesquisaSobre(){
-        return pesquisaSobre;
-    }
     
     public ImageIcon fundoIcon(){
         return fundoClaro;
@@ -144,14 +117,6 @@ public class Util {
     }
     
     // Getters e Setters
-    public boolean isCadeado() {
-        return cadeado;
-    }
-
-    public void setCadeado(boolean cadeado) {
-        this.cadeado = cadeado;
-    }
-
     public boolean isCaixa() {
         return caixa;
     }

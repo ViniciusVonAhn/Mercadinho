@@ -223,7 +223,6 @@ public class ProdutoDAO extends ConnectionFactory {
                 p.setValor(this.getResultSet().getDouble(6));
                 p.setQuantidadeUn(this.getResultSet().getInt(7));
                 p.setQuantidadeKg(this.getResultSet().getDouble(8));
-                p.setQuantidade(this.getResultSet().getDouble(9));
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -8,7 +8,9 @@ package com.senac.mercadinho;
 import com.senac.mercadinho.DAO.ProdutoDAO;
 import com.senac.mercadinho.DAO.UsuarioDAO;
 import com.senac.mercadinho.model.bean.Produto;
+import com.senac.mercadinho.util.Arquivo;
 import java.awt.Color;
+import java.awt.event.KeyEvent;
 import java.util.Vector;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -25,72 +27,27 @@ public class Principal extends javax.swing.JFrame {
 
     Util u = new Util();
     UsuarioDAO dao = new UsuarioDAO();
+    Arquivo a = new Arquivo();
+    ProdutoDAO pdao = new ProdutoDAO();
+    Produto p = new Produto();
+    private String cadeado;
+    private String lupa;
+    private String janela;
 
     /**
      * Creates new form Principal
      */
     public Principal() {
         initComponents();
-        areaV.setVisible(false);
-        areaE.setVisible(false);
-        areaP.setVisible(false);
-        fundoVendas.setVisible(false);
-        fundoEstoque.setVisible(false);
-        txtVendas.setVisible(false);
-        txtEstoque.setVisible(false);
-        msgE.setVisible(false);
-        cancelaE.setVisible(false);
+        cadeado = "fechado";
+        lupa = "fora";
+        janela = "entrada";
+        startComp();
         pesqValor.setBackground(new Color(0, 0, 0, 0));
         DefaultTableModel modelo = (DefaultTableModel) jTable2.getModel();
         jTable2.setRowSorter(new TableRowSorter(modelo));
-        pesqTabela.setVisible(false);
         //RadioUn.setSelected(true);
         readjTable();
-    }
-
-    public void readjTable() {
-        DefaultTableModel modelo = (DefaultTableModel) jTable2.getModel();
-        modelo.setNumRows(0);
-        ProdutoDAO pdao = new ProdutoDAO();
-        Produto prod = new Produto();
-            for (Produto p : pdao.read()) {
-                if(p.getQuantidadeKg() != 0){
-                  modelo.addRow(new Object[]{
-                    p.getCodigo(),
-                    p.getCodigoDeBarras(),
-                    p.getDescricao(),
-                    p.getQuantidadeKg(),
-                    p.getValor(),});  
-                }else{
-                    modelo.addRow(new Object[]{
-                    p.getCodigo(),
-                    p.getCodigoDeBarras(),
-                    p.getDescricao(),
-                    p.getQuantidadeUn(),
-                    p.getValor(),});
-                }
-        }
-    }
-
-    private void mudarComponentes() {
-        if (u.getBtSalvar() == 0) {
-            codigoC.setEditable(true);
-            barraC.setEditable(true);
-            descricaoC.setEditable(true);
-            quantC.setEditable(true);
-            valorUC.setEditable(true);
-        } else {
-            codigoC.setEditable(false);
-            barraC.setEditable(false);
-            descricaoC.setEditable(false);
-            quantC.setEditable(false);
-            valorUC.setEditable(false);
-            codigoC.setText("1");
-            barraC.setText("CODIGO DE BARRA");
-            descricaoC.setText("DESCRIÇÃO");
-            quantC.setText("10");
-            valorUC.setText("1,99");
-        }
     }
 
     /**
@@ -146,8 +103,9 @@ public class Principal extends javax.swing.JFrame {
         quantF = new javax.swing.JLabel();
         valorUC = new javax.swing.JFormattedTextField();
         valorUF = new javax.swing.JLabel();
-        msgE = new javax.swing.JLabel();
         jcQuant = new javax.swing.JComboBox<>();
+        addImagemF = new javax.swing.JLabel();
+        addImagem = new javax.swing.JLabel();
         fundoGG = new javax.swing.JLabel();
         pesquisaV = new javax.swing.JLabel();
         pesquisaU = new javax.swing.JLabel();
@@ -160,7 +118,7 @@ public class Principal extends javax.swing.JFrame {
         cadeadoF = new javax.swing.JLabel();
         campoS = new javax.swing.JLabel();
         fundoS = new javax.swing.JLabel();
-        lupa = new javax.swing.JLabel();
+        lupaF = new javax.swing.JLabel();
         campoPT = new javax.swing.JTextField();
         campoPF = new javax.swing.JLabel();
         fundoPes = new javax.swing.JLabel();
@@ -176,6 +134,7 @@ public class Principal extends javax.swing.JFrame {
 
         areaP.setBackground(new java.awt.Color(255, 255, 255));
         areaP.setForeground(new java.awt.Color(255, 255, 255));
+        areaP.setOpaque(false);
         areaP.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         pesqTabela.setBorder(null);
@@ -491,16 +450,19 @@ public class Principal extends javax.swing.JFrame {
         if (jTable2.getColumnModel().getColumnCount() > 0) {
             jTable2.getColumnModel().getColumn(0).setMaxWidth(100);
             jTable2.getColumnModel().getColumn(1).setMinWidth(150);
-            jTable2.getColumnModel().getColumn(1).setMaxWidth(400);
+            jTable2.getColumnModel().getColumn(1).setMaxWidth(300);
             jTable2.getColumnModel().getColumn(2).setMinWidth(300);
             jTable2.getColumnModel().getColumn(2).setMaxWidth(600);
             jTable2.getColumnModel().getColumn(3).setMaxWidth(100);
             jTable2.getColumnModel().getColumn(4).setMaxWidth(200);
         }
 
-        areaE.add(tabelaC1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 100, 1140, 400));
+        areaE.add(tabelaC1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 110, 1140, 390));
 
+        cancelaE.setFont(new java.awt.Font("Hobo Std", 0, 18)); // NOI18N
+        cancelaE.setForeground(new java.awt.Color(233, 145, 14));
         cancelaE.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/errados.png"))); // NOI18N
+        cancelaE.setText("Cancelar");
         cancelaE.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 cancelaEMouseClicked(evt);
@@ -512,21 +474,24 @@ public class Principal extends javax.swing.JFrame {
                 cancelaEMouseExited(evt);
             }
         });
-        areaE.add(cancelaE, new org.netbeans.lib.awtextra.AbsoluteConstraints(1150, 30, -1, -1));
+        areaE.add(cancelaE, new org.netbeans.lib.awtextra.AbsoluteConstraints(1060, 74, -1, -1));
 
+        confereE.setFont(new java.awt.Font("Hobo Std", 0, 18)); // NOI18N
+        confereE.setForeground(new java.awt.Color(233, 145, 14));
         confereE.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/certo.png"))); // NOI18N
+        confereE.setText("Novo Produto");
         confereE.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 confereEMouseClicked(evt);
             }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                confereEMouseExited(evt);
-            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 confereEMouseEntered(evt);
             }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                confereEMouseExited(evt);
+            }
         });
-        areaE.add(confereE, new org.netbeans.lib.awtextra.AbsoluteConstraints(1100, 30, -1, 32));
+        areaE.add(confereE, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 74, -1, 32));
 
         codigoC.setEditable(false);
         codigoC.setBackground(new java.awt.Color(153, 153, 153));
@@ -567,10 +532,10 @@ public class Principal extends javax.swing.JFrame {
                 barraCMouseClicked(evt);
             }
         });
-        areaE.add(barraC, new org.netbeans.lib.awtextra.AbsoluteConstraints(106, 33, 156, 28));
+        areaE.add(barraC, new org.netbeans.lib.awtextra.AbsoluteConstraints(115, 33, 156, 28));
 
         barraF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/campoeestoquebarra.png"))); // NOI18N
-        areaE.add(barraF, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 30, -1, -1));
+        areaE.add(barraF, new org.netbeans.lib.awtextra.AbsoluteConstraints(108, 30, -1, -1));
 
         descricaoC.setEditable(false);
         descricaoC.setBackground(new java.awt.Color(165, 164, 169));
@@ -590,14 +555,20 @@ public class Principal extends javax.swing.JFrame {
                 descricaoCKeyPressed(evt);
             }
         });
-        areaE.add(descricaoC, new org.netbeans.lib.awtextra.AbsoluteConstraints(286, 33, 520, 28));
+        areaE.add(descricaoC, new org.netbeans.lib.awtextra.AbsoluteConstraints(344, 33, 520, 28));
 
         descricaoF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/campoeestoquedesc.png"))); // NOI18N
-        areaE.add(descricaoF, new org.netbeans.lib.awtextra.AbsoluteConstraints(276, 30, -1, -1));
-        areaE.add(quantC, new org.netbeans.lib.awtextra.AbsoluteConstraints(832, 34, 50, -1));
+        areaE.add(descricaoF, new org.netbeans.lib.awtextra.AbsoluteConstraints(334, 30, -1, -1));
+
+        quantC.setEditable(false);
+        quantC.setBackground(new java.awt.Color(165, 164, 169));
+        quantC.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
+        quantC.setForeground(new java.awt.Color(255, 255, 255));
+        quantC.setBorder(null);
+        areaE.add(quantC, new org.netbeans.lib.awtextra.AbsoluteConstraints(897, 33, 50, 28));
 
         quantF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/campoeestoquecod.png"))); // NOI18N
-        areaE.add(quantF, new org.netbeans.lib.awtextra.AbsoluteConstraints(825, 30, -1, -1));
+        areaE.add(quantF, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 30, -1, -1));
 
         valorUC.setEditable(false);
         valorUC.setBackground(new java.awt.Color(153, 153, 153));
@@ -614,24 +585,36 @@ public class Principal extends javax.swing.JFrame {
                 valorUCMouseClicked(evt);
             }
         });
-        areaE.add(valorUC, new org.netbeans.lib.awtextra.AbsoluteConstraints(976, 33, 110, 32));
+        areaE.add(valorUC, new org.netbeans.lib.awtextra.AbsoluteConstraints(1058, 33, 110, 32));
 
         valorUF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/campoeestoqueval.png"))); // NOI18N
-        areaE.add(valorUF, new org.netbeans.lib.awtextra.AbsoluteConstraints(966, 30, -1, -1));
-
-        msgE.setFont(new java.awt.Font("Hobo Std", 0, 18)); // NOI18N
-        msgE.setForeground(new java.awt.Color(255, 145, 96));
-        msgE.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        msgE.setText("Novo Produto");
-        msgE.setToolTipText("");
-        areaE.add(msgE, new org.netbeans.lib.awtextra.AbsoluteConstraints(1060, 70, 120, 19));
+        areaE.add(valorUF, new org.netbeans.lib.awtextra.AbsoluteConstraints(1046, 30, -1, -1));
 
         jcQuant.setBackground(new java.awt.Color(102, 102, 102));
         jcQuant.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
         jcQuant.setForeground(new java.awt.Color(102, 102, 102));
         jcQuant.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "KG", "UN" }));
         jcQuant.setBorder(null);
-        areaE.add(jcQuant, new org.netbeans.lib.awtextra.AbsoluteConstraints(896, 30, 64, 36));
+        areaE.add(jcQuant, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 30, 64, 36));
+
+        addImagemF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/imagems.png"))); // NOI18N
+        addImagemF.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                addImagemFMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                addImagemFMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                addImagemFMouseExited(evt);
+            }
+        });
+        areaE.add(addImagemF, new org.netbeans.lib.awtextra.AbsoluteConstraints(288, 30, -1, -1));
+
+        addImagem.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
+        addImagem.setForeground(new java.awt.Color(233, 145, 14));
+        addImagem.setText("Adicionar Imagem");
+        areaE.add(addImagem, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 74, -1, -1));
 
         jPanel1.add(areaE, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 140, 1200, 520));
 
@@ -703,19 +686,19 @@ public class Principal extends javax.swing.JFrame {
         fundoS.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/barracinza.png"))); // NOI18N
         jPanel1.add(fundoS, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, -1, -1));
 
-        lupa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/lupa.png"))); // NOI18N
-        lupa.addMouseListener(new java.awt.event.MouseAdapter() {
+        lupaF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/lupabranca.png"))); // NOI18N
+        lupaF.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lupaMouseClicked(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                lupaMouseExited(evt);
+                lupaFMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                lupaMouseEntered(evt);
+                lupaFMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lupaFMouseExited(evt);
             }
         });
-        jPanel1.add(lupa, new org.netbeans.lib.awtextra.AbsoluteConstraints(895, 20, -1, -1));
+        jPanel1.add(lupaF, new org.netbeans.lib.awtextra.AbsoluteConstraints(895, 20, -1, -1));
 
         campoPT.setEditable(false);
         campoPT.setBackground(new java.awt.Color(165, 164, 169));
@@ -741,7 +724,7 @@ public class Principal extends javax.swing.JFrame {
         campoPF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/campoentrada.png"))); // NOI18N
         jPanel1.add(campoPF, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 19, -1, -1));
 
-        fundoPes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fundopesquisa.png"))); // NOI18N
+        fundoPes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/pesqfraco.png"))); // NOI18N
         jPanel1.add(fundoPes, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, -1, -1, -1));
 
         fundoPesL.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/barralforte.png"))); // NOI18N
@@ -790,134 +773,46 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cadeadoFMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cadeadoFMouseEntered
-        if (u.isCadeado() == true) {
-            cadeadoF.setIcon(u.cadeadoAberto());
+        if (cadeado.equals("fechado")) {
+            cadeadoF.setIcon(a.pegaIcon("cadverde"));
         } else {
-            cadeadoF.setIcon(u.cadeadoFechado());
+            cadeadoF.setIcon(a.pegaIcon("cadvermelho"));
         }
     }//GEN-LAST:event_cadeadoFMouseEntered
 
     private void cadeadoFMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cadeadoFMouseExited
-        if (u.isCadeado() == true) {
-            cadeadoF.setIcon(u.cadeadoFechado());
+        if (cadeado.equals("fechado")) {
+            cadeadoF.setIcon(a.pegaIcon("cadvermelho"));
         } else {
-            cadeadoF.setIcon(u.cadeadoAberto());
+            cadeadoF.setIcon(a.pegaIcon("cadverde"));
         }
     }//GEN-LAST:event_cadeadoFMouseExited
 
     private void cadeadoFMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cadeadoFMouseClicked
-        if (dao.checkLogin(usuarioT.getText(), senhaT.getText()) && u.isCadeado() == true) {
-            u.setUser(true);
-            u.setCadeado(false);
-            fundoPes.setIcon(u.pesquisaIcon());
-            lupa.setIcon(u.lupaIcon());
-            campoPT.setText("CODIGO DE BARRA");
-            campoPT.setEditable(false);
-            areaP.setVisible(false);
-            u.setLupa(0);
-            fundoVendas.setVisible(true);
-            fundoEstoque.setVisible(true);
-            txtVendas.setVisible(true);
-            txtEstoque.setVisible(true);
-            //Check o login e caso der errado aprensneta a mensagem "Usuario ou Senha incorreta!"
+        if (dao.checkLogin(usuarioT.getText(), senhaT.getText()) == true && cadeado.equals("fechado")) {
+            cadeadoFechado();
+            JOptionPane.showMessageDialog(null, "Usuario Conectado!!!");
         } else if (dao.checkLogin(usuarioT.getText(), senhaT.getText()) == false) {
             JOptionPane.showMessageDialog(null, "Usuario ou Senha incorreta!");
-        } else if (u.isCadeado() == false) {
-            fundoPes.setIcon(u.pesquisaIcon());
-            lupa.setIcon(u.lupaIcon());
-            campoPT.setText("CODIGO DE BARRA");
-            campoPT.setEditable(false);
-            areaP.setVisible(false);
-            u.setLupa(0);
-            u.setUser(true);
-            usuarioT.setText("ADMIN");
-            senhaT.setText("ADMIN");
-            fundoVendas.setVisible(false);
-            fundoEstoque.setVisible(false);
-            txtVendas.setVisible(false);
-            txtEstoque.setVisible(false);
-            u.setCadeado(true);
-            if (u.getJanela() == 1) {
-                fundoVendas.setIcon(u.fundoIcon());
-                fundoPes.setIcon(u.pesquisaIcon());
-                u.setJanela(0);
-                if (u.isCaixa() == true) {
-                    u.setCaixa(false);
-                    areaV.setVisible(false);
-                }
-            } else if (u.getJanela() == 2) {
-                fundoEstoque.setIcon(u.fundoIcon());
-                fundoPes.setIcon(u.pesquisaIcon());
-                u.setJanela(0);
-                if (u.isCaixa() == true) {
-                    u.setCaixa(false);
-                    areaV.setVisible(false);
-                }
-                areaE.setVisible(false);
-            }
+        } else if (cadeado.equals("aberto")) {
+            cadeadoAberto();
+            JOptionPane.showMessageDialog(null, "Usuario Desconectado!!!");
         }
-
     }//GEN-LAST:event_cadeadoFMouseClicked
 
     private void fundoVendasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fundoVendasMouseClicked
-        if (u.getJanela() == 2) {
-            u.setJanela(1);
-            areaV.setVisible(true);
-            areaE.setVisible(false);
-            if (u.getLupa() == 1) {
-                fundoPes.setIcon(u.pesquisaIcon());
-                lupa.setIcon(u.lupaIcon());
-                campoPT.setText("CODIGO DE BARRA");
-                campoPT.setEditable(false);
-                areaP.setVisible(false);
-                u.setLupa(0);
-            }
-            fundoVendas.setIcon(u.fundoEscuro());
-            fundoEstoque.setIcon(u.fundoIcon());
+        if (janela.equals("estoque")) {
+            mudaEstoquePvendas();
         } else {
-            u.setJanela(1);
-            u.setLupa(1);
-            areaV.setVisible(true);
-            if (u.getLupa() == 1) {
-                fundoPes.setIcon(u.pesquisaIcon());
-                lupa.setIcon(u.lupaIcon());
-                campoPT.setText("CODIGO DE BARRA");
-                campoPT.setEditable(false);
-                areaP.setVisible(false);
-                u.setLupa(0);
-            }
-            fundoVendas.setIcon(u.fundoEscuro());
-            fundoEstoque.setIcon(u.fundoIcon());
+            mudaPvendas();
         }
     }//GEN-LAST:event_fundoVendasMouseClicked
 
     private void fundoEstoqueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fundoEstoqueMouseClicked
-        if (u.getJanela() == 1) {
-            if (u.getLupa() == 1) {
-                fundoPes.setIcon(u.pesquisaIcon());
-                lupa.setIcon(u.lupaIcon());
-                campoPT.setText("CODIGO DE BARRA");
-                campoPT.setEditable(false);
-                areaP.setVisible(false);
-                u.setLupa(0);
-            }
-            areaV.setVisible(false);
-            fundoVendas.setIcon(u.fundoIcon());
-            fundoEstoque.setIcon(u.fundoEscuro());
-            areaE.setVisible(true);
-            u.setJanela(2);
+        if (janela.equals("vendas")) {
+            mudaVendasPestoque();
         } else {
-            if (u.getLupa() == 1) {
-                fundoPes.setIcon(u.pesquisaIcon());
-                lupa.setIcon(u.lupaIcon());
-                campoPT.setText("CODIGO DE BARRA");
-                campoPT.setEditable(false);
-                areaP.setVisible(false);
-                u.setLupa(0);
-            }
-            fundoEstoque.setIcon(u.fundoEscuro());
-            areaE.setVisible(true);
-            u.setJanela(2);
+            mudaPestoque();
         }
     }//GEN-LAST:event_fundoEstoqueMouseClicked
 
@@ -935,8 +830,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void confereEMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confereEMouseClicked
         if (u.getBtSalvar() == 1) {
-            ProdutoDAO pdao = new ProdutoDAO();
-            Produto p = new Produto();
+            addImagemF.setEnabled(true);
             String verificaUnidade = jcQuant.getSelectedItem().toString();
             p.setCodigo(Integer.parseInt(codigoC.getText()));
             p.setCodigoDeBarras(barraC.getText());
@@ -958,9 +852,8 @@ public class Principal extends javax.swing.JFrame {
             u.setBtSalvar(0);
             mudarComponentes();
         } else if (u.getBtSalvar() == 2) {
+            addImagemF.setEnabled(true);
             if (jTable2.getSelectedRow() != -1) {
-                ProdutoDAO pdao = new ProdutoDAO();
-                Produto p = new Produto();
                 String verificaUnidade = jcQuant.getSelectedItem().toString();
                 p.setCodigo(Integer.parseInt(codigoC.getText()));
                 p.setCodigoDeBarras(barraC.getText());
@@ -983,10 +876,9 @@ public class Principal extends javax.swing.JFrame {
                 mudarComponentes();
                 u.setBtSalvar(0);
                 u.certoIcon();
-                msgE.setForeground(Color.ORANGE);
-                msgE.setText("Atualizar");
             }
         } else if (u.getBtSalvar() == 0) {
+            addImagemF.setEnabled(true);
             mudarComponentes();
             u.mouseMove(evt);
             cancelaE.setVisible(true);
@@ -999,75 +891,44 @@ public class Principal extends javax.swing.JFrame {
     private void confereEMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confereEMouseEntered
         if (u.getBtSalvar() == 0) {
             confereE.setIcon(u.certoSobre());
-            msgE.setForeground(Color.ORANGE);
-            msgE.setText("Novo Produto");
-            msgE.setVisible(true);
         } else if (u.getBtSalvar() == 1) {
             confereE.setIcon(u.salvaIcon());
-            msgE.setForeground(Color.GREEN);
-            msgE.setText("Salvar");
-            msgE.setVisible(true);
         } else if (u.getBtSalvar() == 2) {
             confereE.setIcon(u.certoSobre());
-            msgE.setForeground(Color.ORANGE);
-            msgE.setText("Atualizar");
-            msgE.setVisible(true);
         }
     }//GEN-LAST:event_confereEMouseEntered
 
     private void confereEMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confereEMouseExited
         if (u.getBtSalvar() == 0) {
             confereE.setIcon(u.certoIcon());
-            msgE.setVisible(false);
         } else if (u.getBtSalvar() == 1) {
             confereE.setIcon(u.salvaIcon());
-            msgE.setVisible(false);
         } else if (u.getBtSalvar() == 2) {
             confereE.setIcon(u.certoIcon());
-            msgE.setVisible(false);
         }
     }//GEN-LAST:event_confereEMouseExited
 
-    private void lupaMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lupaMouseEntered
-        if (u.getLupa() == 0) {
-            lupa.setIcon(u.lupaLaranjaF());
+    private void lupaFMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lupaFMouseEntered
+        if (lupa.equals("dentro")) {
+            lupaF.setIcon(a.pegaIcon("lupafraca"));
         } else {
-            lupa.setIcon(u.lupaIcon());
+            lupaF.setIcon(a.pegaIcon("lupaforte"));
         }
-    }//GEN-LAST:event_lupaMouseEntered
+    }//GEN-LAST:event_lupaFMouseEntered
 
-    private void lupaMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lupaMouseExited
-        if (u.getLupa() == 0) {
-            lupa.setIcon(u.lupaIcon());
+    private void lupaFMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lupaFMouseExited
+        if (lupa.equals("dentro")) {
+            lupaF.setIcon(a.pegaIcon("lupabranca"));
         } else {
-            lupa.setIcon(u.lupaLaranja());
+            lupaF.setIcon(a.pegaIcon("lupabranca"));
         }
-    }//GEN-LAST:event_lupaMouseExited
+    }//GEN-LAST:event_lupaFMouseExited
 
-    private void lupaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lupaMouseClicked
-        if (u.getLupa() == 0) {
-            areaP.setVisible(true);
-            fundoPes.setIcon(u.pesquisaSobre());
-            lupa.setIcon(u.lupaLaranja());
-            campoPT.setEditable(true);
-            campoPT.requestFocus();
-            campoPT.selectAll();
-            if (u.isCadeado() == true) {
-                u.setLupa(1);
-            } else {
-                u.setLupa(1);
-                if (u.getJanela() == 1) {
-                    areaV.setVisible(false);
-                    fundoVendas.setIcon(u.fundoIcon());
-                    u.setJanela(0);
-                } else if (u.getJanela() == 2) {
-                    areaE.setVisible(false);
-                    fundoEstoque.setIcon(u.fundoIcon());
-                    u.setJanela(0);
-                }
-            }
+    private void lupaFMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lupaFMouseClicked
+        if (lupa.equals("fora")) {
+            lupaFora();
         }
-    }//GEN-LAST:event_lupaMouseClicked
+    }//GEN-LAST:event_lupaFMouseClicked
 
     private void usuarioTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usuarioTActionPerformed
         // TODO add your handling code here:
@@ -1125,21 +986,16 @@ public class Principal extends javax.swing.JFrame {
 
     private void cancelaEMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelaEMouseEntered
         cancelaE.setIcon(u.erradoIcon());
-        msgE.setForeground(Color.RED);
-        msgE.setText("Cancela");
-        msgE.setVisible(true);
     }//GEN-LAST:event_cancelaEMouseEntered
 
     private void cancelaEMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelaEMouseExited
         cancelaE.setIcon(u.erradoSobre());
-        msgE.setVisible(false);
     }//GEN-LAST:event_cancelaEMouseExited
 
     private void cancelaEMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancelaEMouseClicked
         mudarComponentes();
         u.setBtSalvar(0);
         confereE.setIcon(u.certoIcon());
-        msgE.setVisible(false);
         cancelaE.setVisible(false);
     }//GEN-LAST:event_cancelaEMouseClicked
 
@@ -1152,7 +1008,6 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_codigoBarrasCActionPerformed
 
     private void codigoBarrasCKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigoBarrasCKeyPressed
-        ProdutoDAO pdao = new ProdutoDAO();
         try {
             Vector cabecalho = new Vector();
 
@@ -1176,19 +1031,12 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_campoPTActionPerformed
 
     private void campoPTKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_campoPTKeyReleased
-        ProdutoDAO pdao = new ProdutoDAO();
-        Produto p = new Produto();
-        DefaultTableModel tb = (DefaultTableModel) this.tabelaP.getModel();
-        final TableRowSorter<TableModel> classificador = new TableRowSorter<>(tb);
-        this.tabelaP.setRowSorter(classificador);
-        String id = this.campoPT.getText();
-        classificador.setRowFilter(RowFilter.regexFilter(id, 0));
-        this.pesqP();
-        pesqFigura.setIcon(mudarImagem(id));
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER || evt.getKeyCode() == KeyEvent.VK_TAB) {
+            mostrarProduto();
+        }
     }//GEN-LAST:event_campoPTKeyReleased
 
     private void quantidadeCKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_quantidadeCKeyPressed
-        ProdutoDAO pdao = new ProdutoDAO();
         try {
             if (!codigoBarrasC.getText().equals("")) {
                 pdao.venda(codigoBarrasC.getText());
@@ -1200,6 +1048,18 @@ public class Principal extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Erro: " + ex.getMessage());
         }
     }//GEN-LAST:event_quantidadeCKeyPressed
+
+    private void addImagemFMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addImagemFMouseEntered
+        addImagem.setVisible(true);
+    }//GEN-LAST:event_addImagemFMouseEntered
+
+    private void addImagemFMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addImagemFMouseExited
+        addImagem.setVisible(false);
+    }//GEN-LAST:event_addImagemFMouseExited
+
+    private void addImagemFMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addImagemFMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_addImagemFMouseClicked
 
     /**
      * @param args the command line arguments
@@ -1236,9 +1096,210 @@ public class Principal extends javax.swing.JFrame {
         });
     }
 
+    public void startComp() {
+        areaV.setVisible(false);
+        areaE.setVisible(false);
+        areaP.setVisible(false);
+        fundoVendas.setVisible(false);
+        fundoEstoque.setVisible(false);
+        txtVendas.setVisible(false);
+        txtEstoque.setVisible(false);
+        cancelaE.setVisible(false);
+        pesqTabela.setVisible(false);
+        pesqFigura.setIcon(null);
+        addImagem.setVisible(false);
+        addImagemF.setEnabled(false);
+        pesqProduto.setText("");
+        pesqValor.setText("");
+    }
+
+    public void readjTable() {
+        DefaultTableModel modelo = (DefaultTableModel) jTable2.getModel();
+        modelo.setNumRows(0);
+        for (Produto p : pdao.read()) {
+            if (p.getQuantidadeKg() != 0) {
+                modelo.addRow(new Object[]{
+                    p.getCodigo(),
+                    p.getCodigoDeBarras(),
+                    p.getDescricao(),
+                    p.getQuantidadeKg(),
+                    p.getValor(),});
+            } else {
+                modelo.addRow(new Object[]{
+                    p.getCodigo(),
+                    p.getCodigoDeBarras(),
+                    p.getDescricao(),
+                    p.getQuantidadeUn(),
+                    p.getValor(),});
+            }
+        }
+    }
+
+    private void cadeadoAberto() {
+        cadeado = "fechado";
+        lupa = "fora";
+        u.setUser(true);
+        usuarioT.setText("ADMIN");
+        senhaT.setText("ADMIN");
+        fundoPes.setIcon(a.pegaIcon("pesqfraco"));
+        lupaF.setIcon(a.pegaIcon("lupabranca"));
+        campoPT.setText("CODIGO DE BARRA");
+        campoPT.setEditable(false);
+        areaP.setVisible(false);
+        fundoVendas.setVisible(false);
+        fundoEstoque.setVisible(false);
+        txtVendas.setVisible(false);
+        txtEstoque.setVisible(false);
+        if (janela.equals("vendas")) {
+            janela = "entrada";
+            fundoPes.setIcon(a.pegaIcon("pesqfraco"));
+            fundoVendas.setIcon(a.pegaIcon("fundoclaro"));
+            areaV.setVisible(false);
+        } else if (janela.equals("estoque")) {
+            janela = "entrada";
+            fundoPes.setIcon(a.pegaIcon("pesqfraco"));
+            fundoEstoque.setIcon(a.pegaIcon("fundoclaro"));
+            areaE.setVisible(false);
+        }
+    }
+
+    private void cadeadoFechado() {
+        cadeado = "aberto";
+        lupa = "fora";
+        u.setUser(true);
+        fundoPes.setIcon(a.pegaIcon("pesqfraco"));
+        lupaF.setIcon(a.pegaIcon("lupabranca"));
+        campoPT.setText("CODIGO DE BARRA");
+        campoPT.setEditable(false);
+        areaP.setVisible(false);
+        fundoVendas.setVisible(true);
+        fundoEstoque.setVisible(true);
+        txtVendas.setVisible(true);
+        txtEstoque.setVisible(true);
+    }
+
+    private void lupaFora() {
+        lupa = "dentro";
+        areaP.setVisible(true);
+        fundoPes.setIcon(a.pegaIcon("pesqforte"));
+        lupaF.setIcon(a.pegaIcon("lupafraca"));
+        campoPT.setEditable(true);
+        campoPT.requestFocus();
+        campoPT.selectAll();
+        if (cadeado.equals("aberto")) {
+            lupa = "dentro";
+            areaV.setVisible(false);
+            areaE.setVisible(false);
+            fundoVendas.setIcon(u.fundoIcon());
+            fundoEstoque.setIcon(u.fundoIcon());
+            janela = "entrada";
+        } else {
+            lupa = "dentro";
+            if (janela.equals("vendas")) {
+                areaV.setVisible(false);
+                fundoVendas.setIcon(u.fundoIcon());
+                janela = "entrada";
+            } else if (janela.equals("estoque")) {
+                areaE.setVisible(false);
+                fundoEstoque.setIcon(u.fundoIcon());
+                janela = "entrada";
+            }
+        }
+    }
+
+    private void mudarComponentes() {
+        if (u.getBtSalvar() == 0) {
+            codigoC.setEditable(true);
+            barraC.setEditable(true);
+            descricaoC.setEditable(true);
+            quantC.setEditable(true);
+            valorUC.setEditable(true);
+        } else {
+            codigoC.setEditable(false);
+            barraC.setEditable(false);
+            descricaoC.setEditable(false);
+            quantC.setEditable(false);
+            valorUC.setEditable(false);
+            codigoC.setText("1");
+            barraC.setText("CODIGO DE BARRA");
+            descricaoC.setText("DESCRIÇÃO");
+            quantC.setText("10");
+            valorUC.setText("1,99");
+        }
+    }
+
+    private void mudaEstoquePvendas() {
+        janela = "vendas";
+        areaV.setVisible(true);
+        areaE.setVisible(false);
+        if (lupa.equals("dentro")) {
+            lupa = "fora";
+            fundoPes.setIcon(a.pegaIcon("pesqfraco"));
+            lupaF.setIcon(a.pegaIcon("lupabranca"));
+            campoPT.setText("CODIGO DE BARRA");
+            campoPT.setEditable(false);
+            areaP.setVisible(false);
+        }
+        fundoVendas.setIcon(u.fundoEscuro());
+        fundoEstoque.setIcon(u.fundoIcon());
+    }
+
+    private void mudaVendasPestoque() {
+        if (lupa.equals("dentro")) {
+            fundoPes.setIcon(a.pegaIcon("pesqfraco"));
+            lupaF.setIcon(a.pegaIcon("lupabranca"));
+            campoPT.setText("CODIGO DE BARRA");
+            campoPT.setEditable(false);
+            areaP.setVisible(false);
+            lupa = "fora";
+        }
+        areaV.setVisible(false);
+        fundoVendas.setIcon(u.fundoIcon());
+        fundoEstoque.setIcon(u.fundoEscuro());
+        areaE.setVisible(true);
+        janela = "estoque";
+    }
+
+    private void mudaPvendas() {
+        janela = "vendas";
+        areaV.setVisible(true);
+        if (lupa.equals("dentro")) {
+            lupa = "fora";
+            fundoPes.setIcon(a.pegaIcon("pesqfraco"));
+            lupaF.setIcon(a.pegaIcon("lupabranca"));
+            campoPT.setText("CODIGO DE BARRA");
+            campoPT.setEditable(false);
+            areaP.setVisible(false);
+        }
+        fundoVendas.setIcon(u.fundoEscuro());
+        fundoEstoque.setIcon(u.fundoIcon());
+    }
+
+    private void mudaPestoque() {
+        if (lupa.equals("dentro")) {
+            lupa = "fora";
+            fundoPes.setIcon(a.pegaIcon("pesqfraco"));
+            lupaF.setIcon(a.pegaIcon("lupabranca"));
+            campoPT.setText("CODIGO DE BARRA");
+            campoPT.setEditable(false);
+            areaP.setVisible(false);
+        }
+        fundoEstoque.setIcon(u.fundoEscuro());
+        areaE.setVisible(true);
+        janela = "estoque";
+    }
+
+    private void mostrarProduto() {
+        DefaultTableModel tb = (DefaultTableModel) this.tabelaP.getModel();
+        final TableRowSorter<TableModel> classificador = new TableRowSorter<>(tb);
+        this.tabelaP.setRowSorter(classificador);
+        String id = this.campoPT.getText();
+        classificador.setRowFilter(RowFilter.regexFilter(id, 0));
+        this.pesqP();
+        pesqFigura.setIcon(mudarImagem(id));
+    }
+
     private void pesqP() {
-        ProdutoDAO pdao = new ProdutoDAO();
-        Produto p = new Produto();
         String id = this.campoPT.getText();
         p = pdao.pegaP(id);
         this.pesqProduto.setText(p.getDescricao());
@@ -1252,6 +1313,8 @@ public class Principal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel abreCaixaF;
+    private javax.swing.JLabel addImagem;
+    private javax.swing.JLabel addImagemF;
     private javax.swing.JPanel areaE;
     private javax.swing.JPanel areaP;
     private javax.swing.JPanel areaV;
@@ -1283,8 +1346,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jcQuant;
     private javax.swing.JTable jtbVenda;
     private javax.swing.JLabel logo;
-    private javax.swing.JLabel lupa;
-    private javax.swing.JLabel msgE;
+    private javax.swing.JLabel lupaF;
     private javax.swing.JLabel pesqFigura;
     private javax.swing.JPanel pesqFundoB;
     private javax.swing.JLabel pesqProduto;
