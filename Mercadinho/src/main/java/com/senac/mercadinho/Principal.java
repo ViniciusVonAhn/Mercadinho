@@ -12,7 +12,6 @@ import com.senac.mercadinho.util.Arquivo;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.util.Vector;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
@@ -25,7 +24,6 @@ import javax.swing.table.TableRowSorter;
  */
 public class Principal extends javax.swing.JFrame {
 
-    Util u = new Util();
     UsuarioDAO dao = new UsuarioDAO();
     Arquivo a = new Arquivo();
     ProdutoDAO pdao = new ProdutoDAO();
@@ -34,6 +32,7 @@ public class Principal extends javax.swing.JFrame {
     private String lupa;
     private String janela;
     private String salvar;
+    private String usuario;
 
     /**
      * Creates new form Principal
@@ -44,6 +43,7 @@ public class Principal extends javax.swing.JFrame {
         lupa = "fora";
         janela = "entrada";
         salvar = "falso";
+        usuario = "desconectado";
         startComp();
         pesqValor.setBackground(new Color(0, 0, 0, 0));
         DefaultTableModel modelo = (DefaultTableModel) jTable2.getModel();
@@ -105,7 +105,7 @@ public class Principal extends javax.swing.JFrame {
         valorUF = new javax.swing.JLabel();
         jcQuant = new javax.swing.JComboBox<>();
         addImagem = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btImagem = new javax.swing.JButton();
         AreaEBT = new javax.swing.JPanel();
         btCancelar = new javax.swing.JButton();
         btSalvar = new javax.swing.JButton();
@@ -572,11 +572,11 @@ public class Principal extends javax.swing.JFrame {
         addImagem.setText("Adicionar Imagem");
         areaE.add(addImagem, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 80, -1, -1));
 
-        jButton1.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
-        jButton1.setText("IMG");
-        jButton1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        areaE.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(278, 30, 54, 34));
+        btImagem.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
+        btImagem.setText("IMG");
+        btImagem.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btImagem.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        areaE.add(btImagem, new org.netbeans.lib.awtextra.AbsoluteConstraints(278, 30, 54, 34));
 
         AreaEBT.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         AreaEBT.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -853,22 +853,10 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_codigoCActionPerformed
 
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
-        if (!salvar.equals("salva") || !salvar.equals("atualiza")) {
-            if (jTable2.getSelectedRow() != -1) {
-                codigoC.setText(jTable2.getValueAt(jTable2.getSelectedRow(), 0).toString());
-                barraC.setText(jTable2.getValueAt(jTable2.getSelectedRow(), 1).toString());
-                descricaoC.setText(jTable2.getValueAt(jTable2.getSelectedRow(), 2).toString());
-                quantC.setText(jTable2.getValueAt(jTable2.getSelectedRow(), 3).toString());
-                valorUC.setText(a.converteVirgula(jTable2.getValueAt(jTable2.getSelectedRow(), 4).toString()));
-                mudarComponentes();
-            }
-            u.certoIcon();
-            valorUC.selectAll();
-            valorUC.requestFocus();
-            salvar = "atualiza";
+        if (salvar.equals("falso")) {
+            alterarProduto();
         } else {
-            mudarComponentes();
-            JOptionPane.showMessageDialog(null, "Salve ou Cancele");
+            JOptionPane.showMessageDialog(null, "Salve ou Cancele Antes!!!");
         }
     }//GEN-LAST:event_jTable2MouseClicked
 
@@ -950,51 +938,9 @@ public class Principal extends javax.swing.JFrame {
 
     private void btSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalvarActionPerformed
         if (salvar.equals("salva")) {
-            salvar = "falso";
-            String verificaUnidade = jcQuant.getSelectedItem().toString();
-            p.setCodigo(Integer.parseInt(codigoC.getText()));
-            p.setCodigoDeBarras(barraC.getText());
-            p.setDescricao(descricaoC.getText());
-            if ("UN".equals(verificaUnidade)) {
-                p.setUnidade(verificaUnidade);
-                p.setQuantidadeUn(Integer.parseInt(quantC.getText()));
-            } else {
-                p.setUnidade(verificaUnidade);
-                p.setQuantidadeKg(a.convertePonto(quantC.getText()));
-            }
-            p.setValor(a.convertePonto(valorUC.getText()));
-            if ("UN".equals(verificaUnidade)) {
-                pdao.createUn(p);
-            } else {
-                pdao.createKg(p);
-            }
-            readjTable();
-            mudarComponentes();
+            salvarProduto();
         } else if (salvar.equals("atualiza")) {
-            salvar = "falso";
-            if (jTable2.getSelectedRow() != -1) {
-                String verificaUnidade = jcQuant.getSelectedItem().toString();
-                p.setCodigo(Integer.parseInt(codigoC.getText()));
-                p.setCodigoDeBarras(barraC.getText());
-                p.setDescricao(descricaoC.getText());
-                if ("UN".equals(verificaUnidade)) {
-                    p.setUnidade(verificaUnidade);
-                    p.setQuantidadeUn(Integer.parseInt(quantC.getText()));
-                } else {
-                    p.setUnidade(verificaUnidade);
-                    p.setQuantidadeKg(a.convertePonto(quantC.getText()));
-                }
-                p.setValor(a.convertePonto(valorUC.getText()));
-                p.setProdutosid((int) jTable2.getValueAt(jTable2.getSelectedRow(), 0));
-                if ("UN".equals(verificaUnidade)) {
-                    pdao.updateUn(p);
-                } else {
-                    pdao.updateKg(p);
-                }
-                readjTable();
-                mudarComponentes();
-                u.certoIcon();
-            }
+            salvaAlterarProduto();
         }
     }//GEN-LAST:event_btSalvarActionPerformed
 
@@ -1056,8 +1002,46 @@ public class Principal extends javax.swing.JFrame {
         pesqTabela.setVisible(false);
         pesqFigura.setIcon(null);
         addImagem.setVisible(false);
+        codigoC.setVisible(false);
+        barraC.setVisible(false);
+        descricaoC.setVisible(false);
+        quantC.setVisible(false);
+        valorUC.setVisible(false);
+        btSalvar.setEnabled(false);
+        btCancelar.setEnabled(false);
+        btImagem.setEnabled(false);
         pesqProduto.setText("");
         pesqValor.setText("");
+    }
+
+    private void mudarComponentes() {
+        if (salvar.equals("falso")) {
+            codigoC.setVisible(true);
+            barraC.setVisible(true);
+            descricaoC.setVisible(true);
+            quantC.setVisible(true);
+            valorUC.setVisible(true);
+            btSalvar.setEnabled(true);
+            btCancelar.setEnabled(true);
+            btNovo.setEnabled(false);
+            jTable2.setEnabled(false);
+        } else {
+            codigoC.setVisible(false);
+            barraC.setVisible(false);
+            descricaoC.setVisible(false);
+            quantC.setVisible(false);
+            valorUC.setVisible(false);
+            btSalvar.setEnabled(false);
+            btCancelar.setEnabled(false);
+            btImagem.setEnabled(false);
+            btNovo.setEnabled(true);
+            jTable2.setEnabled(true);
+            codigoC.setText("1");
+            barraC.setText("CODIGO DE BARRA");
+            descricaoC.setText("DESCRIÇÃO");
+            quantC.setText("10");
+            valorUC.setText("1,99");
+        }
     }
 
     public void readjTable() {
@@ -1085,7 +1069,7 @@ public class Principal extends javax.swing.JFrame {
     private void cadeadoAberto() {
         cadeado = "fechado";
         lupa = "fora";
-        u.setUser(true);
+        usuario = "conectado";
         usuarioT.setText("ADMIN");
         senhaT.setText("ADMIN");
         fundoPes.setIcon(a.pegaIcon("pesqfraco"));
@@ -1113,7 +1097,7 @@ public class Principal extends javax.swing.JFrame {
     private void cadeadoFechado() {
         cadeado = "aberto";
         lupa = "fora";
-        u.setUser(true);
+        usuario = "desconectado";
         fundoPes.setIcon(a.pegaIcon("pesqfraco"));
         lupaF.setIcon(a.pegaIcon("lupabranca"));
         campoPT.setText("CODIGO DE BARRA");
@@ -1137,41 +1121,20 @@ public class Principal extends javax.swing.JFrame {
             lupa = "dentro";
             areaV.setVisible(false);
             areaE.setVisible(false);
-            fundoVendas.setIcon(u.fundoIcon());
-            fundoEstoque.setIcon(u.fundoIcon());
+            fundoVendas.setIcon(a.pegaIcon("fundoclaro"));
+            fundoEstoque.setIcon(a.pegaIcon("fundoclaro"));
             janela = "entrada";
         } else {
             lupa = "dentro";
             if (janela.equals("vendas")) {
                 areaV.setVisible(false);
-                fundoVendas.setIcon(u.fundoIcon());
+                fundoVendas.setIcon(a.pegaIcon("fundoclaro"));
                 janela = "entrada";
             } else if (janela.equals("estoque")) {
                 areaE.setVisible(false);
-                fundoEstoque.setIcon(u.fundoIcon());
+                fundoEstoque.setIcon(a.pegaIcon("fundoclaro"));
                 janela = "entrada";
             }
-        }
-    }
-
-    private void mudarComponentes() {
-        if (u.getBtSalvar() == 0) {
-            codigoC.setEditable(true);
-            barraC.setEditable(true);
-            descricaoC.setEditable(true);
-            quantC.setEditable(true);
-            valorUC.setEditable(true);
-        } else {
-            codigoC.setEditable(false);
-            barraC.setEditable(false);
-            descricaoC.setEditable(false);
-            quantC.setEditable(false);
-            valorUC.setEditable(false);
-            codigoC.setText("1");
-            barraC.setText("CODIGO DE BARRA");
-            descricaoC.setText("DESCRIÇÃO");
-            quantC.setText("10");
-            valorUC.setText("1,99");
         }
     }
 
@@ -1187,8 +1150,8 @@ public class Principal extends javax.swing.JFrame {
             campoPT.setEditable(false);
             areaP.setVisible(false);
         }
-        fundoVendas.setIcon(u.fundoEscuro());
-        fundoEstoque.setIcon(u.fundoIcon());
+        fundoVendas.setIcon(a.pegaIcon("fundoescuro"));
+        fundoEstoque.setIcon(a.pegaIcon("fundoclaro"));
     }
 
     private void mudaVendasPestoque() {
@@ -1201,8 +1164,8 @@ public class Principal extends javax.swing.JFrame {
             lupa = "fora";
         }
         areaV.setVisible(false);
-        fundoVendas.setIcon(u.fundoIcon());
-        fundoEstoque.setIcon(u.fundoEscuro());
+        fundoVendas.setIcon(a.pegaIcon("fundoclaro"));
+        fundoEstoque.setIcon(a.pegaIcon("fundoescuro"));
         areaE.setVisible(true);
         janela = "estoque";
     }
@@ -1218,8 +1181,8 @@ public class Principal extends javax.swing.JFrame {
             campoPT.setEditable(false);
             areaP.setVisible(false);
         }
-        fundoVendas.setIcon(u.fundoEscuro());
-        fundoEstoque.setIcon(u.fundoIcon());
+        fundoVendas.setIcon(a.pegaIcon("fundoclaro"));
+        fundoEstoque.setIcon(a.pegaIcon("fundoclaro"));
     }
 
     private void mudaPestoque() {
@@ -1231,9 +1194,73 @@ public class Principal extends javax.swing.JFrame {
             campoPT.setEditable(false);
             areaP.setVisible(false);
         }
-        fundoEstoque.setIcon(u.fundoEscuro());
+        fundoEstoque.setIcon(a.pegaIcon("fundoescuro"));
         areaE.setVisible(true);
         janela = "estoque";
+    }
+
+    private void alterarProduto() {
+        if (jTable2.getSelectedRow() != -1) {
+            codigoC.setText(jTable2.getValueAt(jTable2.getSelectedRow(), 0).toString());
+            barraC.setText(jTable2.getValueAt(jTable2.getSelectedRow(), 1).toString());
+            descricaoC.setText(jTable2.getValueAt(jTable2.getSelectedRow(), 2).toString());
+            quantC.setText(jTable2.getValueAt(jTable2.getSelectedRow(), 3).toString());
+            valorUC.setText(a.converteVirgula(jTable2.getValueAt(jTable2.getSelectedRow(), 4).toString()));
+        }
+        mudarComponentes();
+        valorUC.selectAll();
+        valorUC.requestFocus();
+        salvar = "atualiza";
+    }
+
+    private void salvarProduto() {
+        salvar = "falso";
+        String verificaUnidade = jcQuant.getSelectedItem().toString();
+        p.setCodigo(Integer.parseInt(codigoC.getText()));
+        p.setCodigoDeBarras(barraC.getText());
+        p.setDescricao(descricaoC.getText());
+        if ("UN".equals(verificaUnidade)) {
+            p.setUnidade(verificaUnidade);
+            p.setQuantidadeUn(Integer.parseInt(quantC.getText()));
+        } else {
+            p.setUnidade(verificaUnidade);
+            p.setQuantidadeKg(a.convertePonto(quantC.getText()));
+        }
+        p.setValor(a.convertePonto(valorUC.getText()));
+        if ("UN".equals(verificaUnidade)) {
+            pdao.createUn(p);
+        } else {
+            pdao.createKg(p);
+        }
+        readjTable();
+        mudarComponentes();
+    }
+
+    private void salvaAlterarProduto() {
+        
+        if (jTable2.getSelectedRow() != -1) {
+            String verificaUnidade = jcQuant.getSelectedItem().toString();
+            p.setCodigo(Integer.parseInt(codigoC.getText()));
+            p.setCodigoDeBarras(barraC.getText());
+            p.setDescricao(descricaoC.getText());
+            if ("UN".equals(verificaUnidade)) {
+                p.setUnidade(verificaUnidade);
+                p.setQuantidadeUn(Integer.parseInt(quantC.getText()));
+            } else {
+                p.setUnidade(verificaUnidade);
+                p.setQuantidadeKg(a.convertePonto(quantC.getText()));
+            }
+            p.setValor(a.convertePonto(valorUC.getText()));
+            p.setProdutosid((int) jTable2.getValueAt(jTable2.getSelectedRow(), 0));
+            if ("UN".equals(verificaUnidade)) {
+                pdao.updateUn(p);
+            } else {
+                pdao.updateKg(p);
+            }
+            readjTable();
+            mudarComponentes();
+            salvar = "falso";
+        }
     }
 
     private void mostrarProduto() {
@@ -1262,6 +1289,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JTextField barraC;
     private javax.swing.JLabel barraF;
     private javax.swing.JButton btCancelar;
+    private javax.swing.JButton btImagem;
     private javax.swing.JButton btNovo;
     private javax.swing.JButton btSalvar;
     private javax.swing.JLabel cadeadoF;
@@ -1283,7 +1311,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel fundoPesL;
     private javax.swing.JLabel fundoS;
     private javax.swing.JLabel fundoVendas;
-    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTable jTable2;
     private javax.swing.JComboBox<String> jcQuant;
