@@ -9,6 +9,7 @@ import com.senac.mercadinho.DAO.ProdutoDAO;
 import com.senac.mercadinho.DAO.UsuarioDAO;
 import com.senac.mercadinho.model.bean.Produto;
 import com.senac.mercadinho.util.Arquivo;
+import com.senac.mercadinho.util.CodigoBarraEAN;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.util.Vector;
@@ -497,6 +498,11 @@ public class Principal extends javax.swing.JFrame {
         barraC.setToolTipText("");
         barraC.setBorder(null);
         barraC.setOpaque(false);
+        barraC.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                barraCFocusLost(evt);
+            }
+        });
         barraC.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 barraCMouseClicked(evt);
@@ -576,6 +582,19 @@ public class Principal extends javax.swing.JFrame {
         btImagem.setText("IMG");
         btImagem.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btImagem.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        btImagem.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btImagemMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btImagemMouseExited(evt);
+            }
+        });
+        btImagem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btImagemActionPerformed(evt);
+            }
+        });
         areaE.add(btImagem, new org.netbeans.lib.awtextra.AbsoluteConstraints(278, 30, 54, 34));
 
         AreaEBT.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -919,7 +938,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void campoPTKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_campoPTKeyReleased
         if (evt.getKeyCode() == KeyEvent.VK_ENTER || evt.getKeyCode() == KeyEvent.VK_TAB) {
-            mostrarProduto();
+            mostrarProduto(campoPT.getText());
         }
     }//GEN-LAST:event_campoPTKeyReleased
 
@@ -939,22 +958,48 @@ public class Principal extends javax.swing.JFrame {
     private void btSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSalvarActionPerformed
         if (salvar.equals("salva")) {
             salvarProduto();
-        } else if (salvar.equals("atualiza")) {
+        } else if (salvar.equals("atualizar")) {
             salvaAlterarProduto();
         }
     }//GEN-LAST:event_btSalvarActionPerformed
 
     private void btNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNovoActionPerformed
+        salvar = "falso";
         mudarComponentes();
+        salvar = "salva";
         codigoC.selectAll();
         codigoC.requestFocus();
-        salvar = "salva";
     }//GEN-LAST:event_btNovoActionPerformed
 
     private void btCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarActionPerformed
         mudarComponentes();
         salvar = "falso";
     }//GEN-LAST:event_btCancelarActionPerformed
+
+    private void btImagemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btImagemActionPerformed
+        a.salvarImagem(barraC.getText());
+    }//GEN-LAST:event_btImagemActionPerformed
+
+    private void barraCFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_barraCFocusLost
+        CodigoBarraEAN codigoBarra = new CodigoBarraEAN(barraC.getText());
+        String validar = codigoBarra.validar(codigoBarra);
+        System.out.println(validar);
+        if(validar.equals("valido")){
+            a.salvarImagem(barraC.getText());
+        } else if (validar.equals("invalido")){
+            JOptionPane.showMessageDialog(null, "Erro: Código de Barra Inválido");
+            barraC.selectAll();
+            barraC.requestFocus();
+        }
+    }//GEN-LAST:event_barraCFocusLost
+
+    private void btImagemMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btImagemMouseEntered
+        addImagem.setVisible(true);
+    }//GEN-LAST:event_btImagemMouseEntered
+
+    private void btImagemMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btImagemMouseExited
+        addImagem.setVisible(false);
+    }//GEN-LAST:event_btImagemMouseExited
 
     /**
      * @param args the command line arguments
@@ -1017,12 +1062,18 @@ public class Principal extends javax.swing.JFrame {
     private void mudarComponentes() {
         if (salvar.equals("falso")) {
             codigoC.setVisible(true);
+            codigoC.setEditable(true);
             barraC.setVisible(true);
+            barraC.setEditable(true);
             descricaoC.setVisible(true);
+            descricaoC.setEditable(true);
             quantC.setVisible(true);
+            quantC.setEditable(true);
             valorUC.setVisible(true);
+            valorUC.setEditable(true);
             btSalvar.setEnabled(true);
             btCancelar.setEnabled(true);
+            btImagem.setEnabled(true);
             btNovo.setEnabled(false);
             jTable2.setEnabled(false);
         } else {
@@ -1210,7 +1261,7 @@ public class Principal extends javax.swing.JFrame {
         mudarComponentes();
         valorUC.selectAll();
         valorUC.requestFocus();
-        salvar = "atualiza";
+        salvar = "atualizar";
     }
 
     private void salvarProduto() {
@@ -1263,20 +1314,19 @@ public class Principal extends javax.swing.JFrame {
         }
     }
 
-    private void mostrarProduto() {
+    private void mostrarProduto(String id) {
         DefaultTableModel tb = (DefaultTableModel) this.tabelaP.getModel();
         final TableRowSorter<TableModel> classificador = new TableRowSorter<>(tb);
         this.tabelaP.setRowSorter(classificador);
-        String id = this.campoPT.getText();
         classificador.setRowFilter(RowFilter.regexFilter(id, 0));
-        this.pesqP();
+        this.pesqP(id);
     }
 
-    private void pesqP() {
-        String id = this.campoPT.getText();
+    private void pesqP(String id) {
         p = pdao.pegaP(id);
         this.pesqProduto.setText(p.getDescricao());
         this.pesqValor.setText(String.valueOf(p.getValor()));
+        this.pesqFigura.setIcon(a.pegaIcon(id));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

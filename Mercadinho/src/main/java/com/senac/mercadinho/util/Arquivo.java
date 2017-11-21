@@ -52,6 +52,7 @@ public class Arquivo {
         ImageIcon imagem = new ImageIcon();
         try {
             JFileChooser jc = new JFileChooser();
+            jc.setDialogTitle("Selecione uma imagem");
             FileFilter ff = new FileNameExtensionFilter("Image Files", ImageIO.getReaderFileSuffixes());
             jc.setFileFilter(ff);
             int ok = jc.showOpenDialog(null);
