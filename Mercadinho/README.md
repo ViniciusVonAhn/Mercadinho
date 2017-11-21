@@ -1,2 +1,0 @@
-# Mercadinho
-Trabalho final
