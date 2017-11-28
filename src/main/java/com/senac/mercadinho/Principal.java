@@ -508,6 +508,11 @@ public class Principal extends javax.swing.JFrame {
                 barraCMouseClicked(evt);
             }
         });
+        barraC.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                barraCKeyReleased(evt);
+            }
+        });
         areaE.add(barraC, new org.netbeans.lib.awtextra.AbsoluteConstraints(115, 33, 156, 28));
 
         barraF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/campoeestoquebarra.png"))); // NOI18N
@@ -981,16 +986,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btImagemActionPerformed
 
     private void barraCFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_barraCFocusLost
-        CodigoBarraEAN codigoBarra = new CodigoBarraEAN(barraC.getText());
-        String validar = codigoBarra.validar(codigoBarra);
-        System.out.println(validar);
-        if(validar.equals("valido")){
-            a.salvarImagem(barraC.getText());
-        } else if (validar.equals("invalido")){
-            JOptionPane.showMessageDialog(null, "Erro: Código de Barra Inválido");
-            barraC.selectAll();
-            barraC.requestFocus();
-        }
+
     }//GEN-LAST:event_barraCFocusLost
 
     private void btImagemMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btImagemMouseEntered
@@ -1000,6 +996,21 @@ public class Principal extends javax.swing.JFrame {
     private void btImagemMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btImagemMouseExited
         addImagem.setVisible(false);
     }//GEN-LAST:event_btImagemMouseExited
+
+    private void barraCKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_barraCKeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER || evt.getKeyCode() == KeyEvent.VK_TAB) {
+            CodigoBarraEAN codigoBarra = new CodigoBarraEAN(barraC.getText());
+            String validar = codigoBarra.validar(codigoBarra);
+            System.out.println(validar);
+            if (validar.equals("valido")) {
+                a.salvarImagem(barraC.getText());
+            } else if (validar.equals("invalido")) {
+                JOptionPane.showMessageDialog(null, "Erro: Código de Barra Inválido");
+                barraC.selectAll();
+                barraC.requestFocus();
+            }
+        }
+    }//GEN-LAST:event_barraCKeyReleased
 
     /**
      * @param args the command line arguments
@@ -1076,6 +1087,22 @@ public class Principal extends javax.swing.JFrame {
             btImagem.setEnabled(true);
             btNovo.setEnabled(false);
             jTable2.setEnabled(false);
+        } else if(salvar.equals("verdade")){
+            codigoC.setVisible(false);
+            barraC.setVisible(false);
+            descricaoC.setVisible(false);
+            quantC.setVisible(false);
+            valorUC.setVisible(false);
+            btSalvar.setEnabled(false);
+            btCancelar.setEnabled(false);
+            btImagem.setEnabled(false);
+            btNovo.setEnabled(true);
+            jTable2.setEnabled(true);
+            codigoC.setText("1");
+            barraC.setText("CODIGO DE BARRA");
+            descricaoC.setText("DESCRIÇÃO");
+            quantC.setText("10");
+            valorUC.setText("1,99");
         } else {
             codigoC.setVisible(false);
             barraC.setVisible(false);
@@ -1265,7 +1292,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     private void salvarProduto() {
-        salvar = "falso";
+        salvar = "verdade";
         String verificaUnidade = jcQuant.getSelectedItem().toString();
         p.setCodigo(Integer.parseInt(codigoC.getText()));
         p.setCodigoDeBarras(barraC.getText());
@@ -1288,7 +1315,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     private void salvaAlterarProduto() {
-        
+
         if (jTable2.getSelectedRow() != -1) {
             String verificaUnidade = jcQuant.getSelectedItem().toString();
             p.setCodigo(Integer.parseInt(codigoC.getText()));
