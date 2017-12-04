@@ -111,6 +111,7 @@ public class Principal extends javax.swing.JFrame {
         btCancelar = new javax.swing.JButton();
         btSalvar = new javax.swing.JButton();
         btNovo = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         fundoGG = new javax.swing.JLabel();
         pesquisaV = new javax.swing.JLabel();
         pesquisaU = new javax.swing.JLabel();
@@ -634,6 +635,14 @@ public class Principal extends javax.swing.JFrame {
 
         areaE.add(AreaEBT, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 80, 390, 40));
 
+        jButton1.setText("PDF");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        areaE.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 80, -1, 40));
+
         jPanel1.add(areaE, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 140, 1200, 520));
 
         fundoGG.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fundoap.png"))); // NOI18N
@@ -1012,6 +1021,11 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_barraCKeyReleased
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        pdao.gerarPDF();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1388,6 +1402,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel fundoPesL;
     private javax.swing.JLabel fundoS;
     private javax.swing.JLabel fundoVendas;
+    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTable jTable2;
     private javax.swing.JComboBox<String> jcQuant;

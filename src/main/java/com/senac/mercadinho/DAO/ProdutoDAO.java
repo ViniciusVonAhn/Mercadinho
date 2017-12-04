@@ -5,9 +5,17 @@
  */
 package com.senac.mercadinho.DAO;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.mysql.jdbc.PreparedStatement;
 import com.senac.mercadinho.Connection.ConnectionFactory;
 import com.senac.mercadinho.model.bean.Produto;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -30,14 +38,14 @@ public class ProdutoDAO extends ConnectionFactory {
     public void createKg(Produto p) {
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null;
-        
+
         try {
             stmt = (PreparedStatement) con.prepareStatement("INSERT INTO produtos (produtosid, codigo, codigo_de_barras,"
                     + " descricao, quantidade_kg, unidade, valor)VALUES(?,?,?,?,?,?,?)");
             stmt.setInt(2, p.getCodigo());
             stmt.setInt(1, p.getCodigo());
             stmt.setString(3, p.getCodigoDeBarras());
-            stmt.setString(4, p.getDescricao());  
+            stmt.setString(4, p.getDescricao());
             stmt.setDouble(5, p.getQuantidadeKg());
             stmt.setString(6, p.getUnidade());
             stmt.setDouble(7, p.getValor());
@@ -51,18 +59,18 @@ public class ProdutoDAO extends ConnectionFactory {
         }
 
     }
-    
+
     public void createUn(Produto p) {
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null;
-        
+
         try {
             stmt = (PreparedStatement) con.prepareStatement("INSERT INTO produtos (produtosid, codigo, codigo_de_barras,"
                     + " descricao, quantidade_un, unidade, valor)VALUES(?,?,?,?,?,?,?)");
             stmt.setInt(2, p.getCodigo());
             stmt.setInt(1, p.getCodigo());
             stmt.setString(3, p.getCodigoDeBarras());
-            stmt.setString(4, p.getDescricao());  
+            stmt.setString(4, p.getDescricao());
             stmt.setDouble(5, p.getQuantidadeUn());
             stmt.setString(6, p.getUnidade());
             stmt.setDouble(7, p.getValor());
@@ -76,7 +84,7 @@ public class ProdutoDAO extends ConnectionFactory {
         }
 
     }
-    
+
     public List<Produto> read() {
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null;
@@ -93,10 +101,10 @@ public class ProdutoDAO extends ConnectionFactory {
                 produto.setCodigoDeBarras(rs.getString("codigo_de_barras"));
                 produto.setDescricao(rs.getString("descricao"));
                 produto.setUnidade(rs.getString("unidade"));
-                if("UN".equals(produto.getUnidade())){
-                produto.setQuantidadeUn(rs.getInt("quantidade_un"));    
-                }else{
-                produto.setQuantidadeKg(rs.getInt("quantidade_kg"));    
+                if ("UN".equals(produto.getUnidade())) {
+                    produto.setQuantidadeUn(rs.getInt("quantidade_un"));
+                } else {
+                    produto.setQuantidadeKg(rs.getInt("quantidade_kg"));
                 }
                 produto.setValor(rs.getDouble("valor"));
 
@@ -135,7 +143,7 @@ public class ProdutoDAO extends ConnectionFactory {
         }
 
     }
-    
+
     public void updateUn(Produto p) {
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null;
@@ -175,46 +183,46 @@ public class ProdutoDAO extends ConnectionFactory {
         }
         return tb;
     }
-    
-    public DefaultTableModel venda(String pesq) throws Exception{
+
+    public DefaultTableModel venda(String pesq) throws Exception {
         Connection con = ConnectionFactory.getConnection();
-		DefaultTableModel dtm = new DefaultTableModel() {
-			public boolean isCellEditable(int row, int column) {
-				return false;
-			}
-		};
-		String sql = "select * from produtos where codigo_de_barras like '" + pesq + "'";
-		PreparedStatement ps = (PreparedStatement) getConnection().prepareStatement(sql);
-		ResultSet rs = ps.executeQuery();
-                //adiciona as colunas
-		dtm.addColumn("descricao");
-		dtm.addColumn("valor");
-                dtm.addColumn("quantidade");
-		while (rs.next()) {
-                //pega os valores do bd para popular tabela
-			dtm.addRow(new String[] {rs.getString("descricao"), rs.getString("valor")});
-		}
-		ConnectionFactory.closeConnection(con, ps);
-                return dtm;
-	}
-    
+        DefaultTableModel dtm = new DefaultTableModel() {
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        String sql = "select * from produtos where codigo_de_barras like '" + pesq + "'";
+        PreparedStatement ps = (PreparedStatement) getConnection().prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        //adiciona as colunas
+        dtm.addColumn("descricao");
+        dtm.addColumn("valor");
+        dtm.addColumn("quantidade");
+        while (rs.next()) {
+            //pega os valores do bd para popular tabela
+            dtm.addRow(new String[]{rs.getString("descricao"), rs.getString("valor")});
+        }
+        ConnectionFactory.closeConnection(con, ps);
+        return dtm;
+    }
+
     public Produto pegaP(String pId) {
         Produto p = new Produto();
         try {
             this.conectar();
             this.executarMysql(
                     "SELECT "
-                    + "produtosid, "     
+                    + "produtosid, "
                     + "codigo_de_barras, "
-                    + "codigo, "        
+                    + "codigo, "
                     + "descricao, "
                     + "unidade, "
-                    + "valor, "        
+                    + "valor, "
                     + "quantidade_un, "
                     + "quantidade_kg "
                     + " FROM produtos WHERE codigo_de_barras = '" + pId + "'"
             );
-            while (this.getResultSet().next()){
+            while (this.getResultSet().next()) {
                 p.setProdutosid(this.getResultSet().getInt(1));
                 p.setCodigoDeBarras(this.getResultSet().getString(2));
                 p.setCodigo(this.getResultSet().getInt(3));
@@ -231,5 +239,57 @@ public class ProdutoDAO extends ConnectionFactory {
         }
         return p;
     }
-    
+
+    public void gerarPDF() {
+        Connection con = ConnectionFactory.getConnection();
+
+        Document doc = new Document();
+        List<Produto> listp = read();
+        String arquivoPdf = "relatorio.pdf";
+        
+        try {
+            PdfWriter.getInstance(doc, new FileOutputStream(arquivoPdf));
+            doc.open();
+            
+            Paragraph p = new Paragraph("Relatório de Estoque");
+            p.setAlignment(1);
+            doc.add(p);
+            p = new Paragraph("  ");
+            doc.add(p);
+            
+            PdfPTable table = new PdfPTable(4);
+            
+            PdfPCell cel1 = new PdfPCell(new Paragraph("Codigo"));
+            PdfPCell cel2 = new PdfPCell(new Paragraph("Descrição"));
+            PdfPCell cel3 = new PdfPCell(new Paragraph("Quantidade"));
+            PdfPCell cel4 = new PdfPCell(new Paragraph("Valor"));
+            
+            table.addCell(cel1);
+            table.addCell(cel2);
+            table.addCell(cel3);
+            table.addCell(cel4);
+            
+            for(Produto produto : listp){
+            cel1 = new PdfPCell(new Paragraph(produto.getCodigoDeBarras()+""));
+            cel2 = new PdfPCell(new Paragraph(produto.getDescricao()+""));
+            if ("UN".equals(produto.getUnidade())) {
+             cel3 = new PdfPCell(new Paragraph(produto.getQuantidadeUn()+""));
+                } else {
+             cel3 = new PdfPCell(new Paragraph(produto.getQuantidadeKg()+""));
+                }
+            
+            cel4 = new PdfPCell(new Paragraph(produto.getValor()+""));
+            
+            table.addCell(cel1);
+            table.addCell(cel2);
+            table.addCell(cel3);
+            table.addCell(cel4);
+            }
+            doc.add(table);
+            doc.close();
+            Desktop.getDesktop().open(new File(arquivoPdf));
+            
+        } catch (Exception e) {
+        }
+    }
 }
