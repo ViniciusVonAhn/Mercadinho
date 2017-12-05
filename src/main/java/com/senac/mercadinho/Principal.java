@@ -32,7 +32,7 @@ public class Principal extends javax.swing.JFrame {
     Arquivo a = new Arquivo();
     ProdutoDAO pdao = new ProdutoDAO();
     Produto p = new Produto();
-     Venda venda = new Venda();
+    Venda venda = new Venda();
     private String cadeado;
     private String lupa;
     private String janela;
@@ -55,7 +55,7 @@ public class Principal extends javax.swing.JFrame {
         jTable2.setRowSorter(new TableRowSorter(modelo));
         //RadioUn.setSelected(true);
         readjTable();
-         codigoBarrasC.setText("");
+        codigoBarrasC.setText("");
         quantidadeC.setText("");
         totalC.setText("");
         totalC1.setText("");
@@ -226,8 +226,6 @@ public class Principal extends javax.swing.JFrame {
         jtbVenda.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jtbVenda.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"Arroz Tio Joao 2 Kg",  new Integer(10),  new Double(1.5)},
-                {"Farinha Mafalda 5Kg",  new Integer(66),  new Double(7.35)},
                 {null, null, null},
                 {null, null, null},
                 {null, null, null},
@@ -397,7 +395,6 @@ public class Principal extends javax.swing.JFrame {
         totalT1.setToolTipText("");
         areaV.add(totalT1, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 380, -1, -1));
 
-        totalC1.setEditable(false);
         totalC1.setBackground(new java.awt.Color(153, 153, 153));
         totalC1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 6));
         totalC1.setForeground(new java.awt.Color(255, 255, 255));
@@ -875,11 +872,15 @@ public class Principal extends javax.swing.JFrame {
         totalC1.setText("");
         trocoC.setText("");
         quantidadeC.setText("");
+        venda.setValorpago(0);
+        p.setQuantidadeUn(0);
+        p.setQuantidadeKg(0);
+        p.setQuantidade(0);
 
         if (venda.getTroco() >= 0) {
             pdao.finalizarCompra();
             readJTable();
-            codigoBarrasC.requestFocus();
+//            codigoBarrasC.requestFocus();
 
         } else {
             JOptionPane.showMessageDialog(null, "Compra cancelada");
@@ -973,7 +974,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_codigoBarrasCActionPerformed
 
     private void codigoBarrasCKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigoBarrasCKeyPressed
-       if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             try {
                 //DefaultTableModel dtm = (DefaultTableModel) ;
                 //dtm.addRow(new Object[]{"","","","",""}); // no lugar das aspas vc coloca seus Jtextfields (textfield1.getText(), textField2.getText().... ) e assim por diante.
@@ -1004,7 +1005,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_campoPTKeyReleased
 
     private void quantidadeCKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_quantidadeCKeyPressed
-         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
 
             int qnt = Integer.parseInt(quantidadeC.getText());
             p.setQuantidadeUn(qnt);
@@ -1102,26 +1103,26 @@ public class Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             Formatacoes f = new Formatacoes();
-            double valor = f.virgulaParaPonto(totalC1);
-            System.out.println("SETANDO TOTALC1 KEY PRESSED" + valor);
-            venda.setValorpago(valor);
+            double valorRecebido = f.virgulaParaPonto(totalC1);
+            System.out.println("SETANDO TOTALC1 KEY PRESSED" + valorRecebido);
 
             double total = f.virgulaParaPonto(totalC);
+            venda.calculaTotal(total);// PROBLEMA AQI MEU
+            
+            if (valorRecebido >= total) {
+                venda.setValorpago(valorRecebido);
 
-            venda.calculaTotal(total);
-            venda.calculaTroco();
+                venda.calculaTroco();
+                String troco = f.limitarCasasDecimais(venda.getTroco());
 
-            String troco = f.limitarCasasDecimais(venda.getTroco());
-
-            String trocoformated = f.pontoParaVirgula(troco);
-            System.out.println("TROCO FORMATADO TOTALC1 KEY PRESSES" + trocoformated);
-
-            if (venda.getTroco() >= 0) {
+                String trocoformated = f.pontoParaVirgula(troco);
+                
+                System.out.println("TROCO FORMATADO TOTALC1 KEY PRESSES" + trocoformated);
                 trocoC.setText(trocoformated);
+
             } else {
                 JOptionPane.showMessageDialog(null, "Dinheiro insuficiente");
             }
-
             codigoBarrasC.setText("");
             quantidadeC.setText("");
         }
@@ -1129,7 +1130,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void abreCaixaFMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_abreCaixaFMouseClicked
         // TODO add your handling code here:
-         Formatacoes f = new Formatacoes();
+        Formatacoes f = new Formatacoes();
         if (jtbVenda.getSelectedRow() != -1) {
             DefaultTableModel dtm = (DefaultTableModel) jtbVenda.getModel();
             double valortotal = pdao.recalcularProdutosVenda(jtbVenda.getSelectedRow());
@@ -1170,7 +1171,7 @@ public class Principal extends javax.swing.JFrame {
             });
         }
     }
-    
+
     /**
      * @param args the command line arguments
      */
@@ -1246,7 +1247,7 @@ public class Principal extends javax.swing.JFrame {
             btImagem.setEnabled(true);
             btNovo.setEnabled(false);
             jTable2.setEnabled(false);
-        } else if(salvar.equals("verdade")){
+        } else if (salvar.equals("verdade")) {
             codigoC.setVisible(false);
             barraC.setVisible(false);
             descricaoC.setVisible(false);

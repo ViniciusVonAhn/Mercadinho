@@ -51,12 +51,14 @@ public class Venda {
     }
     
     public void calculaTroco(){
-        double troco = (getValorpago()-getValortotal());
+        System.out.println("VALOR PAGOOOOOOOOOo"+getValorpago());
+        System.out.println("VALOR TOTALL"+getValortotal());
+        double troco = ((getValorpago())-(getValortotal()));
         setTroco(troco);
     }
     
     public void calculaTotal(double valorProduto){
-        setValortotal(getValortotal()+(valorProduto));
+        setValortotal((getValortotal()+(valorProduto)));
     }
     
     public void recalcularTotal(double novototal){

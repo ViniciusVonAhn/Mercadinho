@@ -97,7 +97,7 @@ public class ProdutoDAO extends ConnectionFactory {
 
         try {
             //          recalcularProdutosVenda();
-            stmt = (PreparedStatement) con.prepareStatement("TRUNCATE TABLE venda;");
+            stmt = (PreparedStatement) con.prepareStatement("TRUNCATE TABLE venda;");//NAO FAZ SENTIDO LIMPAR A TABELA
             stmt.executeUpdate();
             JOptionPane.showMessageDialog(null, "Venda concluída"); //acho que nao ta no lugar certo
         } catch (SQLException ex) {
