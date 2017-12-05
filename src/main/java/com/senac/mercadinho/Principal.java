@@ -15,6 +15,7 @@ import com.senac.mercadinho.util.CodigoBarraEAN;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.text.DecimalFormat;
+import java.util.List;
 import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
@@ -38,6 +39,7 @@ public class Principal extends javax.swing.JFrame {
     private String janela;
     private String salvar;
     private String usuario;
+    private boolean ook;
 
     /**
      * Creates new form Principal
@@ -868,6 +870,21 @@ public class Principal extends javax.swing.JFrame {
 
     private void confereTotalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confereTotalMouseClicked
         // TODO add your handling code here:
+        int numerolinhas = jtbVenda.getRowCount();
+        for (int i = 0; i < numerolinhas; i++) {
+            pdao.percorrerVenda(i);    
+            
+            String x = (ProdutoDAO.codigos.get(i));
+            int quantidadeEstoque = (ProdutoDAO.quantidades.get(i));
+            
+            DefaultTableModel dtm = (DefaultTableModel)jtbVenda.getModel();
+            int quantidade =  Integer.parseInt(String.valueOf(dtm.getValueAt(i, 1)));
+            
+            pdao.removerQuantidadeEstoque(x, quantidade, quantidadeEstoque);
+            
+        }
+
+        
         totalC.setText("");
         totalC1.setText("");
         trocoC.setText("");
@@ -890,6 +907,8 @@ public class Principal extends javax.swing.JFrame {
             readJTable();
             codigoBarrasC.requestFocus();
         }
+        ProdutoDAO.codigos.clear();
+        ProdutoDAO.quantidades.clear();
         totalC1.setText("");
     }//GEN-LAST:event_confereTotalMouseClicked
 
@@ -1010,28 +1029,33 @@ public class Principal extends javax.swing.JFrame {
             int qnt = Integer.parseInt(quantidadeC.getText());
             p.setQuantidadeUn(qnt);
 
-            System.out.println(p.getQuantidadeUn());
-            System.out.println(p.getCodigoDeBarras());
+            ook = pdao.validarQuantidade(p.getCodigoDeBarras(), p.getQuantidadeUn());
 
-            double total = pdao.addVenda(p.getQuantidadeUn(), p.getCodigoDeBarras());
+            if (ook == true) {
+                double total = pdao.addVenda(p.getQuantidadeUn(), p.getCodigoDeBarras());
 
-            DecimalFormat decimal = new DecimalFormat("0.00");
-            String valorFormatado = decimal.format(total);
+                DecimalFormat decimal = new DecimalFormat("0.00");
+                String valorFormatado = decimal.format(total);
 
-            totalC.setText(valorFormatado);
+                totalC.setText(valorFormatado);
 
-            try {
-                if (!codigoBarrasC.getText().equals("")) {
-                    pdao.venda(codigoBarrasC.getText());
-                } else {
-                    DefaultTableModel nv = new DefaultTableModel();
-                    jtbVenda.setModel(nv);
+                try {
+                    if (!codigoBarrasC.getText().equals("")) {
+                        pdao.venda(codigoBarrasC.getText());
+                    } else {
+                        DefaultTableModel nv = new DefaultTableModel();
+                        jtbVenda.setModel(nv);
+                    }
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, "Erro: " + ex.getMessage());
                 }
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "Erro: " + ex.getMessage());
-            }
 
-            readJTable();
+                readJTable();
+            } else {
+                JOptionPane.showMessageDialog(null, "Adcione uma quantidade valida!");
+                codigoBarrasC.setText("");
+                quantidadeC.setText("");
+            }
         }
     }//GEN-LAST:event_quantidadeCKeyPressed
 
@@ -1108,7 +1132,7 @@ public class Principal extends javax.swing.JFrame {
 
             double total = f.virgulaParaPonto(totalC);
             venda.calculaTotal(total);// PROBLEMA AQI MEU
-            
+
             if (valorRecebido >= total) {
                 venda.setValorpago(valorRecebido);
 
@@ -1116,7 +1140,7 @@ public class Principal extends javax.swing.JFrame {
                 String troco = f.limitarCasasDecimais(venda.getTroco());
 
                 String trocoformated = f.pontoParaVirgula(troco);
-                
+
                 System.out.println("TROCO FORMATADO TOTALC1 KEY PRESSES" + trocoformated);
                 trocoC.setText(trocoformated);
 

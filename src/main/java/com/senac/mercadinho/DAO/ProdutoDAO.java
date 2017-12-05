@@ -35,8 +35,70 @@ import javax.swing.table.DefaultTableModel;
 public class ProdutoDAO extends ConnectionFactory {
 
     public ResultSet result;
-
+    boolean ok;
+    public static ArrayList<String> codigos = new ArrayList();
+    public static ArrayList<Integer> quantidades = new ArrayList();
+    
     Venda venda = new Venda();
+
+    public boolean validarQuantidade(String codigodebarras, int quantidade) {
+        for (Produto p : read()) {
+            if (p.getCodigoDeBarras().equalsIgnoreCase(codigodebarras)) {
+                if (p.getQuantidadeUn() >= quantidade) {
+                    ok = true;
+                } else {
+                    JOptionPane.showMessageDialog(null, "Não há quantidade " + quantidade + " de " + p.getDescricao() + " em estoque!");
+                    JOptionPane.showMessageDialog(null, "Há quantidade " + p.getQuantidadeUn() + " de " + p.getDescricao() + " em estoque!");
+                    ok = false;
+                }
+            }
+        }
+        return ok;
+    }
+
+    public void percorrerVenda(int id) {
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            stmt = (PreparedStatement) con.prepareStatement("SELECT produtos.codigo_de_barras, produtos.quantidade_un"
+                    + " FROM produtos INNER JOIN venda ON"
+                    + "(produtos.produtosid=venda.produtosid) WHERE venda.id = "+(id+1)+";");
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                codigos.add(rs.getString("codigo_de_barras"));
+                quantidades.add(rs.getInt("quantidade_un"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProdutoDAO.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            ConnectionFactory.closeConnection(con, stmt, rs);
+        }
+    }
+
+    public void removerQuantidadeEstoque(String codigodebarras, int quantidade, int quantidadeEstoque) {
+        int recalculandoQuantidade = (quantidadeEstoque - quantidade);
+        
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null;
+
+        try {
+            stmt = (PreparedStatement) con.prepareStatement("UPDATE produtos SET quantidade_un = ? WHERE produtos.codigo_de_barras = "+codigodebarras+";");
+            stmt.setInt(1, recalculandoQuantidade);
+            
+
+            stmt.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Atualizado com sucesso");
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao atualizar: " + ex);
+        } finally {
+            ConnectionFactory.closeConnection(con, stmt);
+        }
+
+    }
 
     public double recalcularProdutosVenda(int id) {
         Connection con = ConnectionFactory.getConnection();
@@ -54,21 +116,23 @@ public class ProdutoDAO extends ConnectionFactory {
                 Produto produto = new Produto();
                 produto.setCodigo(rs.getInt("id"));
 
-                if (produto.getCodigo() == (id+1)) {
+                if (produto.getCodigo() == (id + 1)) {
                     produto.setValor(rs.getDouble("valor"));
                     System.out.println(produto.getValor() + "PRODUTO GET VALOR RECALCULAR PRODUTOS VENDA");
 
                     produto.setQuantidadeUn((rs.getInt("quantidade")));
 
                     double calculo = (produto.getValor() * produto.getQuantidadeUn());
-                    System.out.println("CALCULO"+calculo);
+                    System.out.println("CALCULO" + calculo);
 
                     venda.recalcularTotal(calculo);
                     System.out.println("NOVO TOTAL RECALCULAR TOTAL" + venda.getValortotal());
+
                 }
             }
         } catch (SQLException ex) {
-            Logger.getLogger(ProdutoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProdutoDAO.class
+                    .getName()).log(Level.SEVERE, null, ex);
         } finally {
             ConnectionFactory.closeConnection(con, stmt, rs);
         }
@@ -85,7 +149,8 @@ public class ProdutoDAO extends ConnectionFactory {
             stmt.executeUpdate();
 
         } catch (SQLException ex) {
-            Logger.getLogger(ProdutoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProdutoDAO.class
+                    .getName()).log(Level.SEVERE, null, ex);
         } finally {
             ConnectionFactory.closeConnection(con, stmt);
         }
@@ -100,8 +165,10 @@ public class ProdutoDAO extends ConnectionFactory {
             stmt = (PreparedStatement) con.prepareStatement("TRUNCATE TABLE venda;");//NAO FAZ SENTIDO LIMPAR A TABELA
             stmt.executeUpdate();
             JOptionPane.showMessageDialog(null, "Venda concluída"); //acho que nao ta no lugar certo
+
         } catch (SQLException ex) {
-            Logger.getLogger(ProdutoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProdutoDAO.class
+                    .getName()).log(Level.SEVERE, null, ex);
         } finally {
             ConnectionFactory.closeConnection(con, stmt);
 
@@ -117,8 +184,10 @@ public class ProdutoDAO extends ConnectionFactory {
             stmt.executeUpdate();
 
             JOptionPane.showMessageDialog(null, "Item excluído com sucesso");
+
         } catch (SQLException ex) {
-            Logger.getLogger(ProdutoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProdutoDAO.class
+                    .getName()).log(Level.SEVERE, null, ex);
         } finally {
             ConnectionFactory.closeConnection(con, stmt);
 
@@ -147,9 +216,11 @@ public class ProdutoDAO extends ConnectionFactory {
                 produto.setQuantidadeUn(rs.getInt("quantidade"));
 
                 produtos.add(produto);
+
             }
         } catch (SQLException ex) {
-            Logger.getLogger(ProdutoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProdutoDAO.class
+                    .getName()).log(Level.SEVERE, null, ex);
         } finally {
             ConnectionFactory.closeConnection(con, stmt, rs);
         }
@@ -190,7 +261,7 @@ public class ProdutoDAO extends ConnectionFactory {
         }
         return venda.getValortotal();
     }
-    
+
     public void createKg(Produto p) {
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null;
@@ -265,9 +336,11 @@ public class ProdutoDAO extends ConnectionFactory {
                 produto.setValor(rs.getDouble("valor"));
 
                 produtos.add(produto);
+
             }
         } catch (SQLException ex) {
-            Logger.getLogger(ProdutoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ProdutoDAO.class
+                    .getName()).log(Level.SEVERE, null, ex);
         } finally {
             ConnectionFactory.closeConnection(con, stmt, rs);
         }
@@ -402,49 +475,49 @@ public class ProdutoDAO extends ConnectionFactory {
         Document doc = new Document();
         List<Produto> listp = read();
         String arquivoPdf = "relatorio.pdf";
-        
+
         try {
             PdfWriter.getInstance(doc, new FileOutputStream(arquivoPdf));
             doc.open();
-            
+
             Paragraph p = new Paragraph("Relatório de Estoque");
             p.setAlignment(1);
             doc.add(p);
             p = new Paragraph("  ");
             doc.add(p);
-            
+
             PdfPTable table = new PdfPTable(4);
-            
+
             PdfPCell cel1 = new PdfPCell(new Paragraph("Codigo"));
             PdfPCell cel2 = new PdfPCell(new Paragraph("Descrição"));
             PdfPCell cel3 = new PdfPCell(new Paragraph("Quantidade"));
             PdfPCell cel4 = new PdfPCell(new Paragraph("Valor"));
-            
+
             table.addCell(cel1);
             table.addCell(cel2);
             table.addCell(cel3);
             table.addCell(cel4);
-            
-            for(Produto produto : listp){
-            cel1 = new PdfPCell(new Paragraph(produto.getCodigoDeBarras()+""));
-            cel2 = new PdfPCell(new Paragraph(produto.getDescricao()+""));
-            if ("UN".equals(produto.getUnidade())) {
-             cel3 = new PdfPCell(new Paragraph(produto.getQuantidadeUn()+""));
+
+            for (Produto produto : listp) {
+                cel1 = new PdfPCell(new Paragraph(produto.getCodigoDeBarras() + ""));
+                cel2 = new PdfPCell(new Paragraph(produto.getDescricao() + ""));
+                if ("UN".equals(produto.getUnidade())) {
+                    cel3 = new PdfPCell(new Paragraph(produto.getQuantidadeUn() + ""));
                 } else {
-             cel3 = new PdfPCell(new Paragraph(produto.getQuantidadeKg()+""));
+                    cel3 = new PdfPCell(new Paragraph(produto.getQuantidadeKg() + ""));
                 }
-            
-            cel4 = new PdfPCell(new Paragraph(produto.getValor()+""));
-            
-            table.addCell(cel1);
-            table.addCell(cel2);
-            table.addCell(cel3);
-            table.addCell(cel4);
+
+                cel4 = new PdfPCell(new Paragraph(produto.getValor() + ""));
+
+                table.addCell(cel1);
+                table.addCell(cel2);
+                table.addCell(cel3);
+                table.addCell(cel4);
             }
             doc.add(table);
             doc.close();
             Desktop.getDesktop().open(new File(arquivoPdf));
-            
+
         } catch (Exception e) {
         }
     }
