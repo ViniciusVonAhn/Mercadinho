@@ -13,6 +13,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.mysql.jdbc.PreparedStatement;
 import com.senac.mercadinho.Connection.ConnectionFactory;
 import com.senac.mercadinho.model.bean.Produto;
+import com.senac.mercadinho.model.bean.Venda;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -35,6 +36,161 @@ public class ProdutoDAO extends ConnectionFactory {
 
     public ResultSet result;
 
+    Venda venda = new Venda();
+
+    public double recalcularProdutosVenda(int id) {
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            stmt = (PreparedStatement) con.prepareStatement("SELECT venda.id, produtos.descricao,"
+                    + " produtos.valor, venda.quantidade FROM produtos INNER JOIN venda ON"
+                    + "(produtos.produtosid=venda.produtosid);");
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+
+                Produto produto = new Produto();
+                produto.setCodigo(rs.getInt("id"));
+
+                if (produto.getCodigo() == (id+1)) {
+                    produto.setValor(rs.getDouble("valor"));
+                    System.out.println(produto.getValor() + "PRODUTO GET VALOR RECALCULAR PRODUTOS VENDA");
+
+                    produto.setQuantidadeUn((rs.getInt("quantidade")));
+
+                    double calculo = (produto.getValor() * produto.getQuantidadeUn());
+                    System.out.println("CALCULO"+calculo);
+
+                    venda.recalcularTotal(calculo);
+                    System.out.println("NOVO TOTAL RECALCULAR TOTAL" + venda.getValortotal());
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProdutoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            ConnectionFactory.closeConnection(con, stmt, rs);
+        }
+        return venda.getValortotal();
+    }
+
+    public void limparJtable() {
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null;
+
+        try {
+//            recalcularProdutosVenda();
+            stmt = (PreparedStatement) con.prepareStatement("TRUNCATE TABLE venda;");
+            stmt.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ProdutoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            ConnectionFactory.closeConnection(con, stmt);
+        }
+    }
+
+    public void finalizarCompra() {
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null;
+
+        try {
+            //          recalcularProdutosVenda();
+            stmt = (PreparedStatement) con.prepareStatement("TRUNCATE TABLE venda;");
+            stmt.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Venda concluída"); //acho que nao ta no lugar certo
+        } catch (SQLException ex) {
+            Logger.getLogger(ProdutoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            ConnectionFactory.closeConnection(con, stmt);
+
+        }
+    }
+
+    public void excluirProdutoCompra(int id) {
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null;
+
+        try {
+            stmt = (PreparedStatement) con.prepareStatement("DELETE FROM venda WHERE id = " + (id + 1) + ";");
+            stmt.executeUpdate();
+
+            JOptionPane.showMessageDialog(null, "Item excluído com sucesso");
+        } catch (SQLException ex) {
+            Logger.getLogger(ProdutoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            ConnectionFactory.closeConnection(con, stmt);
+
+        }
+    }
+
+    //aplicar polimorfismo depois
+    public List<Produto> readVenda() {
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        List<Produto> produtos = new ArrayList<>();
+
+        try {
+            stmt = (PreparedStatement) con.prepareStatement("SELECT produtos.descricao,"
+                    + " produtos.valor, venda.quantidade FROM produtos INNER JOIN venda ON"
+                    + "(produtos.produtosid=venda.produtosid);");
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+
+                Produto produto = new Produto();
+
+                produto.setDescricao(rs.getString("descricao"));
+                produto.setValor(rs.getDouble("valor"));
+                produto.setQuantidadeUn(rs.getInt("quantidade"));
+
+                produtos.add(produto);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProdutoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            ConnectionFactory.closeConnection(con, stmt, rs);
+        }
+        return produtos;
+    }
+
+    public double addVenda(int quantidade, String cod) {
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        Produto p = new Produto();
+        try {
+            stmt = (PreparedStatement) con.prepareStatement("SELECT produtosid, valor, descricao FROM produtos WHERE codigo_de_barras=" + cod + ";");
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                p.setCodigo(rs.getInt("produtosid"));
+                p.setValor(rs.getDouble("valor"));
+                p.setDescricao(rs.getString("descricao"));
+            }
+
+            stmt = (PreparedStatement) con.prepareStatement("INSERT INTO venda (produtosid, quantidade, valortotal) VALUES (?,?,?)");
+            stmt.setInt(1, p.getCodigo());
+            stmt.setInt(2, quantidade);
+
+            double total = quantidade * p.getValor();
+            venda.calculaTotal(total);
+
+            stmt.setDouble(3, total);
+
+            stmt.executeUpdate();
+            //JOptionPane.showMessageDialog(null, "Salvo com sucesso");
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Erro ao salvar: " + ex);
+        } finally {
+            ConnectionFactory.closeConnection(con, stmt);
+        }
+        return venda.getValortotal();
+    }
+    
     public void createKg(Produto p) {
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null;

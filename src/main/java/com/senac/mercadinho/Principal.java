@@ -7,11 +7,14 @@ package com.senac.mercadinho;
 
 import com.senac.mercadinho.DAO.ProdutoDAO;
 import com.senac.mercadinho.DAO.UsuarioDAO;
+import com.senac.mercadinho.model.bean.Formatacoes;
 import com.senac.mercadinho.model.bean.Produto;
+import com.senac.mercadinho.model.bean.Venda;
 import com.senac.mercadinho.util.Arquivo;
 import com.senac.mercadinho.util.CodigoBarraEAN;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
+import java.text.DecimalFormat;
 import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
@@ -29,6 +32,7 @@ public class Principal extends javax.swing.JFrame {
     Arquivo a = new Arquivo();
     ProdutoDAO pdao = new ProdutoDAO();
     Produto p = new Produto();
+     Venda venda = new Venda();
     private String cadeado;
     private String lupa;
     private String janela;
@@ -51,6 +55,13 @@ public class Principal extends javax.swing.JFrame {
         jTable2.setRowSorter(new TableRowSorter(modelo));
         //RadioUn.setSelected(true);
         readjTable();
+         codigoBarrasC.setText("");
+        quantidadeC.setText("");
+        totalC.setText("");
+        totalC1.setText("");
+        trocoC.setText("");
+        pdao.limparJtable();
+
     }
 
     /**
@@ -333,6 +344,11 @@ public class Principal extends javax.swing.JFrame {
         quantidadeC.setText("9");
         quantidadeC.setToolTipText("");
         quantidadeC.setFont(new java.awt.Font("Hobo Std", 0, 24)); // NOI18N
+        quantidadeC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                quantidadeCActionPerformed(evt);
+            }
+        });
         quantidadeC.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 quantidadeCKeyPressed(evt);
@@ -368,6 +384,11 @@ public class Principal extends javax.swing.JFrame {
         areaV.add(confereTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(1110, 460, -1, 32));
 
         abreCaixaF.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/remove.png"))); // NOI18N
+        abreCaixaF.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                abreCaixaFMouseClicked(evt);
+            }
+        });
         areaV.add(abreCaixaF, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 20, -1, -1));
 
         totalT1.setFont(new java.awt.Font("Hobo Std", 0, 36)); // NOI18N
@@ -385,6 +406,11 @@ public class Principal extends javax.swing.JFrame {
         totalC1.setText("354,00");
         totalC1.setToolTipText("");
         totalC1.setFont(new java.awt.Font("Arial Black", 0, 36)); // NOI18N
+        totalC1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                totalC1KeyPressed(evt);
+            }
+        });
         areaV.add(totalC1, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 386, 190, 36));
 
         totalF1.setFont(new java.awt.Font("Hobo Std", 0, 18)); // NOI18N
@@ -845,6 +871,25 @@ public class Principal extends javax.swing.JFrame {
 
     private void confereTotalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confereTotalMouseClicked
         // TODO add your handling code here:
+        totalC.setText("");
+        totalC1.setText("");
+        trocoC.setText("");
+        quantidadeC.setText("");
+
+        if (venda.getTroco() >= 0) {
+            pdao.finalizarCompra();
+            readJTable();
+            codigoBarrasC.requestFocus();
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Compra cancelada");
+            pdao.finalizarCompra();
+            venda.setValorpago(0);
+            p.setQuantidadeUn(0);
+            readJTable();
+            codigoBarrasC.requestFocus();
+        }
+        totalC1.setText("");
     }//GEN-LAST:event_confereTotalMouseClicked
 
     private void confereTotalMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confereTotalMouseEntered
@@ -928,21 +973,23 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_codigoBarrasCActionPerformed
 
     private void codigoBarrasCKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigoBarrasCKeyPressed
-        try {
-            Vector cabecalho = new Vector();
+       if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            try {
+                //DefaultTableModel dtm = (DefaultTableModel) ;
+                //dtm.addRow(new Object[]{"","","","",""}); // no lugar das aspas vc coloca seus Jtextfields (textfield1.getText(), textField2.getText().... ) e assim por diante.
+                Vector cabecalho = new Vector();
 
-            cabecalho.add("descricao");
-            cabecalho.add("quantidade_kg");
-            cabecalho.add("valor");
-            if (!codigoBarrasC.getText().equals("")) {
-                DefaultTableModel nv = new DefaultTableModel(pdao.pesquisar(codigoBarrasC.getText()), cabecalho);
-                jtbVenda.setModel(nv);
-            } else {
-                DefaultTableModel nv = new DefaultTableModel(new Vector(), cabecalho);
-                jtbVenda.setModel(nv);
+                p.setCodigoDeBarras(codigoBarrasC.getText());
+                System.out.println(p.getCodigoDeBarras());
+
+                cabecalho.add("descricao");
+                cabecalho.add("quantidade_kg");
+                cabecalho.add("valor");
+
+                quantidadeC.requestFocus();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Erro: " + ex.getMessage());
             }
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Erro: " + ex.getMessage());
         }
     }//GEN-LAST:event_codigoBarrasCKeyPressed
 
@@ -957,15 +1004,33 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_campoPTKeyReleased
 
     private void quantidadeCKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_quantidadeCKeyPressed
-        try {
-            if (!codigoBarrasC.getText().equals("")) {
-                pdao.venda(codigoBarrasC.getText());
-            } else {
-                DefaultTableModel nv = new DefaultTableModel();
-                jtbVenda.setModel(nv);
+         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+
+            int qnt = Integer.parseInt(quantidadeC.getText());
+            p.setQuantidadeUn(qnt);
+
+            System.out.println(p.getQuantidadeUn());
+            System.out.println(p.getCodigoDeBarras());
+
+            double total = pdao.addVenda(p.getQuantidadeUn(), p.getCodigoDeBarras());
+
+            DecimalFormat decimal = new DecimalFormat("0.00");
+            String valorFormatado = decimal.format(total);
+
+            totalC.setText(valorFormatado);
+
+            try {
+                if (!codigoBarrasC.getText().equals("")) {
+                    pdao.venda(codigoBarrasC.getText());
+                } else {
+                    DefaultTableModel nv = new DefaultTableModel();
+                    jtbVenda.setModel(nv);
+                }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Erro: " + ex.getMessage());
             }
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Erro: " + ex.getMessage());
+
+            readJTable();
         }
     }//GEN-LAST:event_quantidadeCKeyPressed
 
@@ -1026,6 +1091,86 @@ public class Principal extends javax.swing.JFrame {
         pdao.gerarPDF();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void quantidadeCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quantidadeCActionPerformed
+        // TODO add your handling code here:
+        Produto p = new Produto();
+        int qnt = Integer.parseInt(quantidadeC.getText());
+        p.setQuantidade(qnt);
+    }//GEN-LAST:event_quantidadeCActionPerformed
+
+    private void totalC1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_totalC1KeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            Formatacoes f = new Formatacoes();
+            double valor = f.virgulaParaPonto(totalC1);
+            System.out.println("SETANDO TOTALC1 KEY PRESSED" + valor);
+            venda.setValorpago(valor);
+
+            double total = f.virgulaParaPonto(totalC);
+
+            venda.calculaTotal(total);
+            venda.calculaTroco();
+
+            String troco = f.limitarCasasDecimais(venda.getTroco());
+
+            String trocoformated = f.pontoParaVirgula(troco);
+            System.out.println("TROCO FORMATADO TOTALC1 KEY PRESSES" + trocoformated);
+
+            if (venda.getTroco() >= 0) {
+                trocoC.setText(trocoformated);
+            } else {
+                JOptionPane.showMessageDialog(null, "Dinheiro insuficiente");
+            }
+
+            codigoBarrasC.setText("");
+            quantidadeC.setText("");
+        }
+    }//GEN-LAST:event_totalC1KeyPressed
+
+    private void abreCaixaFMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_abreCaixaFMouseClicked
+        // TODO add your handling code here:
+         Formatacoes f = new Formatacoes();
+        if (jtbVenda.getSelectedRow() != -1) {
+            DefaultTableModel dtm = (DefaultTableModel) jtbVenda.getModel();
+            double valortotal = pdao.recalcularProdutosVenda(jtbVenda.getSelectedRow());
+            if (valortotal > 0) {
+                String valor = f.limitarCasasDecimais(valortotal);
+                String valorfinal = f.pontoParaVirgula(valor);
+                System.out.println(valorfinal + " VALOR FINAL FUNCAO REMOVER");
+                totalC.setText(valorfinal);
+            } else {
+                totalC.setText("");
+            }
+
+            pdao.excluirProdutoCompra(jtbVenda.getSelectedRow());
+
+            codigoBarrasC.setText("");
+            //totalC1.setText("");
+            quantidadeC.setText("");
+
+            dtm.removeRow(jtbVenda.getSelectedRow());
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Selecione um produto para excluir");
+        }
+    }//GEN-LAST:event_abreCaixaFMouseClicked
+
+    public void readJTable() {
+        pdao.readVenda();
+
+        DefaultTableModel dtm = (DefaultTableModel) jtbVenda.getModel();
+        dtm.setNumRows(0);
+
+        for (Produto p : pdao.readVenda()) {
+
+            dtm.addRow(new Object[]{
+                p.getDescricao(),
+                p.getQuantidadeUn(),
+                p.getValor()
+            });
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
