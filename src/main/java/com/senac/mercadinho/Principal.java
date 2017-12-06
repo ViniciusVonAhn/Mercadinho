@@ -42,9 +42,7 @@ public class Principal extends javax.swing.JFrame {
     private boolean unid;
     
 
-    /**
-     * Creates new form Principal
-     */
+    
     public Principal() {
         initComponents();
         cadeado = "fechado";
@@ -64,9 +62,7 @@ public class Principal extends javax.swing.JFrame {
         totalC1.setText("");
         trocoC.setText("");
         pdao.limparJtable();
-        ProdutoDAO.codigos.clear();
-        ProdutoDAO.quantidades.clear();
-
+       
     }
 
     /**
@@ -873,24 +869,34 @@ public class Principal extends javax.swing.JFrame {
 
     private void confereTotalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confereTotalMouseClicked
         // TODO add your handling code here:
-        System.out.println(ProdutoDAO.codigos);
-        System.out.println(ProdutoDAO.quantidades);
-        int numerolinhas = jtbVenda.getRowCount();
+       int numerolinhas = jtbVenda.getRowCount();
+        System.out.println("NUMERO DE LINHAS"+numerolinhas);
         for (int i = 0; i < numerolinhas; i++) {
             pdao.percorrerVenda(i);    
+            unid = ProdutoDAO.unidade;
             
-            String x = (ProdutoDAO.codigos.get(i));
-            int quantidadeEstoque = (ProdutoDAO.quantidades.get(i));
-            
-            DefaultTableModel dtm = (DefaultTableModel)jtbVenda.getModel();
-            int quantidade =  Integer.parseInt(String.valueOf(dtm.getValueAt(i, 1)));
-            
-            System.out.println("OQUE ESTAS ME RETORNANDO "+unid);
-            pdao.removerQuantidadeEstoque(x, quantidade, quantidadeEstoque, unid);
-            
-        }
+            if(unid){
+                System.out.println("ENTROU NO IF");
+                String x = (ProdutoDAO.codigos.get(i));
+                int quantidadeEstoque = (pdao.quantidades.get(i));  
+                DefaultTableModel dtm = (DefaultTableModel)jtbVenda.getModel();
+                int quantidade =  Integer.parseInt(String.valueOf(dtm.getValueAt(i, 1)));
+                pdao.removerQuantidadeEstoque(x, quantidade, quantidadeEstoque, unid);
+                unid = false;
+                System.out.println("FIM DO IF");
+            }else{
+                System.out.println("ENTROU NO ELSE");
+                String x = (ProdutoDAO.codigos.get(i));
+                System.out.println(x+"CODIGO KG");
+                int quantidadeEstoque = (ProdutoDAO.quantidades.get(i));  
+                DefaultTableModel dtm = (DefaultTableModel)jtbVenda.getModel();
+                int quantidade =  Integer.parseInt(String.valueOf(dtm.getValueAt(i, 1)));
+                pdao.removerQuantidadeEstoque(x, quantidade, quantidadeEstoque, unid);
+                unid = false;
+                System.out.println("FIM DO ELSE");
+            }
 
-        
+        }
 
         if (venda.getTroco() >= 0) {
             pdao.finalizarCompra();
@@ -905,20 +911,22 @@ public class Principal extends javax.swing.JFrame {
             readJTable();
             codigoBarrasC.requestFocus();
         }
-        ProdutoDAO.codigos.clear();
-        ProdutoDAO.quantidades.clear();
-//        totalC1.setText("");;
+       
+
         totalC.setText("");
         totalC1.setText("");
         trocoC.setText("");
         quantidadeC.setText("");
         venda.setValorpago(0);
+        venda.setValortotal(0);
+        venda.setTroco(0);
         p.setQuantidadeUn(0);
         p.setQuantidadeKg(0);
         p.setQuantidade(0);
         ProdutoDAO.codigos.clear();
         ProdutoDAO.quantidades.clear();
         ProdutoDAO.unidade = false;
+        
     }//GEN-LAST:event_confereTotalMouseClicked
 
     private void confereTotalMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confereTotalMouseEntered
@@ -1040,10 +1048,7 @@ public class Principal extends javax.swing.JFrame {
             int qnt = Integer.parseInt(quantidadeC.getText());
             p.setQuantidadeUn(qnt);
 
-            pdao.validarQuantidade(p.getCodigoDeBarras(), p.getQuantidadeUn());
-            unid = ProdutoDAO.unidade;
-
-                double total = pdao.addVenda(p.getQuantidadeUn(), p.getCodigoDeBarras());
+            double total = pdao.addVenda(p.getQuantidadeUn(), p.getCodigoDeBarras());
 
                 DecimalFormat decimal = new DecimalFormat("0.00");
                 String valorFormatado = decimal.format(total);

@@ -39,11 +39,13 @@ public class ProdutoDAO extends ConnectionFactory {
     public static boolean unidade;
     public static ArrayList<String> codigos = new ArrayList();
     public static ArrayList<Integer> quantidades = new ArrayList();
+    
 
     Venda venda = new Venda();
 
+   /*
     public void validarQuantidade(String codigodebarras, int quantidade) {
-        System.out.println("CODIGO DE BARRAS VALIDAR QUANTIDADE "+codigodebarras);
+        System.out.println("CODIGO DE BARRAS VALIDAR QUANTIDADE " + codigodebarras);
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -57,12 +59,14 @@ public class ProdutoDAO extends ConnectionFactory {
                     rs = stmt.executeQuery();
 
                     while (rs.next()) {
-                        String codigo = (rs.getString("unidade"));
-                        System.out.println("UN OU KG "+codigo);
-                        if (codigo.equals("UN")) {
-                            unidade = true;
-                        } else if(codigo.equals("KG")){
-                            unidade = false;
+                        if (codigodebarras.equals(rs.getString("codigo_de_barras"))) {
+                            String codigo = (rs.getString("unidade"));
+                            System.out.println("UN OU KG??? " + codigo);
+                            if (codigo.equals("UN")) {
+                                unidade = true;
+                            } else if (codigo.equals("KG")) {
+                                unidade = false;
+                            }
                         }
                     }
 
@@ -79,10 +83,11 @@ public class ProdutoDAO extends ConnectionFactory {
                     JOptionPane.showMessageDialog(null, "Não há quantidade " + quantidade + " de " + p.getDescricao() + " em estoque!");
                     JOptionPane.showMessageDialog(null, "Há quantidade " + p.getQuantidadeUn() + " de " + p.getDescricao() + " em estoque!");
                     ok = false;
-                }*/
+                }*//*
             }
         }
-    }
+    } */
+
 
     public void percorrerVenda(int id) {
         Connection con = ConnectionFactory.getConnection();
@@ -90,19 +95,27 @@ public class ProdutoDAO extends ConnectionFactory {
         ResultSet rs = null;
 
         try {
-            stmt = (PreparedStatement) con.prepareStatement("SELECT produtos.codigo_de_barras, produtos.quantidade_un"
+            stmt = (PreparedStatement) con.prepareStatement("SELECT produtos.codigo_de_barras, produtos.unidade, produtos.quantidade_un, produtos.quantidade_kg"
                     + " FROM produtos INNER JOIN venda ON"
                     + "(produtos.produtosid=venda.produtosid) WHERE venda.id = " + (id + 1) + ";");
             rs = stmt.executeQuery();
             while (rs.next()) {
-                codigos.clear();
-                String cod = rs.getString("codigo_de_barras");
+                String cod = (rs.getString("codigo_de_barras"));
                 codigos.add(cod);
-                System.out.println(codigos);
+                if (rs.getString("unidade").equals("UN")) {
+                    quantidades.add(rs.getInt("quantidade_un"));
+                    unidade = true;
+                } else if (rs.getString("unidade").equals("KG")) {
+                    quantidades.add(rs.getInt("quantidade_kg"));
+                    unidade = false;
+                }
                 
-                System.out.println("CODIGO DE BARRAS PERCORRER VENDA "+cod);
-                quantidades.add(rs.getInt("quantidade_un"));
+
             }
+            System.out.println("IMPRIMINDO ARRAY CODIGOS "+codigos);
+            System.out.println("IMPRIMINDO ARRAY UN "+quantidades);
+            
+
         } catch (SQLException ex) {
             Logger.getLogger(ProdutoDAO.class
                     .getName()).log(Level.SEVERE, null, ex);
@@ -113,26 +126,25 @@ public class ProdutoDAO extends ConnectionFactory {
 
     public void removerQuantidadeEstoque(String codigodebarras, int quantidade, int quantidadeEstoque, boolean unid) {
         int recalculandoQuantidade = (quantidadeEstoque - quantidade);
-        System.out.println("CODIGO DE BARRAS LOCAO "+codigodebarras);
+        System.out.println("CODIGO DE BARRAS LOCAO " + codigodebarras);
 
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null;
 
         try {
-            if(unid){
+            if (unid) {
                 stmt = (PreparedStatement) con.prepareStatement("UPDATE produtos SET quantidade_un = ? WHERE produtos.codigo_de_barras = " + codigodebarras + ";");
                 stmt.setInt(1, recalculandoQuantidade);
-                System.out.println("RECALCULANDO QUANTIDADE "+recalculandoQuantidade);
+                System.out.println("RECALCULANDO QUANTIDADE " + recalculandoQuantidade);
                 System.out.println("ENTROU EM QUANTIDADE UNID");
                 stmt.executeUpdate();
-            }else{
+            } else {
                 stmt = (PreparedStatement) con.prepareStatement("UPDATE produtos SET quantidade_kg = ? WHERE produtos.codigo_de_barras = " + codigodebarras + ";");
                 stmt.setInt(1, recalculandoQuantidade);
-                System.out.println("RECALCULANDO QUANTIDADE "+recalculandoQuantidade);
+                System.out.println("RECALCULANDO QUANTIDADE " + recalculandoQuantidade);
                 System.out.println("ENTROU EM QUANTIDADE KG");
                 stmt.executeUpdate();
             }
-            
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Erro ao atualizar: " + ex);
@@ -368,7 +380,6 @@ public class ProdutoDAO extends ConnectionFactory {
                 Produto produto = new Produto();
                 produto.setCodigo(rs.getInt("codigo"));
                 produto.setCodigoDeBarras(rs.getString("codigo_de_barras"));
-                codigos.add(produto.getCodigoDeBarras());
                 produto.setDescricao(rs.getString("descricao"));
                 produto.setUnidade(rs.getString("unidade"));
                 if ("UN".equals(produto.getUnidade())) {
