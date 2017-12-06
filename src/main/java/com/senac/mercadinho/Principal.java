@@ -39,7 +39,8 @@ public class Principal extends javax.swing.JFrame {
     private String janela;
     private String salvar;
     private String usuario;
-    private boolean ook;
+    private boolean unid;
+    
 
     /**
      * Creates new form Principal
@@ -63,6 +64,8 @@ public class Principal extends javax.swing.JFrame {
         totalC1.setText("");
         trocoC.setText("");
         pdao.limparJtable();
+        ProdutoDAO.codigos.clear();
+        ProdutoDAO.quantidades.clear();
 
     }
 
@@ -870,6 +873,8 @@ public class Principal extends javax.swing.JFrame {
 
     private void confereTotalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confereTotalMouseClicked
         // TODO add your handling code here:
+        System.out.println(ProdutoDAO.codigos);
+        System.out.println(ProdutoDAO.quantidades);
         int numerolinhas = jtbVenda.getRowCount();
         for (int i = 0; i < numerolinhas; i++) {
             pdao.percorrerVenda(i);    
@@ -880,19 +885,12 @@ public class Principal extends javax.swing.JFrame {
             DefaultTableModel dtm = (DefaultTableModel)jtbVenda.getModel();
             int quantidade =  Integer.parseInt(String.valueOf(dtm.getValueAt(i, 1)));
             
-            pdao.removerQuantidadeEstoque(x, quantidade, quantidadeEstoque);
+            System.out.println("OQUE ESTAS ME RETORNANDO "+unid);
+            pdao.removerQuantidadeEstoque(x, quantidade, quantidadeEstoque, unid);
             
         }
 
         
-        totalC.setText("");
-        totalC1.setText("");
-        trocoC.setText("");
-        quantidadeC.setText("");
-        venda.setValorpago(0);
-        p.setQuantidadeUn(0);
-        p.setQuantidadeKg(0);
-        p.setQuantidade(0);
 
         if (venda.getTroco() >= 0) {
             pdao.finalizarCompra();
@@ -909,7 +907,18 @@ public class Principal extends javax.swing.JFrame {
         }
         ProdutoDAO.codigos.clear();
         ProdutoDAO.quantidades.clear();
+//        totalC1.setText("");;
+        totalC.setText("");
         totalC1.setText("");
+        trocoC.setText("");
+        quantidadeC.setText("");
+        venda.setValorpago(0);
+        p.setQuantidadeUn(0);
+        p.setQuantidadeKg(0);
+        p.setQuantidade(0);
+        ProdutoDAO.codigos.clear();
+        ProdutoDAO.quantidades.clear();
+        ProdutoDAO.unidade = false;
     }//GEN-LAST:event_confereTotalMouseClicked
 
     private void confereTotalMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confereTotalMouseEntered
@@ -998,6 +1007,7 @@ public class Principal extends javax.swing.JFrame {
                 //DefaultTableModel dtm = (DefaultTableModel) ;
                 //dtm.addRow(new Object[]{"","","","",""}); // no lugar das aspas vc coloca seus Jtextfields (textfield1.getText(), textField2.getText().... ) e assim por diante.
                 Vector cabecalho = new Vector();
+                
 
                 p.setCodigoDeBarras(codigoBarrasC.getText());
                 System.out.println(p.getCodigoDeBarras());
@@ -1025,13 +1035,14 @@ public class Principal extends javax.swing.JFrame {
 
     private void quantidadeCKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_quantidadeCKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-
+            pdao.read();
+            
             int qnt = Integer.parseInt(quantidadeC.getText());
             p.setQuantidadeUn(qnt);
 
-            ook = pdao.validarQuantidade(p.getCodigoDeBarras(), p.getQuantidadeUn());
+            pdao.validarQuantidade(p.getCodigoDeBarras(), p.getQuantidadeUn());
+            unid = ProdutoDAO.unidade;
 
-            if (ook == true) {
                 double total = pdao.addVenda(p.getQuantidadeUn(), p.getCodigoDeBarras());
 
                 DecimalFormat decimal = new DecimalFormat("0.00");
@@ -1051,11 +1062,7 @@ public class Principal extends javax.swing.JFrame {
                 }
 
                 readJTable();
-            } else {
-                JOptionPane.showMessageDialog(null, "Adcione uma quantidade valida!");
-                codigoBarrasC.setText("");
-                quantidadeC.setText("");
-            }
+            
         }
     }//GEN-LAST:event_quantidadeCKeyPressed
 
@@ -1131,7 +1138,7 @@ public class Principal extends javax.swing.JFrame {
             System.out.println("SETANDO TOTALC1 KEY PRESSED" + valorRecebido);
 
             double total = f.virgulaParaPonto(totalC);
-            venda.calculaTotal(total);// PROBLEMA AQI MEU
+            venda.setValortotal(total);
 
             if (valorRecebido >= total) {
                 venda.setValorpago(valorRecebido);
