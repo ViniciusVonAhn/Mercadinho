@@ -17,7 +17,7 @@ public class ConnectionFactory {
     
     private static final String URL = "jdbc:mysql://localhost:3306/mercadinho?autoReconnect=true&useSSL=false";
     private static final String USER = "root";
-    private static final String PASS = "root";
+    private static final String PASS = "";
     private boolean status = false;
     private com.mysql.jdbc.Connection con = null;
     private Statement statement;
@@ -27,7 +27,7 @@ public class ConnectionFactory {
     
     public static Connection getConnection(){
         try {
-            return DriverManager.getConnection(URL, "root", "root");
+            return DriverManager.getConnection(URL, "root", "");
             
         } catch (SQLException ex) {
           throw new RuntimeException("Erro na conexão: ",ex);

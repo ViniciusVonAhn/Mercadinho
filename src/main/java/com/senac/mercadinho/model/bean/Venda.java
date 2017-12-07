@@ -5,6 +5,7 @@
  */
 package com.senac.mercadinho.model.bean;
 
+import com.senac.mercadinho.Principal;
 import javax.swing.JOptionPane;
 
 /**
@@ -12,12 +13,13 @@ import javax.swing.JOptionPane;
  * @author User
  */
 public class Venda {
+
     private double valortotal;
     private double valorpago;
     private double troco;
 
     public Venda() {
-        
+
     }
 
     public Venda(double valortotal) {
@@ -31,8 +33,6 @@ public class Venda {
     public double getTroco() {
         return troco;
     }
-
-    
 
     public double getValortotal() {
         return valortotal;
@@ -49,20 +49,24 @@ public class Venda {
     public void setValorpago(double valorpago) {
         this.valorpago = valorpago;
     }
-    
-    public void calculaTroco(){
-        System.out.println("VALOR PAGOOOOOOOOOo"+getValorpago());
-        System.out.println("VALOR TOTALL"+getValortotal());
-        double troco = ((getValorpago())-(getValortotal()));
+
+    public void calculaTroco() {
+        double troco = ((getValorpago()) - (getValortotal()));
         setTroco(troco);
     }
-    
-    public void calculaTotal(double valorProduto){
-        setValortotal((getValortotal()+(valorProduto)));
+
+    public void calculaTotal(double valorProduto) {
+        if (Principal.limpar) { //verifica se a compra foi finalizada
+            setValortotal(0);
+            Principal.limpar = false;
+            setValortotal((getValortotal() + (valorProduto)));
+        } else {
+            setValortotal((getValortotal() + (valorProduto)));
+        }
     }
-    
-    public void recalcularTotal(double novototal){
-        double novototal2 = getValortotal()-novototal;
+
+    public void recalcularTotal(double novototal) {
+        double novototal2 = getValortotal() - novototal;
         setValortotal(novototal2);
     }
 }

@@ -43,51 +43,6 @@ public class ProdutoDAO extends ConnectionFactory {
 
     Venda venda = new Venda();
 
-   /*
-    public void validarQuantidade(String codigodebarras, int quantidade) {
-        System.out.println("CODIGO DE BARRAS VALIDAR QUANTIDADE " + codigodebarras);
-        Connection con = ConnectionFactory.getConnection();
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-
-        for (Produto p : read()) {
-            if (p.getCodigoDeBarras().equalsIgnoreCase(codigodebarras)) {
-
-                try {
-                    stmt = (PreparedStatement) con.prepareStatement("SELECT produtos.unidade"
-                            + " FROM produtos WHERE " + codigodebarras + " = " + p.getCodigoDeBarras() + ";");
-                    rs = stmt.executeQuery();
-
-                    while (rs.next()) {
-                        if (codigodebarras.equals(rs.getString("codigo_de_barras"))) {
-                            String codigo = (rs.getString("unidade"));
-                            System.out.println("UN OU KG??? " + codigo);
-                            if (codigo.equals("UN")) {
-                                unidade = true;
-                            } else if (codigo.equals("KG")) {
-                                unidade = false;
-                            }
-                        }
-                    }
-
-                } catch (SQLException ex) {
-                    Logger.getLogger(ProdutoDAO.class
-                            .getName()).log(Level.SEVERE, null, ex);
-                } finally {
-                    ConnectionFactory.closeConnection(con, stmt, rs);
-                }
-
-                /*if (p.getQuantidadeUn() >= quantidade) {
-                    ok = true;
-                } else {
-                    JOptionPane.showMessageDialog(null, "Não há quantidade " + quantidade + " de " + p.getDescricao() + " em estoque!");
-                    JOptionPane.showMessageDialog(null, "Há quantidade " + p.getQuantidadeUn() + " de " + p.getDescricao() + " em estoque!");
-                    ok = false;
-                }*//*
-            }
-        }
-    } */
-
 
     public void percorrerVenda(int id) {
         Connection con = ConnectionFactory.getConnection();
@@ -109,13 +64,7 @@ public class ProdutoDAO extends ConnectionFactory {
                     quantidades.add(rs.getInt("quantidade_kg"));
                     unidade = false;
                 }
-                
-
             }
-            System.out.println("IMPRIMINDO ARRAY CODIGOS "+codigos);
-            System.out.println("IMPRIMINDO ARRAY UN "+quantidades);
-            
-
         } catch (SQLException ex) {
             Logger.getLogger(ProdutoDAO.class
                     .getName()).log(Level.SEVERE, null, ex);
@@ -126,7 +75,6 @@ public class ProdutoDAO extends ConnectionFactory {
 
     public void removerQuantidadeEstoque(String codigodebarras, int quantidade, int quantidadeEstoque, boolean unid) {
         int recalculandoQuantidade = (quantidadeEstoque - quantidade);
-        System.out.println("CODIGO DE BARRAS LOCAO " + codigodebarras);
 
         Connection con = ConnectionFactory.getConnection();
         PreparedStatement stmt = null;
@@ -135,14 +83,10 @@ public class ProdutoDAO extends ConnectionFactory {
             if (unid) {
                 stmt = (PreparedStatement) con.prepareStatement("UPDATE produtos SET quantidade_un = ? WHERE produtos.codigo_de_barras = " + codigodebarras + ";");
                 stmt.setInt(1, recalculandoQuantidade);
-                System.out.println("RECALCULANDO QUANTIDADE " + recalculandoQuantidade);
-                System.out.println("ENTROU EM QUANTIDADE UNID");
                 stmt.executeUpdate();
             } else {
                 stmt = (PreparedStatement) con.prepareStatement("UPDATE produtos SET quantidade_kg = ? WHERE produtos.codigo_de_barras = " + codigodebarras + ";");
                 stmt.setInt(1, recalculandoQuantidade);
-                System.out.println("RECALCULANDO QUANTIDADE " + recalculandoQuantidade);
-                System.out.println("ENTROU EM QUANTIDADE KG");
                 stmt.executeUpdate();
             }
 
@@ -172,15 +116,12 @@ public class ProdutoDAO extends ConnectionFactory {
 
                 if (produto.getCodigo() == (id + 1)) {
                     produto.setValor(rs.getDouble("valor"));
-                    System.out.println(produto.getValor() + "PRODUTO GET VALOR RECALCULAR PRODUTOS VENDA");
 
                     produto.setQuantidadeUn((rs.getInt("quantidade")));
 
                     double calculo = (produto.getValor() * produto.getQuantidadeUn());
-                    System.out.println("CALCULO" + calculo);
 
                     venda.recalcularTotal(calculo);
-                    System.out.println("NOVO TOTAL RECALCULAR TOTAL" + venda.getValortotal());
 
                 }
             }
@@ -198,7 +139,6 @@ public class ProdutoDAO extends ConnectionFactory {
         PreparedStatement stmt = null;
 
         try {
-//            recalcularProdutosVenda();
             stmt = (PreparedStatement) con.prepareStatement("TRUNCATE TABLE venda;");
             stmt.executeUpdate();
 
@@ -215,10 +155,8 @@ public class ProdutoDAO extends ConnectionFactory {
         PreparedStatement stmt = null;
 
         try {
-            //          recalcularProdutosVenda();
-            stmt = (PreparedStatement) con.prepareStatement("TRUNCATE TABLE venda;");//NAO FAZ SENTIDO LIMPAR A TABELA
+            stmt = (PreparedStatement) con.prepareStatement("TRUNCATE TABLE venda;");
             stmt.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Venda concluída"); //acho que nao ta no lugar certo
 
         } catch (SQLException ex) {
             Logger.getLogger(ProdutoDAO.class
@@ -302,7 +240,7 @@ public class ProdutoDAO extends ConnectionFactory {
 
             double total = quantidade * p.getValor();
             venda.calculaTotal(total);
-
+            
             stmt.setDouble(3, total);
 
             stmt.executeUpdate();
@@ -313,6 +251,7 @@ public class ProdutoDAO extends ConnectionFactory {
         } finally {
             ConnectionFactory.closeConnection(con, stmt);
         }
+        
         return venda.getValortotal();
     }
 
