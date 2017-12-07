@@ -144,7 +144,7 @@
             <Component class="javax.swing.JLabel" name="pesqProduto">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Hobo Std" size="48" style="0"/>
+                  <Font name="Hobo Std" size="36" style="0"/>
                 </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="33" green="99" red="ff" type="rgb"/>
@@ -456,7 +456,7 @@
               </Events>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                  <AbsoluteConstraints x="840" y="210" width="90" height="32"/>
+                  <AbsoluteConstraints x="835" y="211" width="90" height="32"/>
                 </Constraint>
               </Constraints>
             </Component>
@@ -577,6 +577,7 @@
                 </Property>
               </Properties>
               <Events>
+                <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="totalC1FocusLost"/>
                 <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="totalC1KeyPressed"/>
               </Events>
               <Constraints>

@@ -40,15 +40,15 @@ public class Principal extends javax.swing.JFrame {
     private String salvar;
     private String usuario;
     private boolean unid;
-    
+    private String jsalvar;
 
-    
     public Principal() {
         initComponents();
         cadeado = "fechado";
         lupa = "fora";
         janela = "entrada";
-        salvar = "falso";
+        salvar = "cancelar";
+        jsalvar = "cancelar";
         usuario = "desconectado";
         startComp();
         pesqValor.setBackground(new Color(0, 0, 0, 0));
@@ -62,7 +62,7 @@ public class Principal extends javax.swing.JFrame {
         totalC1.setText("");
         trocoC.setText("");
         pdao.limparJtable();
-       
+
     }
 
     /**
@@ -198,7 +198,7 @@ public class Principal extends javax.swing.JFrame {
 
         areaP.add(pesqFundoB, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 100, 270, 320));
 
-        pesqProduto.setFont(new java.awt.Font("Hobo Std", 0, 48)); // NOI18N
+        pesqProduto.setFont(new java.awt.Font("Hobo Std", 0, 36)); // NOI18N
         pesqProduto.setForeground(new java.awt.Color(255, 153, 51));
         pesqProduto.setText("Arroz Tio João 1 Kg");
         areaP.add(pesqProduto, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 160, -1, -1));
@@ -353,7 +353,7 @@ public class Principal extends javax.swing.JFrame {
                 quantidadeCKeyPressed(evt);
             }
         });
-        areaV.add(quantidadeC, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 210, 90, 32));
+        areaV.add(quantidadeC, new org.netbeans.lib.awtextra.AbsoluteConstraints(835, 211, 90, 32));
 
         quantidadeT.setFont(new java.awt.Font("Hobo Std", 0, 24)); // NOI18N
         quantidadeT.setForeground(new java.awt.Color(255, 102, 0));
@@ -404,6 +404,11 @@ public class Principal extends javax.swing.JFrame {
         totalC1.setText("354,00");
         totalC1.setToolTipText("");
         totalC1.setFont(new java.awt.Font("Arial Black", 0, 36)); // NOI18N
+        totalC1.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                totalC1FocusLost(evt);
+            }
+        });
         totalC1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 totalC1KeyPressed(evt);
@@ -868,65 +873,67 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_fundoEstoqueMouseClicked
 
     private void confereTotalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confereTotalMouseClicked
-        // TODO add your handling code here:
-       int numerolinhas = jtbVenda.getRowCount();
-        System.out.println("NUMERO DE LINHAS"+numerolinhas);
-        for (int i = 0; i < numerolinhas; i++) {
-            pdao.percorrerVenda(i);    
-            unid = ProdutoDAO.unidade;
-            
-            if(unid){
-                System.out.println("ENTROU NO IF");
-                String x = (ProdutoDAO.codigos.get(i));
-                int quantidadeEstoque = (pdao.quantidades.get(i));  
-                DefaultTableModel dtm = (DefaultTableModel)jtbVenda.getModel();
-                int quantidade =  Integer.parseInt(String.valueOf(dtm.getValueAt(i, 1)));
-                pdao.removerQuantidadeEstoque(x, quantidade, quantidadeEstoque, unid);
-                unid = false;
-                System.out.println("FIM DO IF");
-            }else{
-                System.out.println("ENTROU NO ELSE");
-                String x = (ProdutoDAO.codigos.get(i));
-                System.out.println(x+"CODIGO KG");
-                int quantidadeEstoque = (ProdutoDAO.quantidades.get(i));  
-                DefaultTableModel dtm = (DefaultTableModel)jtbVenda.getModel();
-                int quantidade =  Integer.parseInt(String.valueOf(dtm.getValueAt(i, 1)));
-                pdao.removerQuantidadeEstoque(x, quantidade, quantidadeEstoque, unid);
-                unid = false;
-                System.out.println("FIM DO ELSE");
+        if (jsalvar.equals("salva")) {
+            int numerolinhas = jtbVenda.getRowCount();
+            System.out.println("NUMERO DE LINHAS" + numerolinhas);
+            for (int i = 0; i < numerolinhas; i++) {
+                pdao.percorrerVenda(i);
+                unid = ProdutoDAO.unidade;
+
+                if (unid) {
+                    System.out.println("ENTROU NO IF");
+                    String x = (ProdutoDAO.codigos.get(i));
+                    int quantidadeEstoque = (pdao.quantidades.get(i));
+                    DefaultTableModel dtm = (DefaultTableModel) jtbVenda.getModel();
+                    int quantidade = Integer.parseInt(String.valueOf(dtm.getValueAt(i, 1)));
+                    pdao.removerQuantidadeEstoque(x, quantidade, quantidadeEstoque, unid);
+                    unid = false;
+                    System.out.println("FIM DO IF");
+                } else {
+                    System.out.println("ENTROU NO ELSE");
+                    String x = (ProdutoDAO.codigos.get(i));
+                    System.out.println(x + "CODIGO KG");
+                    int quantidadeEstoque = (ProdutoDAO.quantidades.get(i));
+                    DefaultTableModel dtm = (DefaultTableModel) jtbVenda.getModel();
+                    int quantidade = Integer.parseInt(String.valueOf(dtm.getValueAt(i, 1)));
+                    pdao.removerQuantidadeEstoque(x, quantidade, quantidadeEstoque, unid);
+                    unid = false;
+                    System.out.println("FIM DO ELSE");
+                }
+
             }
 
-        }
-
-        if (venda.getTroco() >= 0) {
-            pdao.finalizarCompra();
-            readJTable();
+            if (venda.getTroco() >= 0) {
+                pdao.finalizarCompra();
+                readJTable();
 //            codigoBarrasC.requestFocus();
 
-        } else {
-            JOptionPane.showMessageDialog(null, "Compra cancelada");
-            pdao.finalizarCompra();
-            venda.setValorpago(0);
-            p.setQuantidadeUn(0);
-            readJTable();
-            codigoBarrasC.requestFocus();
-        }
-       
+            } else {
+                JOptionPane.showMessageDialog(null, "Compra cancelada");
+                pdao.finalizarCompra();
+                venda.setValorpago(0);
+                p.setQuantidadeUn(0);
+                readJTable();
+                codigoBarrasC.requestFocus();
+            }
 
-        totalC.setText("");
-        totalC1.setText("");
-        trocoC.setText("");
-        quantidadeC.setText("");
-        venda.setValorpago(0);
-        venda.setValortotal(0);
-        venda.setTroco(0);
-        p.setQuantidadeUn(0);
-        p.setQuantidadeKg(0);
-        p.setQuantidade(0);
-        ProdutoDAO.codigos.clear();
-        ProdutoDAO.quantidades.clear();
-        ProdutoDAO.unidade = false;
-        
+            totalC.setText("");
+            totalC1.setText("");
+            trocoC.setText("");
+            quantidadeC.setText("");
+            venda.setValorpago(0);
+            venda.setValortotal(0);
+            venda.setTroco(0);
+            p.setQuantidadeUn(0);
+            p.setQuantidadeKg(0);
+            p.setQuantidade(0);
+            ProdutoDAO.codigos.clear();
+            ProdutoDAO.quantidades.clear();
+            ProdutoDAO.unidade = false;
+            jsalvar = "cancelar";
+        } else {
+            JOptionPane.showMessageDialog(null, "Venda pelo menos 1 Produto");
+        }
     }//GEN-LAST:event_confereTotalMouseClicked
 
     private void confereTotalMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_confereTotalMouseEntered
@@ -968,7 +975,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_codigoCActionPerformed
 
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
-        if (salvar.equals("falso")) {
+        if (salvar.equals("cancelar")) {
             alterarProduto();
         } else {
             JOptionPane.showMessageDialog(null, "Salve ou Cancele Antes!!!");
@@ -1015,7 +1022,6 @@ public class Principal extends javax.swing.JFrame {
                 //DefaultTableModel dtm = (DefaultTableModel) ;
                 //dtm.addRow(new Object[]{"","","","",""}); // no lugar das aspas vc coloca seus Jtextfields (textfield1.getText(), textField2.getText().... ) e assim por diante.
                 Vector cabecalho = new Vector();
-                
 
                 p.setCodigoDeBarras(codigoBarrasC.getText());
                 System.out.println(p.getCodigoDeBarras());
@@ -1024,6 +1030,7 @@ public class Principal extends javax.swing.JFrame {
                 cabecalho.add("quantidade_kg");
                 cabecalho.add("valor");
 
+                jsalvar = "salva";
                 quantidadeC.requestFocus();
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Erro: " + ex.getMessage());
@@ -1043,12 +1050,13 @@ public class Principal extends javax.swing.JFrame {
 
     private void quantidadeCKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_quantidadeCKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            pdao.read();
-            
-            int qnt = Integer.parseInt(quantidadeC.getText());
-            p.setQuantidadeUn(qnt);
+            if (jsalvar.equals("salva")) {
+                pdao.read();
 
-            double total = pdao.addVenda(p.getQuantidadeUn(), p.getCodigoDeBarras());
+                int qnt = Integer.parseInt(quantidadeC.getText());
+                p.setQuantidadeUn(qnt);
+
+                double total = pdao.addVenda(p.getQuantidadeUn(), p.getCodigoDeBarras());
 
                 DecimalFormat decimal = new DecimalFormat("0.00");
                 String valorFormatado = decimal.format(total);
@@ -1067,7 +1075,7 @@ public class Principal extends javax.swing.JFrame {
                 }
 
                 readJTable();
-            
+            }
         }
     }//GEN-LAST:event_quantidadeCKeyPressed
 
@@ -1080,16 +1088,15 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btSalvarActionPerformed
 
     private void btNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNovoActionPerformed
-        salvar = "falso";
-        mudarComponentes();
         salvar = "salva";
+        mudarComponentes();
         codigoC.selectAll();
         codigoC.requestFocus();
     }//GEN-LAST:event_btNovoActionPerformed
 
     private void btCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelarActionPerformed
+        salvar = "cancelar";
         mudarComponentes();
-        salvar = "falso";
     }//GEN-LAST:event_btCancelarActionPerformed
 
     private void btImagemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btImagemActionPerformed
@@ -1129,38 +1136,44 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void quantidadeCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quantidadeCActionPerformed
-        // TODO add your handling code here:
-        Produto p = new Produto();
-        int qnt = Integer.parseInt(quantidadeC.getText());
-        p.setQuantidade(qnt);
+        if (jsalvar.equals("salva")) {
+            Produto p = new Produto();
+            int qnt = Integer.parseInt(quantidadeC.getText());
+            p.setQuantidade(qnt);
+        } else {
+            JOptionPane.showMessageDialog(null, "Entre com um Condigo de Barra Antes");
+        }
     }//GEN-LAST:event_quantidadeCActionPerformed
 
     private void totalC1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_totalC1KeyPressed
-        // TODO add your handling code here:
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            Formatacoes f = new Formatacoes();
-            double valorRecebido = f.virgulaParaPonto(totalC1);
-            System.out.println("SETANDO TOTALC1 KEY PRESSED" + valorRecebido);
+            if (jsalvar.equals("salva")) {
+                Formatacoes f = new Formatacoes();
+                double valorRecebido = f.virgulaParaPonto(totalC1);
+                System.out.println("SETANDO TOTALC1 KEY PRESSED" + valorRecebido);
 
-            double total = f.virgulaParaPonto(totalC);
-            venda.setValortotal(total);
+                double total = f.virgulaParaPonto(totalC);
+                venda.setValortotal(total);
 
-            if (valorRecebido >= total) {
-                venda.setValorpago(valorRecebido);
+                if (valorRecebido >= total) {
+                    venda.setValorpago(valorRecebido);
 
-                venda.calculaTroco();
-                String troco = f.limitarCasasDecimais(venda.getTroco());
+                    venda.calculaTroco();
+                    String troco = f.limitarCasasDecimais(venda.getTroco());
 
-                String trocoformated = f.pontoParaVirgula(troco);
+                    String trocoformated = f.pontoParaVirgula(troco);
 
-                System.out.println("TROCO FORMATADO TOTALC1 KEY PRESSES" + trocoformated);
-                trocoC.setText(trocoformated);
+                    System.out.println("TROCO FORMATADO TOTALC1 KEY PRESSES" + trocoformated);
+                    trocoC.setText(trocoformated);
 
+                } else {
+                    JOptionPane.showMessageDialog(null, "Dinheiro insuficiente");
+                }
+                codigoBarrasC.setText("");
+                quantidadeC.setText("");
             } else {
-                JOptionPane.showMessageDialog(null, "Dinheiro insuficiente");
+                JOptionPane.showMessageDialog(null, "Entre com um Condigo de Barra Antes");
             }
-            codigoBarrasC.setText("");
-            quantidadeC.setText("");
         }
     }//GEN-LAST:event_totalC1KeyPressed
 
@@ -1191,6 +1204,10 @@ public class Principal extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Selecione um produto para excluir");
         }
     }//GEN-LAST:event_abreCaixaFMouseClicked
+
+    private void totalC1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_totalC1FocusLost
+
+    }//GEN-LAST:event_totalC1FocusLost
 
     public void readJTable() {
         pdao.readVenda();
@@ -1267,7 +1284,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     private void mudarComponentes() {
-        if (salvar.equals("falso")) {
+        if (salvar.equals("salva")) {
             codigoC.setVisible(true);
             codigoC.setEditable(true);
             barraC.setVisible(true);
@@ -1283,23 +1300,7 @@ public class Principal extends javax.swing.JFrame {
             btImagem.setEnabled(true);
             btNovo.setEnabled(false);
             jTable2.setEnabled(false);
-        } else if (salvar.equals("verdade")) {
-            codigoC.setVisible(false);
-            barraC.setVisible(false);
-            descricaoC.setVisible(false);
-            quantC.setVisible(false);
-            valorUC.setVisible(false);
-            btSalvar.setEnabled(false);
-            btCancelar.setEnabled(false);
-            btImagem.setEnabled(false);
-            btNovo.setEnabled(true);
-            jTable2.setEnabled(true);
-            codigoC.setText("1");
-            barraC.setText("CODIGO DE BARRA");
-            descricaoC.setText("DESCRIÇÃO");
-            quantC.setText("10");
-            valorUC.setText("1,99");
-        } else {
+        } else if (salvar.equals("cancelar")) {
             codigoC.setVisible(false);
             barraC.setVisible(false);
             descricaoC.setVisible(false);
@@ -1481,14 +1482,15 @@ public class Principal extends javax.swing.JFrame {
             quantC.setText(jTable2.getValueAt(jTable2.getSelectedRow(), 3).toString());
             valorUC.setText(a.converteVirgula(jTable2.getValueAt(jTable2.getSelectedRow(), 4).toString()));
         }
+        salvar = "salva";
         mudarComponentes();
+        salvar = "atualizar";
         valorUC.selectAll();
         valorUC.requestFocus();
-        salvar = "atualizar";
     }
 
     private void salvarProduto() {
-        salvar = "verdade";
+        salvar = "cancelar";
         String verificaUnidade = jcQuant.getSelectedItem().toString();
         p.setCodigo(Integer.parseInt(codigoC.getText()));
         p.setCodigoDeBarras(barraC.getText());
@@ -1532,8 +1534,8 @@ public class Principal extends javax.swing.JFrame {
                 pdao.updateKg(p);
             }
             readjTable();
+            salvar = "cancelar";
             mudarComponentes();
-            salvar = "falso";
         }
     }
 
